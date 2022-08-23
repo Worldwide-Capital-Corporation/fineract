@@ -61,8 +61,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")
-@ConditionalOnProperty("fineract.security.basicauth.enabled")
-@Path("/authentication")
+@ConditionalOnProperty("fineract.security.oauth.enabled")
+@Path("/deprecated/authentication")
 @Tag(name = "Authentication HTTP Basic", description = "An API capability that allows client applications to verify authentication details using HTTP Basic Authentication.")
 public class AuthenticationApiResource {
 
