@@ -35,12 +35,13 @@ public class SecurityValidationConfig {
     @PostConstruct
     public void validate() {
         // NOTE: avoid NPE if these values are not set
-        if (!Boolean.TRUE.equals(basicAuthEnabled) && !Boolean.TRUE.equals(oauthEnabled)) {
-            // NOTE: while we are already doing consistency checks we might as well cover this case; should not happen
-            // as defaults are set in application.properties
-            throw new IllegalArgumentException(
-                    "No authentication scheme selected. Please decide if you want to use basic OR OAuth2 authentication.");
-        }
+        //TODO:- Innocent fix validation
+//        if (!Boolean.TRUE.equals(basicAuthEnabled) && !Boolean.TRUE.equals(oauthEnabled)) {
+//            // NOTE: while we are already doing consistency checks we might as well cover this case; should not happen
+//            // as defaults are set in application.properties
+//            throw new IllegalArgumentException(
+//                    "No authentication scheme selected. Please decide if you want to use basic OR OAuth2 authentication.");
+//        }
 
         if (Boolean.TRUE.equals(basicAuthEnabled) && Boolean.TRUE.equals(oauthEnabled)) {
             throw new IllegalArgumentException(

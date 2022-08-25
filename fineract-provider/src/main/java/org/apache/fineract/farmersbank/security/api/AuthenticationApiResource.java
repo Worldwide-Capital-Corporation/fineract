@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -54,7 +55,6 @@ import org.apache.fineract.useradministration.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -64,7 +64,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")
-@ConditionalOnProperty("fineract.security.basicauth.enabled")
 @Path("/authentication")
 @Tag(
     name = "Authentication HTTP Basic",
@@ -168,9 +167,9 @@ public class AuthenticationApiResource {
       }
 
       final AppUser principal = (AppUser) authenticationCheck.getPrincipal();
-        String accessToken = jwtUtil.generate(principal);
-        String refreshToken = jwtUtil.refreshToken(principal);
-        final Collection<RoleData> roles = new ArrayList<>();
+      String accessToken = jwtUtil.generate(principal);
+      String refreshToken = jwtUtil.refreshToken(principal);
+      final Collection<RoleData> roles = new ArrayList<>();
       final Set<Role> userRoles = principal.getRoles();
       for (final Role role : userRoles) {
         roles.add(role.toData());
@@ -196,6 +195,7 @@ public class AuthenticationApiResource {
                 userId,
                 accessToken,
                 refreshToken,
+                new Date(System.currentTimeMillis() + 10 * 60 * 1000),
                 isTwoFactorRequired);
       } else {
 
@@ -212,6 +212,7 @@ public class AuthenticationApiResource {
                 principal.getId(),
                 accessToken,
                 refreshToken,
+                new Date(System.currentTimeMillis() + 10 * 60 * 1000),
                 isTwoFactorRequired,
                 returnClientList ? clientReadPlatformService.retrieveUserClients(userId) : null);
       }

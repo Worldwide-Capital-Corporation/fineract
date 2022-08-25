@@ -20,6 +20,7 @@
 package org.apache.fineract.farmersbank.service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -35,7 +36,8 @@ import java.util.Date;
 @Service
 public class JwtUtil {
 
-    private static final int expireInMs = 3 * 60 * 1000; //three minutes
+    private static final int expireInMs = 2 * 60 * 1000; //two minutes
+    private static final int expireInMsDev = 20 * 60 * 1000; //two minutes
     private static final int refreshTokenExpireInMs = 5 * 60 * 1000;
     private static final int bCryptEncoderStrength = 10;
     private static final String tokenTypeKey = "token_type";
@@ -56,7 +58,7 @@ public class JwtUtil {
                 .claim(tokenTypeKey, TokenType.ACCESS_TOKEN)
                 .claim(securityCheckKey, securityCheck)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireInMs))
+                .setExpiration(new Date(System.currentTimeMillis() + expireInMsDev))
                 .signWith(key)
                 .compact();
     }
@@ -64,8 +66,8 @@ public class JwtUtil {
     public String refreshToken(AppUser user) {
         BCryptPasswordEncoder bCryptPasswordEncoder =
                 new BCryptPasswordEncoder(bCryptEncoderStrength, new SecureRandom());
-        String tokenId = bCryptPasswordEncoder.encode(user.getPassword());
-        String securityCheck = bCryptPasswordEncoder.encode(String.valueOf(user.getId()));
+        String tokenId = bCryptPasswordEncoder.encode(String.valueOf(user.getId()));
+        String securityCheck = bCryptPasswordEncoder.encode(String.valueOf(user.getId())+user.getPassword());
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .setIssuer("fb.cbs")
@@ -78,24 +80,24 @@ public class JwtUtil {
                 .compact();
     }
 
-    public boolean validate(String token) {
+    public boolean validate(String token) throws JwtException {
         if (getUsername(token) != null && isExpired(token)) {
             return true;
         }
         return false;
     }
 
-    public String getUsername(String token) {
+    public String getUsername(String token) throws JwtException {
         Claims claims = getClaims(token);
         return claims.getSubject();
     }
 
-    public boolean isExpired(String token) {
+    public boolean isExpired(String token) throws JwtException {
         Claims claims = getClaims(token);
         return claims.getExpiration().after(new Date(System.currentTimeMillis()));
     }
 
-    private Claims getClaims(String token) {
+    private Claims getClaims(String token) throws JwtException {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 }

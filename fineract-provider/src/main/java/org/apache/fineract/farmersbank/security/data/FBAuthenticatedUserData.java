@@ -23,6 +23,7 @@ import org.apache.fineract.infrastructure.core.data.EnumOptionData;
 import org.apache.fineract.useradministration.data.RoleData;
 
 import java.util.Collection;
+import java.util.Date;
 
 public class FBAuthenticatedUserData {
   @SuppressWarnings("unused")
@@ -39,6 +40,8 @@ public class FBAuthenticatedUserData {
 
   @SuppressWarnings("unused")
   private final boolean authenticated;
+
+  private final Date expiresIn;
 
   @SuppressWarnings("unused")
   private final Long officeId;
@@ -74,6 +77,7 @@ public class FBAuthenticatedUserData {
     this.userId = null;
     this.accessToken = null;
     this.refreshToken = null;
+    this.expiresIn = null;
     this.authenticated = false;
     this.officeId = null;
     this.officeName = null;
@@ -99,6 +103,7 @@ public class FBAuthenticatedUserData {
       final Long userId,
       final String accessToken,
       final String refreshToken,
+      final Date tokenExpireIn,
       final boolean isTwoFactorAuthenticationRequired,
       Collection<Long> aListOfClientIDs) {
     this.username = username;
@@ -110,6 +115,7 @@ public class FBAuthenticatedUserData {
     this.userId = userId;
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
+    this.expiresIn = tokenExpireIn;
     this.authenticated = true;
     this.roles = roles;
     this.permissions = permissions;
@@ -123,6 +129,7 @@ public class FBAuthenticatedUserData {
       final Long userId,
       final String accessToken,
       final String refreshToken,
+      final Date tokenExpireIn,
       final boolean isTwoFactorAuthenticationRequired) {
     this.username = username;
     this.officeId = null;
@@ -133,6 +140,7 @@ public class FBAuthenticatedUserData {
     this.userId = userId;
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
+    this.expiresIn = tokenExpireIn;
     this.authenticated = true;
     this.roles = null;
     this.permissions = null;

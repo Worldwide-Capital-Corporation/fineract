@@ -16,22 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.security.service;
+
+package org.apache.fineract.farmersbank.service;
 
 import org.apache.fineract.infrastructure.security.domain.PlatformUser;
 import org.apache.fineract.infrastructure.security.domain.PlatformUserRepository;
+import org.apache.fineract.infrastructure.security.service.PlatformUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-/**
- * Used in securityContext.xml as implementation of spring security's {@link UserDetailsService}.
- */
-
-public class TenantAwareJpaPlatformUserDetailsService implements PlatformUserDetailsService {
+@Service("userDetailsService")
+public class FarmersBankUserDetailsService implements PlatformUserDetailsService {
 
     @Autowired
     private PlatformUserRepository platformUserRepository;

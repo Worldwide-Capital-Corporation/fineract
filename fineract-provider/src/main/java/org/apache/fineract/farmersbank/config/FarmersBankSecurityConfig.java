@@ -17,14 +17,14 @@
  * under the License.
  */
 
-package org.apache.fineract.infrastructure.core.config;
+package org.apache.fineract.farmersbank.config;
 
+import org.apache.fineract.farmersbank.filters.FarmersBankJWTAuthenticationFilter;
+import org.apache.fineract.farmersbank.service.FarmersBankUserDetailsService;
+import org.apache.fineract.infrastructure.core.config.FineractProperties;
 import org.apache.fineract.infrastructure.instancemode.filter.FineractInstanceModeApiFilter;
-import org.apache.fineract.infrastructure.security.filter.TenantAwareBasicAuthenticationFilter;
 import org.apache.fineract.infrastructure.security.filter.TwoFactorAuthenticationFilter;
-import org.apache.fineract.infrastructure.security.service.TenantAwareJpaPlatformUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -44,12 +44,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
-@ConditionalOnProperty("fineract.security.oauth.enabled")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class FarmersBankSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private TenantAwareJpaPlatformUserDetailsService userDetailsService;
+    private FarmersBankUserDetailsService userDetailsService;
 
     @Autowired
     private TwoFactorAuthenticationFilter twoFactorAuthenticationFilter;
@@ -85,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //
                 .and() //
                 .addFilterAfter(fineractInstanceModeApiFilter, SecurityContextPersistenceFilter.class) //
-                .addFilterAfter(tenantAwareBasicAuthenticationFilter(), FineractInstanceModeApiFilter.class) //
+                .addFilterAfter(authenticationFilter(), FineractInstanceModeApiFilter.class) //
                 .addFilterAfter(twoFactorAuthenticationFilter, BasicAuthenticationFilter.class); //
 
         if (serverProperties.getSsl().isEnabled()) {
@@ -94,8 +93,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     //TODO: - Innocent implement JWT filter
     @Bean
-    public TenantAwareBasicAuthenticationFilter tenantAwareBasicAuthenticationFilter() throws Exception {
-        return new TenantAwareBasicAuthenticationFilter(authenticationManagerBean(), basicAuthenticationEntryPoint());
+    public FarmersBankJWTAuthenticationFilter authenticationFilter() throws Exception {
+        return new FarmersBankJWTAuthenticationFilter(authenticationManagerBean(), basicAuthenticationEntryPoint());
     }
 
     @Bean
@@ -131,10 +130,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public FilterRegistrationBean<TenantAwareBasicAuthenticationFilter> tenantAwareBasicAuthenticationFilterRegistration()
+    public FilterRegistrationBean<FarmersBankJWTAuthenticationFilter> authenticationFilterRegistration()
             throws Exception {
-        FilterRegistrationBean<TenantAwareBasicAuthenticationFilter> registration = new FilterRegistrationBean<TenantAwareBasicAuthenticationFilter>(
-                tenantAwareBasicAuthenticationFilter());
+        FilterRegistrationBean<FarmersBankJWTAuthenticationFilter> registration = new FilterRegistrationBean<>(
+                authenticationFilter());
         registration.setEnabled(false);
         return registration;
     }
