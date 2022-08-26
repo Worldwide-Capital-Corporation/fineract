@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -41,6 +40,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.fineract.farmersbank.security.data.FBAuthenticatedUserData;
+import org.apache.fineract.farmersbank.security.data.FBJwtTokenData;
 import org.apache.fineract.farmersbank.service.JwtUtil;
 import org.apache.fineract.infrastructure.core.data.EnumOptionData;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
@@ -51,6 +51,7 @@ import org.apache.fineract.infrastructure.security.service.SpringSecurityPlatfor
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.useradministration.data.RoleData;
 import org.apache.fineract.useradministration.domain.AppUser;
+import org.apache.fineract.useradministration.domain.AppUserRepository;
 import org.apache.fineract.useradministration.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -84,6 +85,7 @@ public class AuthenticationApiResource {
   private final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService;
   private final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext;
   private final ClientReadPlatformService clientReadPlatformService;
+  private final AppUserRepository repository;
   private final JwtUtil jwtUtil;
 
   @Autowired
@@ -92,11 +94,13 @@ public class AuthenticationApiResource {
           final DaoAuthenticationProvider customAuthenticationProvider,
       final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService,
       final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext,
+      final AppUserRepository repository,
       final JwtUtil jwtUtil,
       ClientReadPlatformService aClientReadPlatformService) {
     this.customAuthenticationProvider = customAuthenticationProvider;
     this.apiJsonSerializerService = apiJsonSerializerService;
     this.springSecurityPlatformSecurityContext = springSecurityPlatformSecurityContext;
+    this.repository = repository;
     this.jwtUtil = jwtUtil;
     clientReadPlatformService = aClientReadPlatformService;
   }
@@ -131,23 +135,15 @@ public class AuthenticationApiResource {
   public String authenticate(
       @Parameter(hidden = true) final String apiRequestBodyAsJson,
       @QueryParam("returnClientList") @DefaultValue("false") boolean returnClientList) {
-    // TODO FINERACT-819: sort out Jersey so JSON conversion does not have
-    // to be done explicitly via GSON here, but implicit by arg
     AuthenticateRequest request =
         new Gson().fromJson(apiRequestBodyAsJson, AuthenticateRequest.class);
     if (request == null) {
       throw new IllegalArgumentException(
-          "Invalid JSON in BODY (no longer URL param; see FINERACT-726) of POST to /authentication: "
-              + apiRequestBodyAsJson);
+          "Invalid JSON in BODY  of POST to /authentication");
     }
     if (request.username == null || request.password == null) {
       throw new IllegalArgumentException(
-          "Username or Password is null in JSON (see FINERACT-726) of POST to /authentication: "
-              + apiRequestBodyAsJson
-              + "; username="
-              + request.username
-              + ", password="
-              + request.password);
+          "Username or Password is null in JSON of POST to /authentication");
     }
 
     final Authentication authentication =
@@ -167,8 +163,8 @@ public class AuthenticationApiResource {
       }
 
       final AppUser principal = (AppUser) authenticationCheck.getPrincipal();
-      String accessToken = jwtUtil.generate(principal);
-      String refreshToken = jwtUtil.refreshToken(principal);
+      FBJwtTokenData accessTokenData = jwtUtil.generate(principal);
+      FBJwtTokenData refreshTokenData = jwtUtil.refreshToken(principal, accessTokenData);
       final Collection<RoleData> roles = new ArrayList<>();
       final Set<Role> userRoles = principal.getRoles();
       for (final Role role : userRoles) {
@@ -188,14 +184,17 @@ public class AuthenticationApiResource {
               && !principal.hasSpecificPermissionTo(
                   TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
       Long userId = principal.getId();
+      principal.setTokenLastGenerated(accessTokenData.getIssuedAt());
+      repository.save(principal);
       if (this.springSecurityPlatformSecurityContext.doesPasswordHasToBeRenewed(principal)) {
         authenticatedUserData =
             new FBAuthenticatedUserData(
                 request.username,
                 userId,
-                accessToken,
-                refreshToken,
-                new Date(System.currentTimeMillis() + 10 * 60 * 1000),
+                accessTokenData.getToken(),
+                refreshTokenData.getToken(),
+                accessTokenData.getExpireIn(),
+                refreshTokenData.getExpireIn(),
                 isTwoFactorRequired);
       } else {
 
@@ -210,9 +209,10 @@ public class AuthenticationApiResource {
                 roles,
                 permissions,
                 principal.getId(),
-                accessToken,
-                refreshToken,
-                new Date(System.currentTimeMillis() + 10 * 60 * 1000),
+                accessTokenData.getToken(),
+                refreshTokenData.getToken(),
+                accessTokenData.getExpireIn(),
+                refreshTokenData.getExpireIn(),
                 isTwoFactorRequired,
                 returnClientList ? clientReadPlatformService.retrieveUserClients(userId) : null);
       }

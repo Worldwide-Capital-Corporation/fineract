@@ -21,6 +21,7 @@ package org.apache.fineract.farmersbank.filters;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.fineract.farmersbank.service.FarmersBankUserDetailsService;
 import org.apache.fineract.farmersbank.service.JwtUtil;
@@ -40,6 +41,7 @@ import org.apache.fineract.useradministration.domain.AppUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -116,43 +118,14 @@ public class FarmersBankJWTAuthenticationFilter extends BasicAuthenticationFilte
         // in different origin (domain name)
       } else {
 
-        String tenantIdentifier = request.getHeader(this.tenantRequestHeader);
-
-        if (org.apache.commons.lang3.StringUtils.isBlank(tenantIdentifier)) {
-          tenantIdentifier = request.getParameter("tenantIdentifier");
-        }
-
-        if (tenantIdentifier == null && this.exceptionIfHeaderMissing) {
-          throw new InvalidTenantIdentifierException(
-              "No tenant identifier found: Add request header of '"
-                  + this.tenantRequestHeader
-                  + "' or add the parameter 'tenantIdentifier' to query string of request URL.");
-        }
-
         String pathInfo = request.getRequestURI();
-        boolean isReportRequest = false;
-        if (pathInfo != null && pathInfo.contains("report")) {
-          isReportRequest = true;
-        }
-        final FineractPlatformTenant tenant =
-            this.basicAuthTenantDetailsService.loadTenantById(tenantIdentifier, isReportRequest);
-        ThreadLocalContextUtil.setTenant(tenant);
-        HashMap<BusinessDateType, LocalDate> businessDates =
-            this.businessDateReadPlatformService.getBusinessDates();
-        ThreadLocalContextUtil.setBusinessDates(businessDates);
+        setTenant(request, (pathInfo != null && pathInfo.contains("report")));
+
+        setBusinessDates();
 
         String authToken = parseJwt(request);
-        if (authToken != null) {
-          if (jwtUtil.validate(authToken)) {
-            String username = jwtUtil.getUsername(authToken);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            ThreadLocalContextUtil.setAuthToken(authToken);
-          }
+        if (authToken != null && jwtUtil.validate(authToken)) {
+            setAuthentication(authToken,request);
         }
 
         if (!firstRequestProcessed.get()) {
@@ -195,11 +168,45 @@ public class FarmersBankJWTAuthenticationFilter extends BasicAuthenticationFilte
   }
 
   private String parseJwt(HttpServletRequest request) {
-    String headerAuth = request.getHeader("Authorization");
+    String headerAuth = request.getHeader(HttpHeaders.AUTHORIZATION);
     if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
       return headerAuth.replaceFirst("Bearer ", "");
     }
     return null;
+  }
+
+  private void setTenant(HttpServletRequest request, boolean isReportRequest){
+    String tenantIdentifier = request.getHeader(this.tenantRequestHeader);
+
+    if (StringUtils.isBlank(tenantIdentifier)) {
+      tenantIdentifier = request.getParameter("tenantIdentifier");
+    }
+
+    if (tenantIdentifier == null && this.exceptionIfHeaderMissing) {
+      throw new InvalidTenantIdentifierException(
+              "No tenant identifier found: Add request header of '"
+                      + this.tenantRequestHeader
+                      + "' or add the parameter 'tenantIdentifier' to query string of request URL.");
+    }
+    final FineractPlatformTenant tenant =
+            this.basicAuthTenantDetailsService.loadTenantById(tenantIdentifier, isReportRequest);
+    ThreadLocalContextUtil.setTenant(tenant);
+  }
+
+  private void setBusinessDates(){
+    HashMap<BusinessDateType, LocalDate> businessDates =
+            this.businessDateReadPlatformService.getBusinessDates();
+    ThreadLocalContextUtil.setBusinessDates(businessDates);
+  }
+
+  private void setAuthentication(String authToken, HttpServletRequest request) {
+    String username = jwtUtil.getUsername(authToken);
+    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    UsernamePasswordAuthenticationToken auth =
+        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+    SecurityContextHolder.getContext().setAuthentication(auth);
+    ThreadLocalContextUtil.setAuthToken(authToken);
   }
 
   // TODO: - Innocent add login history e.t.c

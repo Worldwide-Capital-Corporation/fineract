@@ -41,7 +41,11 @@ public class FBAuthenticatedUserData {
   @SuppressWarnings("unused")
   private final boolean authenticated;
 
+  @SuppressWarnings("unused")
   private final Date expiresIn;
+
+  @SuppressWarnings("unused")
+  private final Date refreshExpiresIn;
 
   @SuppressWarnings("unused")
   private final Long officeId;
@@ -78,6 +82,7 @@ public class FBAuthenticatedUserData {
     this.accessToken = null;
     this.refreshToken = null;
     this.expiresIn = null;
+    this.refreshExpiresIn = null;
     this.authenticated = false;
     this.officeId = null;
     this.officeName = null;
@@ -104,6 +109,7 @@ public class FBAuthenticatedUserData {
       final String accessToken,
       final String refreshToken,
       final Date tokenExpireIn,
+      final Date refreshExpiresIn,
       final boolean isTwoFactorAuthenticationRequired,
       Collection<Long> aListOfClientIDs) {
     this.username = username;
@@ -116,6 +122,7 @@ public class FBAuthenticatedUserData {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
     this.expiresIn = tokenExpireIn;
+    this.refreshExpiresIn = refreshExpiresIn;
     this.authenticated = true;
     this.roles = roles;
     this.permissions = permissions;
@@ -130,6 +137,7 @@ public class FBAuthenticatedUserData {
       final String accessToken,
       final String refreshToken,
       final Date tokenExpireIn,
+      final Date refreshExpiresIn,
       final boolean isTwoFactorAuthenticationRequired) {
     this.username = username;
     this.officeId = null;
@@ -141,6 +149,7 @@ public class FBAuthenticatedUserData {
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
     this.expiresIn = tokenExpireIn;
+    this.refreshExpiresIn = refreshExpiresIn;
     this.authenticated = true;
     this.roles = null;
     this.permissions = null;

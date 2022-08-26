@@ -125,6 +125,9 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
     @Column(name = "cannot_change_password", nullable = true)
     private Boolean cannotChangePassword;
 
+    @Column(name = "login_token_last_generated", nullable = false)
+    private Date tokenLastGenerated;
+
     public static AppUser fromJson(final Office userOffice, final Staff linkedStaff, final Set<Role> allRoles,
             final Collection<Client> clients, final JsonCommand command) {
 
@@ -147,6 +150,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
         final boolean userCredentialsNonExpired = true;
         final boolean userAccountNonLocked = true;
         final boolean cannotChangePassword = false;
+        final Date tokenLastGenerate = null;
 
         final Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("DUMMY_ROLE_NOT_USED_OR_PERSISTED_TO_AVOID_EXCEPTION"));
@@ -161,7 +165,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
         final boolean isSelfServiceUser = command.booleanPrimitiveValueOfParameterNamed(AppUserConstants.IS_SELF_SERVICE_USER);
 
         return new AppUser(userOffice, user, allRoles, email, firstname, lastname, linkedStaff, passwordNeverExpire, isSelfServiceUser,
-                clients, cannotChangePassword);
+                clients, cannotChangePassword, tokenLastGenerate);
     }
 
     protected AppUser() {
@@ -172,7 +176,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
 
     public AppUser(final Office office, final User user, final Set<Role> roles, final String email, final String firstname,
             final String lastname, final Staff staff, final boolean passwordNeverExpire, final boolean isSelfServiceUser,
-            final Collection<Client> clients, final Boolean cannotChangePassword) {
+            final Collection<Client> clients, final Boolean cannotChangePassword, final Date tokenLastGenerated) {
         this.office = office;
         this.email = email.trim();
         this.username = user.getUsername().trim();
@@ -191,6 +195,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
         this.isSelfServiceUser = isSelfServiceUser;
         this.appUserClientMappings = createAppUserClientMappings(clients);
         this.cannotChangePassword = cannotChangePassword;
+        this.tokenLastGenerated = tokenLastGenerated;
     }
 
     public EnumOptionData organisationalRoleData() {
@@ -722,6 +727,14 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
             }
         }
         return newAppUserClientMappings;
+    }
+
+    public void setTokenLastGenerated(Date issueAt) {
+        this.tokenLastGenerated = issueAt;
+    }
+
+    public Date getTokenLastGenerated() {
+        return this.tokenLastGenerated;
     }
 
     @Override
