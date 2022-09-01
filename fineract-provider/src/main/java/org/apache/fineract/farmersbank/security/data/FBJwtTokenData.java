@@ -21,12 +21,10 @@ package org.apache.fineract.farmersbank.security.data;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class FBJwtTokenData {
 
   private final String token;
-  private final Date issuedAt;
-  private final Date expireIn;
+  private final String uuid;
+  private final Long expireIn;
 }

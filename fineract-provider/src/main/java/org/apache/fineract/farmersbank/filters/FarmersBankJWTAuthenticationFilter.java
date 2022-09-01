@@ -202,11 +202,14 @@ public class FarmersBankJWTAuthenticationFilter extends BasicAuthenticationFilte
   private void setAuthentication(String authToken, HttpServletRequest request) {
     String username = jwtUtil.getUsername(authToken);
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-    UsernamePasswordAuthenticationToken auth =
-        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-    SecurityContextHolder.getContext().setAuthentication(auth);
-    ThreadLocalContextUtil.setAuthToken(authToken);
+    final AppUser appUser = (AppUser) userDetails;
+    if (jwtUtil.validateTokenUuid(authToken, appUser)) {
+      UsernamePasswordAuthenticationToken auth =
+              new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+      auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+      SecurityContextHolder.getContext().setAuthentication(auth);
+      ThreadLocalContextUtil.setAuthToken(authToken);
+    }
   }
 
   // TODO: - Innocent add login history e.t.c

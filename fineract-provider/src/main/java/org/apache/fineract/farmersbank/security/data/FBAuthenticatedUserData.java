@@ -23,7 +23,6 @@ import org.apache.fineract.infrastructure.core.data.EnumOptionData;
 import org.apache.fineract.useradministration.data.RoleData;
 
 import java.util.Collection;
-import java.util.Date;
 
 public class FBAuthenticatedUserData {
   @SuppressWarnings("unused")
@@ -42,10 +41,10 @@ public class FBAuthenticatedUserData {
   private final boolean authenticated;
 
   @SuppressWarnings("unused")
-  private final Date expiresIn;
+  private final Long expiresIn;
 
   @SuppressWarnings("unused")
-  private final Date refreshExpiresIn;
+  private final Long refreshExpiresIn;
 
   @SuppressWarnings("unused")
   private final Long officeId;
@@ -108,8 +107,8 @@ public class FBAuthenticatedUserData {
       final Long userId,
       final String accessToken,
       final String refreshToken,
-      final Date tokenExpireIn,
-      final Date refreshExpiresIn,
+      final Long tokenExpireIn,
+      final Long refreshExpiresIn,
       final boolean isTwoFactorAuthenticationRequired,
       Collection<Long> aListOfClientIDs) {
     this.username = username;
@@ -136,8 +135,8 @@ public class FBAuthenticatedUserData {
       final Long userId,
       final String accessToken,
       final String refreshToken,
-      final Date tokenExpireIn,
-      final Date refreshExpiresIn,
+      final Long tokenExpireIn,
+      final Long refreshExpiresIn,
       final boolean isTwoFactorAuthenticationRequired) {
     this.username = username;
     this.officeId = null;

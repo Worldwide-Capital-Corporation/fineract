@@ -33,7 +33,6 @@ import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.util.Date;
 
-
 @Service
 public class JwtUtil {
 
@@ -41,9 +40,11 @@ public class JwtUtil {
     private static final int expireInMsDev = 20 * 60 * 1000; //two minutes
     private static final int refreshTokenExpireInMs = 5 * 60 * 1000;
     private static final int bCryptEncoderStrength = 10;
+    private static final int refreshTokenIn = 5; //five seconds before token expires
     private static final String TOKEN_TYPE = "token_type";
     private static final String GUID = "guid";
-    private static final String ACCESS_TOKEN_ISSUED_AT = "guid";
+    private static final String UUID = "uuid";
+    private static final String ACCESS_TOKEN_UUID = "uuid";
 
     private enum TokenType {
 
@@ -67,81 +68,91 @@ public class JwtUtil {
             new BCryptPasswordEncoder(bCryptEncoderStrength, new SecureRandom());
 
   public FBJwtTokenData generate(AppUser user) {
-      String tokenId = encoder.encode(String.valueOf(user.getId()));
-      String securityCheck = encoder.encode(tokenId.concat(user.getPassword()));
-      Date issuedAt = new Date(System.currentTimeMillis());
-      Date expiresIn = new Date(System.currentTimeMillis() + expireInMsDev);
-      String token = Jwts.builder()
-          .setSubject(user.getUsername())
-          .setIssuer("fb.cbs")
-          .setId(tokenId)
-          .claim(TOKEN_TYPE, TokenType.ACCESS_TOKEN.toString())
-          .claim(GUID, securityCheck)
-          .setIssuedAt(issuedAt)
-          .setExpiration(expiresIn)
-          .signWith(key)
-          .compact();
-      return new FBJwtTokenData(token, issuedAt, expiresIn);
+    String tokenId = encoder.encode(String.valueOf(user.getId()));
+    String securityCheck = encoder.encode(tokenId.concat(user.getPassword()));
+    Date issuedAt = new Date(System.currentTimeMillis());
+    Date expiresIn = new Date(System.currentTimeMillis() + expireInMsDev);
+    String uuid = java.util.UUID.randomUUID().toString();
+    String token =
+        Jwts.builder()
+            .setSubject(user.getUsername())
+            .setIssuer("fb.cbs")
+            .setId(tokenId)
+            .claim(TOKEN_TYPE, TokenType.ACCESS_TOKEN.toString())
+            .claim(GUID, securityCheck)
+            .claim(UUID, uuid)
+            .setIssuedAt(issuedAt)
+            .setExpiration(expiresIn)
+            .signWith(key)
+            .compact();
+    return new FBJwtTokenData(
+        token, uuid, ((expiresIn.getTime() - issuedAt.getTime()) / 1000) - refreshTokenIn);
   }
 
-    public FBJwtTokenData refreshToken(AppUser user, FBJwtTokenData accessTokenData) {
-        String tokenId = encoder.encode(String.valueOf(user.getId()));
-        String securityCheck = encoder.encode(tokenId.concat(user.getPassword()));
-        Date issuedAt = new Date(System.currentTimeMillis());
-        Date expiresIn = new Date(System.currentTimeMillis() + expireInMsDev);
-        String token = Jwts.builder()
-                .setSubject(user.getUsername())
-                .setIssuer("fb.cbs")
-                .setId(tokenId)
-                .claim(TOKEN_TYPE, TokenType.REFRESH_TOKEN.toString())
-                .claim(GUID, securityCheck)
-                .claim(ACCESS_TOKEN_ISSUED_AT, accessTokenData.getIssuedAt())
-                .setIssuedAt(issuedAt)
-                .setExpiration(expiresIn)
-                .signWith(key)
-                .compact();
-        return new FBJwtTokenData(token, issuedAt, expiresIn);
-    }
+  public FBJwtTokenData refreshToken(AppUser user, FBJwtTokenData accessTokenData) {
+    String tokenId = encoder.encode(String.valueOf(user.getId()));
+    String securityCheck = encoder.encode(tokenId.concat(user.getPassword()));
+    Date issuedAt = new Date(System.currentTimeMillis());
+    Date expiresIn = new Date(System.currentTimeMillis() + expireInMsDev);
+    String token =
+        Jwts.builder()
+            .setSubject(user.getUsername())
+            .setIssuer("fb.cbs")
+            .setId(tokenId)
+            .claim(TOKEN_TYPE, TokenType.REFRESH_TOKEN.toString())
+            .claim(GUID, securityCheck)
+            .claim(ACCESS_TOKEN_UUID, accessTokenData.getUuid())
+            .setIssuedAt(issuedAt)
+            .setExpiration(expiresIn)
+            .signWith(key)
+            .compact();
+    return new FBJwtTokenData(
+        token,
+        accessTokenData.getUuid(),
+        ((expiresIn.getTime() - issuedAt.getTime()) / 1000) - refreshTokenIn);
+  }
 
-    public boolean validate(String token) throws JwtException {
-        if (getUsername(token) != null && isExpired(token)) {
-            return true;
-        }
-        return false;
+  public boolean validate(String token) throws JwtException {
+    if (getUsername(token) != null && isExpired(token)) {
+      return true;
     }
+    return false;
+  }
 
-    public boolean isRefreshToken(String token) throws JwtException {
-        Claims claims = getClaims(token);
-        return claims.get(TOKEN_TYPE, String.class).equals(TokenType.REFRESH_TOKEN.toString());
-    }
+  public boolean isRefreshToken(String token) throws JwtException {
+    Claims claims = getClaims(token);
+    return claims.get(TOKEN_TYPE, String.class).equals(TokenType.REFRESH_TOKEN.toString());
+  }
 
-    public boolean validateId(String token, AppUser user) throws JwtException {
-        Claims claims = getClaims(token);
-        return claims.getId().matches(encoder.encode(String.valueOf(user.getId())));
-    }
+  public boolean validateId(String token, AppUser user) throws JwtException {
+    Claims claims = getClaims(token);
+    return claims.getId().matches(encoder.encode(String.valueOf(user.getId())));
+  }
 
-    public boolean validateIssueDate(String token, AppUser user) throws JwtException {
-        Claims claims = getClaims(token);
-        return claims.getIssuedAt().compareTo(user.getTokenLastGenerated()) == 0;
-    }
+  public boolean validateTokenUuid(String token, AppUser user) throws JwtException {
+      Claims claims = getClaims(token);
+      return claims.get(ACCESS_TOKEN_UUID, String.class).equals(user.getAccessTokenUuid());
+  }
 
-    public String getUsername(String token) throws JwtException {
-        Claims claims = getClaims(token);
-        return claims.getSubject();
-    }
+  public String getUsername(String token) throws JwtException {
+    Claims claims = getClaims(token);
+    return claims.getSubject();
+  }
 
-    public boolean validateGuid(String token, AppUser user) throws JwtException {
-        Claims claims = getClaims(token);
-        String tokenId = claims.getId();
-        return claims.get(GUID, String.class).matches(encoder.encode(tokenId.concat(user.getPassword())));
-    }
+  public boolean validateGuid(String token, AppUser user) throws JwtException {
+    Claims claims = getClaims(token);
+    String tokenId = claims.getId();
+    return claims
+        .get(GUID, String.class)
+        .matches(encoder.encode(tokenId.concat(user.getPassword())));
+  }
 
-    public boolean isExpired(String token) throws JwtException {
-        Claims claims = getClaims(token);
-        return claims.getExpiration().after(new Date(System.currentTimeMillis()));
-    }
+  public boolean isExpired(String token) throws JwtException {
+    Claims claims = getClaims(token);
+    return claims.getExpiration().after(new Date(System.currentTimeMillis()));
+  }
 
-    private Claims getClaims(String token) throws JwtException {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-    }
+  private Claims getClaims(String token) throws JwtException {
+    return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+  }
 }

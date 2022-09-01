@@ -184,7 +184,7 @@ public class AuthenticationApiResource {
               && !principal.hasSpecificPermissionTo(
                   TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
       Long userId = principal.getId();
-      principal.setTokenLastGenerated(accessTokenData.getIssuedAt());
+      principal.setAccessTokenUuid(accessTokenData.getUuid());
       repository.save(principal);
       if (this.springSecurityPlatformSecurityContext.doesPasswordHasToBeRenewed(principal)) {
         authenticatedUserData =

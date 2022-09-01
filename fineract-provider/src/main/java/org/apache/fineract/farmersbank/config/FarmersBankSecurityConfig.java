@@ -62,12 +62,14 @@ public class FarmersBankSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ServerProperties serverProperties;
 
+    private static final String API_PATH = "/api/**";
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http //
                 .csrf().disable() // NOSONAR only creating a service that is used by non-browser clients
-                .antMatcher("/api/**").authorizeRequests() //
-                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll() //
+                .antMatcher(API_PATH).authorizeRequests() //
+                .antMatchers(HttpMethod.OPTIONS, API_PATH).permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/echo").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/authentication").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/self/authentication").permitAll() //
@@ -76,7 +78,7 @@ public class FarmersBankSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/*/instance-mode").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/twofactor/validate").fullyAuthenticated() //
                 .antMatchers("/api/*/twofactor").fullyAuthenticated() //
-                .antMatchers("/api/**").access("isFullyAuthenticated() and hasAuthority('TWOFACTOR_AUTHENTICATED')").and() //
+                .antMatchers(API_PATH).access("isFullyAuthenticated() and hasAuthority('TWOFACTOR_AUTHENTICATED')").and() //
                 .httpBasic() //
                 .authenticationEntryPoint(basicAuthenticationEntryPoint()) //
                 .and() //
@@ -88,10 +90,10 @@ public class FarmersBankSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(twoFactorAuthenticationFilter, BasicAuthenticationFilter.class); //
 
         if (serverProperties.getSsl().isEnabled()) {
-            http.requiresChannel(channel -> channel.antMatchers("/api/**").requiresSecure());
+            http.requiresChannel(channel -> channel.antMatchers(API_PATH).requiresSecure());
         }
     }
-    //TODO: - Innocent implement JWT filter
+
     @Bean
     public FarmersBankJWTAuthenticationFilter authenticationFilter() throws Exception {
         return new FarmersBankJWTAuthenticationFilter(authenticationManagerBean(), basicAuthenticationEntryPoint());
@@ -140,7 +142,7 @@ public class FarmersBankSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterRegistrationBean<TwoFactorAuthenticationFilter> twoFactorAuthenticationFilterRegistration() {
-        FilterRegistrationBean<TwoFactorAuthenticationFilter> registration = new FilterRegistrationBean<TwoFactorAuthenticationFilter>(
+        FilterRegistrationBean<TwoFactorAuthenticationFilter> registration = new FilterRegistrationBean<>(
                 twoFactorAuthenticationFilter);
         registration.setEnabled(false);
         return registration;

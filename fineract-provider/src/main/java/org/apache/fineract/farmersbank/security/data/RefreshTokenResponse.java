@@ -19,17 +19,15 @@
 
 package org.apache.fineract.farmersbank.security.data;
 
-import java.util.Date;
-
 public class RefreshTokenResponse {
 
   private final String accessToken;
   private final String refreshToken;
-  private final Date tokenExpireIn;
-  private final Date refreshExpiresIn;
+  private final Long tokenExpireIn;
+  private final Long refreshExpiresIn;
 
   public RefreshTokenResponse(
-      String accessToken, String refreshToken, Date tokenExpireIn, Date refreshExpiresIn) {
+      String accessToken, String refreshToken, Long tokenExpireIn, Long refreshExpiresIn) {
     this.refreshToken = refreshToken;
     this.accessToken = accessToken;
     this.tokenExpireIn = tokenExpireIn;

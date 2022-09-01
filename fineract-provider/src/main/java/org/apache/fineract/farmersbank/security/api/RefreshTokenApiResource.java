@@ -37,6 +37,8 @@ import org.apache.fineract.infrastructure.security.service.SpringSecurityPlatfor
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.useradministration.domain.AppUser;
 import org.apache.fineract.useradministration.domain.AppUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -65,6 +67,8 @@ public class RefreshTokenApiResource {
 
     public String refreshToken;
   }
+
+  private static final Logger LOG = LoggerFactory.getLogger(RefreshTokenApiResource.class);
 
   private final DaoAuthenticationProvider customAuthenticationProvider;
   private final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService;
@@ -131,7 +135,7 @@ public class RefreshTokenApiResource {
 
     FBJwtTokenData accessTokenData = jwtUtil.generate(appUser);
     FBJwtTokenData refreshTokenData = jwtUtil.refreshToken(appUser, accessTokenData);
-    appUser.setTokenLastGenerated(accessTokenData.getIssuedAt());
+    appUser.setAccessTokenUuid(accessTokenData.getUuid());
     repository.save(appUser);
     return this.apiJsonSerializerService.serialize(
         new RefreshTokenResponse(
@@ -142,6 +146,6 @@ public class RefreshTokenApiResource {
   }
 
   private boolean validateRefreshToken(String token, AppUser user) {
-    return jwtUtil.isRefreshToken(token) && jwtUtil.validateIssueDate(token, user);
+    return jwtUtil.isRefreshToken(token) && jwtUtil.validateTokenUuid(token, user);
   }
 }
