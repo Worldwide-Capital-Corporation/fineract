@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.fineract.infrastructure.core.config;
+package org.apache.fineract.farmersbank.security.config;
 
 import org.apache.fineract.farmersbank.security.filter.FarmersBankAuthenticationFilter;
+import org.apache.fineract.infrastructure.core.config.FineractProperties;
 import org.apache.fineract.infrastructure.instancemode.filter.FineractInstanceModeApiFilter;
 import org.apache.fineract.infrastructure.security.filter.TwoFactorAuthenticationFilter;
 import org.apache.fineract.infrastructure.security.service.TenantAwareJpaPlatformUserDetailsService;
-import org.apache.fineract.infrastructure.security.vote.SelfServiceUserAccessVote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -31,77 +31,69 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.vote.AuthenticatedVoter;
-import org.springframework.security.access.vote.RoleVoter;
-import org.springframework.security.access.vote.UnanimousBased;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Configuration
-@ConditionalOnProperty("fineract.security.basic.enabled") //TODO: - Innocent disabled in favor of our configs
+@ConditionalOnProperty("fineract.security.oauth.enabled")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private TwoFactorAuthenticationFilter twoFactorAuthenticationFilter;
-
-    @Autowired
-    private FarmersBankAuthenticationFilter authenticationFilter;
+public class FarmersBankSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private TenantAwareJpaPlatformUserDetailsService userDetailsService;
 
     @Autowired
+    private TwoFactorAuthenticationFilter twoFactorAuthenticationFilter;
+
+    @Autowired
+    private FineractInstanceModeApiFilter fineractInstanceModeApiFilter;
+
+    @Autowired
+    private FineractProperties fineractProperties;
+
+    @Autowired
     private ServerProperties serverProperties;
 
-    private static final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    private static final String API_PATH = "/api/**";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http //
                 .csrf().disable() // NOSONAR only creating a service that is used by non-browser clients
-                .antMatcher("/api/**").authorizeRequests() //
-                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll() //
+                .antMatcher(API_PATH).authorizeRequests() //
+                .antMatchers(HttpMethod.OPTIONS, API_PATH).permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/echo").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/authentication").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/self/authentication").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/self/registration").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/self/registration/user").permitAll() //
+                .antMatchers(HttpMethod.PUT, "/api/*/instance-mode").permitAll() //
                 .antMatchers(HttpMethod.POST, "/api/*/twofactor/validate").fullyAuthenticated() //
                 .antMatchers("/api/*/twofactor").fullyAuthenticated() //
-                .antMatchers("/api/**").access("isFullyAuthenticated() and hasAuthority('TWOFACTOR_AUTHENTICATED')") //
-                .accessDecisionManager(accessDecisionManager()).and() //
-                .httpBasic()
-                .authenticationEntryPoint(basicAuthenticationEntryPoint()).and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilterAfter(authenticationFilter, SecurityContextPersistenceFilter.class) //
+                .antMatchers(API_PATH).access("isFullyAuthenticated() and hasAuthority('TWOFACTOR_AUTHENTICATED')").and() //
+                .httpBasic() //
+                .authenticationEntryPoint(basicAuthenticationEntryPoint()) //
+                .and() //
+                .sessionManagement() //
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //
+                .and() //
+                .addFilterAfter(fineractInstanceModeApiFilter, SecurityContextPersistenceFilter.class) //
                 .addFilterAfter(authenticationFilter(), FineractInstanceModeApiFilter.class) //
                 .addFilterAfter(twoFactorAuthenticationFilter, BasicAuthenticationFilter.class); //
 
         if (serverProperties.getSsl().isEnabled()) {
-            http.requiresChannel(channel -> channel.antMatchers("/api/**").requiresSecure());
+            http.requiresChannel(channel -> channel.antMatchers(API_PATH).requiresSecure());
         }
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
@@ -116,25 +108,43 @@ public class OAuth2SecurityConfig extends WebSecurityConfigurerAdapter {
         return basicAuthenticationEntryPoint;
     }
 
-    @Bean
-    public AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<? extends Object>> decisionVoters = Arrays.asList(new RoleVoter(), new AuthenticatedVoter(),
-                new WebExpressionVoter(), new SelfServiceUserAccessVote());
-
-        return new UnanimousBased(decisionVoters);
+    @Bean(name = "customAuthenticationProvider")
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean
-    public FilterRegistrationBean<FarmersBankAuthenticationFilter> tenantAwareTenantIdentifierFilterRegistration() throws Exception {
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider());
+        auth.eraseCredentials(false);
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public FilterRegistrationBean<FarmersBankAuthenticationFilter> authenticationFilterRegistration()
+            throws Exception {
         FilterRegistrationBean<FarmersBankAuthenticationFilter> registration = new FilterRegistrationBean<>(
-                authenticationFilter);
+                authenticationFilter());
         registration.setEnabled(false);
         return registration;
     }
 
     @Bean
     public FilterRegistrationBean<TwoFactorAuthenticationFilter> twoFactorAuthenticationFilterRegistration() {
-        FilterRegistrationBean<TwoFactorAuthenticationFilter> registration = new FilterRegistrationBean<TwoFactorAuthenticationFilter>(
+        FilterRegistrationBean<TwoFactorAuthenticationFilter> registration = new FilterRegistrationBean<>(
                 twoFactorAuthenticationFilter);
         registration.setEnabled(false);
         return registration;

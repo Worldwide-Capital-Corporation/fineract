@@ -59,7 +59,7 @@ import org.springframework.web.filter.GenericFilterBean;
  * Used to support Oauth2 authentication and the service is loaded only when "oauth" profile is active.
  */
 @Service
-@ConditionalOnProperty("fineract.security.oauth.enabled")
+@ConditionalOnProperty("fineract.security.basicauth.enabled") //TODO: - Innocent disable fineract filter in favour of our implementation
 @RequiredArgsConstructor
 @Slf4j
 public class TenantAwareTenantIdentifierFilter extends GenericFilterBean {

@@ -84,6 +84,7 @@ dependencies {
             'org.springdoc:springdoc-openapi-common',
             'org.springdoc:springdoc-openapi-security',
             'org.mapstruct:mapstruct',
+            'io.jsonwebtoken:jjwt-api',
             )
 
     implementation ('org.apache.commons:commons-email') {
@@ -146,7 +147,8 @@ dependencies {
     // runtimeOnly dependencies are things that Fineract code has no direct compile time dependency on, but which must be present at run-time
     runtimeOnly(
             'org.apache.bval:org.apache.bval.bundle',
-
+            'io.jsonwebtoken:jjwt-impl',
+            'io.jsonwebtoken:jjwt-jackson',
             // Although fineract (at the time of writing) doesn't have any compile time dep. on httpclient,
             // it's useful to have this for the Spring Boot TestRestTemplate http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-rest-templates-test-utility
             'org.apache.httpcomponents:httpclient'

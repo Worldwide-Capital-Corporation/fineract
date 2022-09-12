@@ -56,7 +56,8 @@ public enum JobName {
     INCREASE_BUSINESS_DATE_BY_1_DAY("Increase Business Date by 1 day"), //
     INCREASE_COB_DATE_BY_1_DAY("Increase COB Date by 1 day"), //
     LOAN_COB("Loan COB"), //
-    LOAN_DELINQUENCY_CLASSIFICATION("Loan Delinquency Classification");
+    LOAN_DELINQUENCY_CLASSIFICATION("Loan Delinquency Classification"),
+    GENERATE_ADHOCCLIENT_SCEHDULE("Generate adhoc client schedule"); // TODO: - Innocent find out why chrash without this enum defined
 
     private final String name;
 

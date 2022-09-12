@@ -122,6 +122,9 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
     @Column(name = "cannot_change_password", nullable = true)
     private Boolean cannotChangePassword;
 
+    @Column(name = "access_token_uuid", nullable = true)
+    private String accessTokenUuid;
+
     public static AppUser fromJson(final Office userOffice, final Staff linkedStaff, final Set<Role> allRoles,
             final Collection<Client> clients, final JsonCommand command) {
 
@@ -158,7 +161,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
         final boolean isSelfServiceUser = command.booleanPrimitiveValueOfParameterNamed(AppUserConstants.IS_SELF_SERVICE_USER);
 
         return new AppUser(userOffice, user, allRoles, email, firstname, lastname, linkedStaff, passwordNeverExpire, isSelfServiceUser,
-                clients, cannotChangePassword);
+                clients, cannotChangePassword, null);
     }
 
     protected AppUser() {
@@ -169,7 +172,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
 
     public AppUser(final Office office, final User user, final Set<Role> roles, final String email, final String firstname,
             final String lastname, final Staff staff, final boolean passwordNeverExpire, final boolean isSelfServiceUser,
-            final Collection<Client> clients, final Boolean cannotChangePassword) {
+            final Collection<Client> clients, final Boolean cannotChangePassword, final String accessTokenUuid) {
         this.office = office;
         this.email = email.trim();
         this.username = user.getUsername().trim();
@@ -188,6 +191,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
         this.isSelfServiceUser = isSelfServiceUser;
         this.appUserClientMappings = createAppUserClientMappings(clients);
         this.cannotChangePassword = cannotChangePassword;
+        this.accessTokenUuid = accessTokenUuid;
     }
 
     public EnumOptionData organisationalRoleData() {
@@ -723,6 +727,14 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
             }
         }
         return newAppUserClientMappings;
+    }
+
+    public void setAccessTokenUuid(String uuid) {
+        this.accessTokenUuid = uuid;
+    }
+
+    public String getAccessTokenUuid() {
+        return this.accessTokenUuid;
     }
 
     @Override
