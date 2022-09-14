@@ -36,7 +36,7 @@ import java.security.SecureRandom;
 import java.util.Date;
 
 @Service
-public class JwtUtil {
+public class TokenProvider {
 
     private static final String TOKEN_TYPE = "token_type";
     private static final String GUID = "guid";
@@ -68,7 +68,7 @@ public class JwtUtil {
     }
 
     @Autowired
-    public JwtUtil(
+    public TokenProvider(
             @Value("${fineract.security.oauth.jwt.key}") String jwtKey,
             @Value("${fineract.security.oauth.jwt.access-token-expires-in}") int accessTokenExpiresIn,
             @Value("${fineract.security.oauth.jwt.refresh-token-expires-in}") int refreshTokenExpiresIn,

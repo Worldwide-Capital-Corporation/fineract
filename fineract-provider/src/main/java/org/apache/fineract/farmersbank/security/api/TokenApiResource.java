@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.fineract.farmersbank.security.data.JwtTokenData;
 import org.apache.fineract.farmersbank.security.data.RefreshTokenResponse;
-import org.apache.fineract.farmersbank.security.utils.JwtUtil;
+import org.apache.fineract.farmersbank.security.utils.TokenProvider;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
 import org.apache.fineract.infrastructure.core.service.ThreadLocalContextUtil;
 import org.apache.fineract.infrastructure.security.data.AuthenticatedUserData;
@@ -66,7 +66,7 @@ public class TokenApiResource {
     private final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService;
     private final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext;
     private final ClientReadPlatformService clientReadPlatformService;
-    private final JwtUtil jwtUtil;
+    private final TokenProvider tokenProvider;
     private final AppUserRepository repository;
 
     @Autowired
@@ -76,13 +76,13 @@ public class TokenApiResource {
             final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService,
             final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext,
             final AppUserRepository repository,
-            final JwtUtil jwtUtil,
+            final TokenProvider tokenProvider,
             ClientReadPlatformService aClientReadPlatformService) {
         this.customAuthenticationProvider = customAuthenticationProvider;
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.springSecurityPlatformSecurityContext = springSecurityPlatformSecurityContext;
         this.repository = repository;
-        this.jwtUtil = jwtUtil;
+        this.tokenProvider = tokenProvider;
         clientReadPlatformService = aClientReadPlatformService;
     }
 
@@ -125,8 +125,8 @@ public class TokenApiResource {
             throw new AccessDeniedException("Token validation checks failed");
         }
 
-        JwtTokenData accessTokenData = jwtUtil.generate(appUser);
-        JwtTokenData refreshTokenData = jwtUtil.refreshToken(appUser, accessTokenData);
+        JwtTokenData accessTokenData = tokenProvider.generate(appUser);
+        JwtTokenData refreshTokenData = tokenProvider.refreshToken(appUser, accessTokenData);
         appUser.setAccessTokenUuid(accessTokenData.getUuid());
         repository.save(appUser);
         return this.apiJsonSerializerService.serialize(
@@ -137,6 +137,6 @@ public class TokenApiResource {
     }
 
     private boolean validateRefreshToken(String token, AppUser user) {
-        return jwtUtil.isRefreshToken(token) && jwtUtil.validateTokenUuid(token, user);
+        return tokenProvider.isRefreshToken(token) && tokenProvider.validateTokenUuid(token, user);
     }
 }

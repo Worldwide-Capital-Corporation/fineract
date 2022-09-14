@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.fineract.farmersbank.security.data.AuthUserData;
 import org.apache.fineract.farmersbank.security.data.JwtTokenData;
-import org.apache.fineract.farmersbank.security.utils.JwtUtil;
+import org.apache.fineract.farmersbank.security.utils.TokenProvider;
 import org.apache.fineract.infrastructure.core.data.EnumOptionData;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
 import org.apache.fineract.infrastructure.security.constants.TwoFactorConstants;
@@ -88,7 +88,7 @@ public class AuthenticationApiResource {
     private final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext;
     private final ClientReadPlatformService clientReadPlatformService;
     private final AppUserRepository repository;
-    private final JwtUtil jwtUtil;
+    private final TokenProvider tokenProvider;
 
     @Autowired
     public AuthenticationApiResource(
@@ -97,13 +97,13 @@ public class AuthenticationApiResource {
             final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService,
             final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext,
             final AppUserRepository repository,
-            final JwtUtil jwtUtil,
+            final TokenProvider jwtUtil,
             ClientReadPlatformService aClientReadPlatformService) {
         this.customAuthenticationProvider = customAuthenticationProvider;
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.springSecurityPlatformSecurityContext = springSecurityPlatformSecurityContext;
         this.repository = repository;
-        this.jwtUtil = jwtUtil;
+        this.tokenProvider = jwtUtil;
         clientReadPlatformService = aClientReadPlatformService;
     }
 
@@ -165,8 +165,8 @@ public class AuthenticationApiResource {
             }
 
             final AppUser principal = (AppUser) authenticationCheck.getPrincipal();
-            JwtTokenData accessTokenData = jwtUtil.generate(principal);
-            JwtTokenData refreshTokenData = jwtUtil.refreshToken(principal, accessTokenData);
+            JwtTokenData accessTokenData = tokenProvider.generate(principal);
+            JwtTokenData refreshTokenData = tokenProvider.refreshToken(principal, accessTokenData);
             final Collection<RoleData> roles = new ArrayList<>();
             final Set<Role> userRoles = principal.getRoles();
             for (final Role role : userRoles) {

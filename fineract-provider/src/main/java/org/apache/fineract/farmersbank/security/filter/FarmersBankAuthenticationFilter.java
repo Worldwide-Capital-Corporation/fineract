@@ -24,7 +24,7 @@ import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.apache.fineract.farmersbank.security.utils.JwtUtil;
+import org.apache.fineract.farmersbank.security.utils.TokenProvider;
 import org.apache.fineract.infrastructure.businessdate.domain.BusinessDateType;
 import org.apache.fineract.infrastructure.businessdate.service.BusinessDateReadPlatformService;
 import org.apache.fineract.infrastructure.cache.domain.CacheType;
@@ -84,7 +84,7 @@ public class FarmersBankAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Autowired private BusinessDateReadPlatformService businessDateReadPlatformService;
 
-    @Autowired private JwtUtil jwtUtil;
+    @Autowired private TokenProvider tokenProvider;
 
     @Autowired private TenantAwareJpaPlatformUserDetailsService userDetailsService;
 
@@ -128,7 +128,7 @@ public class FarmersBankAuthenticationFilter extends BasicAuthenticationFilter {
                 setBusinessDates();
 
                 String authToken = parseJwt(request);
-                if (authToken != null && jwtUtil.validate(authToken)) {
+                if (authToken != null && tokenProvider.validate(authToken)) {
                     setAuthentication(authToken,request);
                 }
 
@@ -204,10 +204,10 @@ public class FarmersBankAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     private void setAuthentication(String authToken, HttpServletRequest request) {
-        String username = jwtUtil.getUsername(authToken);
+        String username = tokenProvider.getUsername(authToken);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         final AppUser appUser = (AppUser) userDetails;
-        if (jwtUtil.validateTokenUuid(authToken, appUser)) {
+        if (tokenProvider.validateTokenUuid(authToken, appUser)) {
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
