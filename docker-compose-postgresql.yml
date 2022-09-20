@@ -50,8 +50,7 @@ services:
     ports:
       - "8443:8443"
     depends_on:
-      fineractpostgresql:
-        condition: service_healthy
+      - fineractpostgresql
     environment:
       # TODO: env vars prefixed with "fineract_tenants_*" will be removed with one of the next releases
       #- fineract_tenants_driver=org.postgresql.Driver
