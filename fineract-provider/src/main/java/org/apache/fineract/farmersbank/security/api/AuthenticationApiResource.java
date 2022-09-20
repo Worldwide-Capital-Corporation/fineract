@@ -165,8 +165,7 @@ public class AuthenticationApiResource {
             }
 
             final AppUser principal = (AppUser) authenticationCheck.getPrincipal();
-            JwtTokenData accessTokenData = tokenProvider.generate(principal);
-            JwtTokenData refreshTokenData = tokenProvider.refreshToken(principal, accessTokenData);
+
             final Collection<RoleData> roles = new ArrayList<>();
             final Set<Role> userRoles = principal.getRoles();
             for (final Role role : userRoles) {
@@ -185,6 +184,10 @@ public class AuthenticationApiResource {
                     this.twoFactorEnabled
                             && !principal.hasSpecificPermissionTo(
                             TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
+
+            JwtTokenData accessTokenData = tokenProvider.generate(principal);
+            JwtTokenData refreshTokenData = tokenProvider.refreshToken(principal, accessTokenData);
+
             Long userId = principal.getId();
             principal.setAccessTokenUuid(accessTokenData.getUuid());
             SecurityContextHolder.getContext().setAuthentication(authentication);

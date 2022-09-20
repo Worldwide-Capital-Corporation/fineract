@@ -150,6 +150,12 @@ public class TwoFactorConfigurationServiceImpl implements TwoFactorConfiguration
     }
 
     @Override
+    @Cacheable(value = "tfConfig", key = "T(org.apache.fineract.infrastructure.core.service.ThreadLocalContextUtil).getTenant().getTenantIdentifier()+'|authenticatorEnabled'")
+    public boolean isAuthenticatorEnabled() {
+        return getBooleanConfig(TwoFactorConfigurationConstants.ENABLE_AUTHENTICATOR_DELIVERY, false);
+    }
+
+    @Override
     @Cacheable(value = "tfConfig", key = "T(org.apache.fineract.infrastructure.core.service.ThreadLocalContextUtil).getTenant().getTenantIdentifier()+'|emailSubject'")
     public String getEmailSubject() {
         return getStringConfig(TwoFactorConfigurationConstants.EMAIL_SUBJECT, DEFAULT_EMAIL_SUBJECT);

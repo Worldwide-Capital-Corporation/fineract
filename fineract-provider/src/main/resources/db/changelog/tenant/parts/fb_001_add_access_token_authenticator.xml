@@ -28,6 +28,21 @@
                 <constraints nullable="true" />
             </column>
         </addColumn>
+        <addColumn tableName="m_appuser">
+            <column name="authenticator_enrolled" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+        <addColumn tableName="m_appuser">
+            <column name="authenticator_secret" type="VARCHAR(40)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <insert tableName="twofactor_configuration">
+            <column name="name" value="totp-delivery-authenticator-enable"/>
+            <column name="value" value="true"/>
+        </insert>
+        <modifyDataType tableName="twofactor_access_token" columnName="token" newDataType="VARCHAR(200)" />
         <createIndex indexName="m_appuser_token_uuid" tableName="m_appuser">
             <column name="access_token_uuid"/>
         </createIndex>

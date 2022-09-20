@@ -34,6 +34,8 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class TokenProvider {
@@ -46,6 +48,7 @@ public class TokenProvider {
     private final int accessTokenExpiresIn;
     private final int refreshTokenExpiresIn;
     private final int refreshTokenBeforeTimeout;
+    private final int mfaTokenExpiresIn;
     private final int bCryptEncoderStrength;
     private SecretKey key;
     private BCryptPasswordEncoder encoder;
@@ -53,7 +56,8 @@ public class TokenProvider {
     private enum TokenType {
 
         ACCESS_TOKEN("access_token"),
-        REFRESH_TOKEN("refresh_token");
+        REFRESH_TOKEN("refresh_token"),
+        MFA_TOKEN("mfa_token");
 
         private final String value;
 
@@ -72,6 +76,7 @@ public class TokenProvider {
             @Value("${fineract.security.oauth.jwt.key}") String jwtKey,
             @Value("${fineract.security.oauth.jwt.access-token-expires-in}") int accessTokenExpiresIn,
             @Value("${fineract.security.oauth.jwt.refresh-token-expires-in}") int refreshTokenExpiresIn,
+            @Value("${fineract.security.oauth.jwt.mfa-token-expires-in}") int mfaTokenExpiresIn,
             @Value("${fineract.security.oauth.jwt.refresh-token-before-expires}") int refreshTokenBeforeTimeout,
             @Value("${fineract.security.oauth.jwt.crypt-encoder-strength}") int bCryptEncoderStrength) {
         this.accessTokenExpiresIn = accessTokenExpiresIn;
@@ -80,22 +85,40 @@ public class TokenProvider {
         this.bCryptEncoderStrength = bCryptEncoderStrength;
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtKey));
         this.encoder = new BCryptPasswordEncoder(bCryptEncoderStrength, new SecureRandom());
+        this.mfaTokenExpiresIn = mfaTokenExpiresIn;
     }
 
     public JwtTokenData generate(AppUser user) {
+        return generateToken(user, TokenType.ACCESS_TOKEN, null);
+    }
+
+    public JwtTokenData generateMFAToken(AppUser user) {
+        return generateToken(user, TokenType.MFA_TOKEN, null);
+    }
+
+    public JwtTokenData refreshToken(AppUser user, JwtTokenData accessTokenData) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put(ACCESS_TOKEN_UUID, accessTokenData.getUuid());
+        return generateToken(user, TokenType.REFRESH_TOKEN, extraClaims);
+    }
+
+    private JwtTokenData generateToken(AppUser user,
+                                  TokenType tokenType,
+                                   Map<String, Object> extraClaims) {
         String tokenId = encoder.encode(String.valueOf(user.getId()));
         String securityCheck = encoder.encode(tokenId.concat(user.getPassword()));
         Date issuedAt = new Date(System.currentTimeMillis());
-        Date expiresIn = new Date(System.currentTimeMillis() + (accessTokenExpiresIn * 1000));
+        Date expiresIn = getTokenExpiry(tokenType);
         String uuid = java.util.UUID.randomUUID().toString();
         String token =
                 Jwts.builder()
                         .setSubject(user.getUsername())
                         .setIssuer("fb.cbs")
                         .setId(tokenId)
-                        .claim(TOKEN_TYPE, TokenType.ACCESS_TOKEN.toString())
+                        .claim(TOKEN_TYPE, tokenType.toString())
                         .claim(GUID, securityCheck)
                         .claim(UUID, uuid)
+                        .addClaims(extraClaims)
                         .setIssuedAt(issuedAt)
                         .setExpiration(expiresIn)
                         .signWith(key)
@@ -104,27 +127,14 @@ public class TokenProvider {
                 token, uuid, ((expiresIn.getTime() - issuedAt.getTime()) / 1000) - refreshTokenBeforeTimeout);
     }
 
-    public JwtTokenData refreshToken(AppUser user, JwtTokenData accessTokenData) {
-        String tokenId = encoder.encode(String.valueOf(user.getId()));
-        String securityCheck = encoder.encode(tokenId.concat(user.getPassword()));
-        Date issuedAt = new Date(System.currentTimeMillis());
-        Date expiresIn = new Date(System.currentTimeMillis() + (refreshTokenExpiresIn * 1000));
-        String token =
-                Jwts.builder()
-                        .setSubject(user.getUsername())
-                        .setIssuer("fb.cbs")
-                        .setId(tokenId)
-                        .claim(TOKEN_TYPE, TokenType.REFRESH_TOKEN.toString())
-                        .claim(GUID, securityCheck)
-                        .claim(ACCESS_TOKEN_UUID, accessTokenData.getUuid())
-                        .setIssuedAt(issuedAt)
-                        .setExpiration(expiresIn)
-                        .signWith(key)
-                        .compact();
-        return new JwtTokenData(
-                token,
-                accessTokenData.getUuid(),
-                ((expiresIn.getTime() - issuedAt.getTime()) / 1000) - refreshTokenBeforeTimeout);
+    private Date getTokenExpiry(TokenType tokenType) {
+        if (tokenType.equals(TokenType.ACCESS_TOKEN)) {
+            return new Date(System.currentTimeMillis() + (accessTokenExpiresIn * 1000));
+        } else if (tokenType.equals(TokenType.REFRESH_TOKEN)) {
+            return new Date(System.currentTimeMillis() + (refreshTokenExpiresIn * 1000));
+        } else {
+            return new Date(System.currentTimeMillis() + (mfaTokenExpiresIn * 1000));
+        }
     }
 
     public boolean validate(String token) throws JwtException {

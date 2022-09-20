@@ -19,7 +19,6 @@
 package org.apache.fineract.infrastructure.security.api;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import java.util.Map;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -33,6 +32,8 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
 import org.apache.fineract.commands.service.PortfolioCommandSourceWritePlatformService;
+import org.apache.fineract.farmersbank.security.data.TwoFactorData;
+import org.apache.fineract.farmersbank.service.AuthenticatorService;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.serialization.DefaultToApiJsonSerializer;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
@@ -49,6 +50,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+
 @Path("/twofactor")
 @Component
 @ConditionalOnProperty("fineract.security.2fa.enabled")
@@ -64,12 +66,14 @@ public class TwoFactorApiResource {
     private final PlatformSecurityContext context;
     private final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService;
     private final TwoFactorService twoFactorService;
+    private final AuthenticatorService authenticatorService;
 
     @Autowired
     public TwoFactorApiResource(ToApiJsonSerializer<OTPMetadata> otpRequestSerializer,
             ToApiJsonSerializer<OTPDeliveryMethod> otpDeliveryMethodSerializer, ToApiJsonSerializer<AccessTokenData> accessTokenSerializer,
             DefaultToApiJsonSerializer<Map<String, Object>> toApiJsonSerializer, PlatformSecurityContext context,
-            PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService, TwoFactorService twoFactorService) {
+            PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService, TwoFactorService twoFactorService,
+                                AuthenticatorService authenticatorService) {
         this.otpRequestSerializer = otpRequestSerializer;
         this.otpDeliveryMethodSerializer = otpDeliveryMethodSerializer;
         this.accessTokenSerializer = accessTokenSerializer;
@@ -77,15 +81,15 @@ public class TwoFactorApiResource {
         this.context = context;
         this.commandsSourceWritePlatformService = commandsSourceWritePlatformService;
         this.twoFactorService = twoFactorService;
+        this.authenticatorService = authenticatorService;
     }
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public String getOTPDeliveryMethods(@Context final UriInfo uriInfo) {
+    public String getOTPDeliveryMethods(@Context final UriInfo uriInfo) throws Exception {
         AppUser user = context.authenticatedUser();
-
-        List<OTPDeliveryMethod> otpDeliveryMethods = twoFactorService.getDeliveryMethodsForUser(user);
-        return this.otpDeliveryMethodSerializer.serialize(otpDeliveryMethods);
+        TwoFactorData twoFactorData = twoFactorService.getOTPDeliveryMethodsForUser(user);
+        return this.otpDeliveryMethodSerializer.serialize(twoFactorData);
     }
 
     @POST
@@ -102,6 +106,17 @@ public class TwoFactorApiResource {
     @POST
     @Produces({ MediaType.APPLICATION_JSON })
     public String validate(@QueryParam("token") final String token) {
+        final AppUser user = context.authenticatedUser();
+
+        TFAccessToken accessToken = twoFactorService.createAccessTokenFromOTP(user, token);
+
+        return accessTokenSerializer.serialize(accessToken.toTokenData());
+    }
+
+    @Path("code")
+    @POST
+    @Produces({ MediaType.APPLICATION_JSON })
+    public String validateAppCode(@QueryParam("token") final String token) {
         final AppUser user = context.authenticatedUser();
 
         TFAccessToken accessToken = twoFactorService.createAccessTokenFromOTP(user, token);

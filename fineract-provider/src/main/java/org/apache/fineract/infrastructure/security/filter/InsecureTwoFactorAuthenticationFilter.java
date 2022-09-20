@@ -47,7 +47,7 @@ import org.springframework.stereotype.Service;
 public class InsecureTwoFactorAuthenticationFilter extends TwoFactorAuthenticationFilter {
 
     public InsecureTwoFactorAuthenticationFilter() {
-        super(null);
+        super(null, null);
     }
 
     @Override

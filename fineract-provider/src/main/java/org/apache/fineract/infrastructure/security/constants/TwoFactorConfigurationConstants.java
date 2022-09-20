@@ -32,6 +32,7 @@ public final class TwoFactorConfigurationConstants {
 
     public static final String RESOURCE_NAME = "TWOFACTOR_CONFIGURATION";
 
+    public static final String ENABLE_AUTHENTICATOR_DELIVERY = "totp-delivery-authenticator-enable";
     public static final String ENABLE_EMAIL_DELIVERY = "otp-delivery-email-enable";
     public static final String EMAIL_SUBJECT = "otp-delivery-email-subject";
     public static final String EMAIL_BODY = "otp-delivery-email-body";

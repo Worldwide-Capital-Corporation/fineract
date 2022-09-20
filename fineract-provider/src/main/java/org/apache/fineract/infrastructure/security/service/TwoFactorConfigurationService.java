@@ -54,4 +54,6 @@ public interface TwoFactorConfigurationService {
     Integer getAccessTokenExtendedLiveTime();
 
     Map<String, Object> update(JsonCommand command);
+
+    boolean isAuthenticatorEnabled();
 }

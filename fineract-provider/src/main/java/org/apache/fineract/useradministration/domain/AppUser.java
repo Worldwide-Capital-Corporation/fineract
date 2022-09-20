@@ -125,6 +125,12 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
     @Column(name = "access_token_uuid", nullable = true)
     private String accessTokenUuid;
 
+    @Column(name = "authenticator_enrolled")
+    private Boolean isAuthenticatorEnrolled;
+
+    @Column(name = "authenticator_secret")
+    private String authenticatorSecret;
+
     public static AppUser fromJson(final Office userOffice, final Staff linkedStaff, final Set<Role> allRoles,
             final Collection<Client> clients, final JsonCommand command) {
 
@@ -735,6 +741,22 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
 
     public String getAccessTokenUuid() {
         return this.accessTokenUuid;
+    }
+
+    public boolean getIsAuthenticatorEnrolled() {
+        return isAuthenticatorEnrolled;
+    }
+
+    public void setAuthenticatorEnrolled(Boolean authenticatorEnrolled) {
+        this.isAuthenticatorEnrolled = authenticatorEnrolled;
+    }
+
+    public String getAuthenticatorSecret() {
+        return authenticatorSecret;
+    }
+
+    public void setAuthenticatorSecret(String authenticatorSecret) {
+        this.authenticatorSecret = authenticatorSecret;
     }
 
     @Override

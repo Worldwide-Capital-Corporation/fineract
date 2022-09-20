@@ -16,20 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.security.constants;
 
-public final class TwoFactorConstants {
+package org.apache.fineract.farmersbank.service;
 
-    private TwoFactorConstants() {
+import org.apache.fineract.useradministration.domain.AppUser;
 
-    }
+public interface AuthenticatorService {
 
-    public static final String ACCESSTOKEN_RESOURCE_NAME = "TWOFACTOR_ACCESSTOKEN";
-
-    public static final String SMS_DELIVERY_METHOD_NAME = "sms";
-    public static final String EMAIL_DELIVERY_METHOD_NAME = "email";
-    public static final String AUTHENTICATOR_DELIVERY_METHOD_NAME = "authenticator";
-
-    public static final String BYPASS_TWO_FACTOR_PERMISSION = "BYPASS_TWOFACTOR";
-
+    public String generateQRCode(AppUser user, String secret) throws Exception;
+    public String generateSecret();
+    public boolean isAppCodeValid(String secret, String code);
 }

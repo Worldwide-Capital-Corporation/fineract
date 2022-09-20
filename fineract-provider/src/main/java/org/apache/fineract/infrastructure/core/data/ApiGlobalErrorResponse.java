@@ -68,6 +68,17 @@ public class ApiGlobalErrorResponse {
         return globalErrorResponse;
     }
 
+    public static ApiGlobalErrorResponse invalidTwoFactorCode(String message) {
+
+        final ApiGlobalErrorResponse globalErrorResponse = new ApiGlobalErrorResponse();
+        globalErrorResponse.setHttpStatusCode("401");
+        globalErrorResponse.setDeveloperMessage("Invalid two factor code supplied.");
+        globalErrorResponse.setUserMessageGlobalisationCode("error.msg.invalid.code");
+        globalErrorResponse.setDefaultUserMessage(message);
+
+        return globalErrorResponse;
+    }
+
     public static ApiGlobalErrorResponse invalidTenantIdentifier() {
 
         final ApiGlobalErrorResponse globalErrorResponse = new ApiGlobalErrorResponse();

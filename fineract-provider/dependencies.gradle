@@ -85,6 +85,7 @@ dependencies {
             'org.springdoc:springdoc-openapi-security',
             'org.mapstruct:mapstruct',
             'io.jsonwebtoken:jjwt-api',
+            'dev.samstevens.totp:totp-spring-boot-starter',
             )
 
     implementation ('org.apache.commons:commons-email') {
