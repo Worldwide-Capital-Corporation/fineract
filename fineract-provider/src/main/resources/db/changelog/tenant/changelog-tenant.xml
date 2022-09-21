@@ -68,4 +68,5 @@
     <include file="parts/0046_external_event_table_schema_info.xml" relativeToChangelogFile="true"/>
     <include file="parts/0047_add_loan_delinquency_tags_business_step.xml" relativeToChangelogFile="true"/>
     <include file="parts/fb_001_add_access_token_authenticator.xml" relativeToChangelogFile="true"/>
+    <include file="parts/fb_002_drop_nullable_constraint.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

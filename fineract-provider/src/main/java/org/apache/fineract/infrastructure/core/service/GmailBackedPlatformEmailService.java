@@ -42,10 +42,10 @@ public class GmailBackedPlatformEmailService implements PlatformEmailService {
 
         final String subject = "Welcome " + contactName + " to " + organisationName;
         final String body = "You are receiving this email as your email account: " + address
-                + " has being used to create a user account for an organisation named [" + organisationName + "] on Mifos.\n"
+                + " has being used to create a user account for an organisation named [" + organisationName + "] on Farmers Bank.\n"
                 + "You can login using the following credentials:\nusername: " + username + "\n" + "password: " + unencodedPassword + "\n"
                 + "You must change this password upon first log in using Uppercase, Lowercase, number and character.\n"
-                + "Thank you and welcome to the organisation.";
+                + "Thank you and welcome to the Farmers Bank.";
 
         final EmailDetail emailDetail = new EmailDetail(subject, body, address, contactName);
         sendDefinedEmail(emailDetail);
@@ -56,12 +56,12 @@ public class GmailBackedPlatformEmailService implements PlatformEmailService {
     public void sendDefinedEmail(EmailDetail emailDetails) {
         final SMTPCredentialsData smtpCredentialsData = this.externalServicesReadPlatformService.getSMTPCredentials();
 
-        final String authuser = smtpCredentialsData.getUsername();
-        final String authpwd = smtpCredentialsData.getPassword();
+        final String authuser = "dummy"; // TODO: - move to properties (Innocent)
+        final String authpwd = "dummy";
 
         final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(smtpCredentialsData.getHost()); // smtp.gmail.com
-        mailSender.setPort(Integer.parseInt(smtpCredentialsData.getPort())); // 587
+        mailSender.setHost("smtp.farmersbank.co.sz"); // smtp.gmail.com
+        mailSender.setPort(587); // 587
 
         // Important: Enable less secure app access for the gmail account used in the following authentication
 
@@ -69,15 +69,24 @@ public class GmailBackedPlatformEmailService implements PlatformEmailService {
         mailSender.setPassword(authpwd); // use password of the above gmail account
 
         Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.smtp.ssl.trust", "smtp.farmersbank.co.sz");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.ssl.trust","*");
         props.put("mail.smtp.auth", "true");
         props.put("mail.debug", "true");
+        props.put("mail.smtp.port","587");
+        props.put("mail.smtp.host","smtp.farmersbank.co.sz");
+        props.put("mail.smtp.user", authuser);
+        props.put("mail.smtp.password", authpwd);
+
 
         // these are the added lines
         props.put("mail.smtp.starttls.enable", "true");
         // props.put("mail.smtp.ssl.enable", "true");
 
-        props.put("mail.smtp.socketFactory.port", Integer.parseInt(smtpCredentialsData.getPort()));
+        props.put("mail.smtp.socketFactory.port", 587);
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");// NOSONAR
         props.put("mail.smtp.socketFactory.fallback", "true");
 
@@ -87,7 +96,7 @@ public class GmailBackedPlatformEmailService implements PlatformEmailService {
             message.setTo(emailDetails.getAddress());
             message.setSubject(emailDetails.getSubject());
             message.setText(emailDetails.getBody());
-            mailSender.send(message);
+            // mailSender.send(message);
 
         } catch (Exception e) {
             throw new PlatformEmailSendException(e);
