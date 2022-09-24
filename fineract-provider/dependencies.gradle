@@ -87,6 +87,8 @@ dependencies {
             'io.jsonwebtoken:jjwt-api',
             'dev.samstevens.totp:totp-spring-boot-starter',
             'redis.clients:jedis',
+            'com.squareup.retrofit2:retrofit',
+            'com.squareup.retrofit2:converter-gson',
             )
 
     implementation ('org.apache.commons:commons-email') {
