@@ -26,8 +26,10 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.fineract.farmersbank.cache.CacheService;
 import org.apache.fineract.farmersbank.security.data.JwtTokenData;
 import org.apache.fineract.farmersbank.security.data.RefreshTokenResponse;
+import org.apache.fineract.farmersbank.security.data.SessionTokenData;
 import org.apache.fineract.farmersbank.security.utils.TokenProvider;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
 import org.apache.fineract.infrastructure.core.service.ThreadLocalContextUtil;
@@ -35,7 +37,6 @@ import org.apache.fineract.infrastructure.security.data.AuthenticatedUserData;
 import org.apache.fineract.infrastructure.security.service.SpringSecurityPlatformSecurityContext;
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.useradministration.domain.AppUser;
-import org.apache.fineract.useradministration.domain.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -67,7 +68,7 @@ public class TokenApiResource {
     private final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext;
     private final ClientReadPlatformService clientReadPlatformService;
     private final TokenProvider tokenProvider;
-    private final AppUserRepository repository;
+    private final CacheService cacheService;
 
     @Autowired
     public TokenApiResource(
@@ -75,14 +76,14 @@ public class TokenApiResource {
             final DaoAuthenticationProvider customAuthenticationProvider,
             final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService,
             final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext,
-            final AppUserRepository repository,
             final TokenProvider tokenProvider,
+            final CacheService cacheService,
             ClientReadPlatformService aClientReadPlatformService) {
         this.customAuthenticationProvider = customAuthenticationProvider;
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.springSecurityPlatformSecurityContext = springSecurityPlatformSecurityContext;
-        this.repository = repository;
         this.tokenProvider = tokenProvider;
+        this.cacheService = cacheService;
         clientReadPlatformService = aClientReadPlatformService;
     }
 
@@ -127,16 +128,19 @@ public class TokenApiResource {
 
         JwtTokenData accessTokenData = tokenProvider.generate(appUser);
         JwtTokenData refreshTokenData = tokenProvider.refreshToken(appUser, accessTokenData);
-        appUser.setAccessTokenUuid(accessTokenData.getUuid());
-        repository.save(appUser);
+        cacheService.set("session:"+appUser.getId()+":"+accessTokenData.uuid(), accessTokenData.uuid(), accessTokenData.expireIn());
         return this.apiJsonSerializerService.serialize(
                 new RefreshTokenResponse(
-                        accessTokenData.getToken(),
-                        refreshTokenData.getToken(),
-                        accessTokenData.getExpireIn()));
+                        accessTokenData.token(),
+                        refreshTokenData.token(),
+                        accessTokenData.refreshIn()));
     }
 
     private boolean validateRefreshToken(String token, AppUser user) {
-        return tokenProvider.isRefreshToken(token) && tokenProvider.validateTokenUuid(token, user);
+        SessionTokenData data = tokenProvider.decodeRefreshToken(token);
+        String cachedTokenUuid = cacheService.get("session:"+user.getId()+":"+data.uuid());
+        return cachedTokenUuid != null &&
+                data.tokenType().equals(TokenProvider.TokenType.REFRESH_TOKEN.toString()) &&
+                data.accessTokenUuid().equals(cachedTokenUuid);
     }
 }

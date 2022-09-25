@@ -86,6 +86,7 @@ dependencies {
             'org.mapstruct:mapstruct',
             'io.jsonwebtoken:jjwt-api',
             'dev.samstevens.totp:totp-spring-boot-starter',
+            'redis.clients:jedis',
             )
 
     implementation ('org.apache.commons:commons-email') {

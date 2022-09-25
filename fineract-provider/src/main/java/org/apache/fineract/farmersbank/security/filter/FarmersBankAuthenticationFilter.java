@@ -24,6 +24,7 @@ import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.apache.fineract.farmersbank.security.data.SessionTokenData;
 import org.apache.fineract.farmersbank.security.utils.TokenProvider;
 import org.apache.fineract.infrastructure.businessdate.domain.BusinessDateType;
 import org.apache.fineract.infrastructure.businessdate.service.BusinessDateReadPlatformService;
@@ -125,11 +126,15 @@ public class FarmersBankAuthenticationFilter extends BasicAuthenticationFilter {
                 String pathInfo = request.getRequestURI();
                 setTenant(request, (pathInfo != null && pathInfo.contains("report")));
 
+                // TODO: - Innocent review how can we cache this business dates data
                 setBusinessDates();
 
                 String authToken = parseJwt(request);
-                if (authToken != null && tokenProvider.validate(authToken)) {
-                    setAuthentication(authToken,request);
+                if (authToken != null ) {
+                    SessionTokenData tokenData = tokenProvider.decode(authToken);
+                    if (tokenData != null) {
+                        setAuthentication(tokenData, request);
+                    }
                 }
 
                 if (!firstRequestProcessed.get()) {
@@ -192,28 +197,33 @@ public class FarmersBankAuthenticationFilter extends BasicAuthenticationFilter {
                             + this.tenantRequestHeader
                             + "' or add the parameter 'tenantIdentifier' to query string of request URL.");
         }
+        // TODO: - Cache in redis
         final FineractPlatformTenant tenant =
                 this.basicAuthTenantDetailsService.loadTenantById(tenantIdentifier, isReportRequest);
         ThreadLocalContextUtil.setTenant(tenant);
     }
 
+    // TODO: - Cache in redis
     private void setBusinessDates(){
         HashMap<BusinessDateType, LocalDate> businessDates =
                 this.businessDateReadPlatformService.getBusinessDates();
         ThreadLocalContextUtil.setBusinessDates(businessDates);
     }
 
-    private void setAuthentication(String authToken, HttpServletRequest request) {
-        String username = tokenProvider.getUsername(authToken);
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        final AppUser appUser = (AppUser) userDetails;
-        if (tokenProvider.validateTokenUuid(authToken, appUser)) {
+    private void setAuthentication(SessionTokenData tokenData, HttpServletRequest request) {
+        // TODO: - Innocent review how can we get one short mapping from token to AppUser
+        UserDetails userDetails = userDetailsService.loadUserByUsername(tokenData.username());
+        if (sessionExist(tokenData.uuid())) {
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
-            ThreadLocalContextUtil.setAuthToken(authToken);
+            ThreadLocalContextUtil.setAuthToken(tokenData.token());
         }
+    }
+
+    private boolean sessionExist(String sessionId) {
+        return true;
     }
 
     @Override

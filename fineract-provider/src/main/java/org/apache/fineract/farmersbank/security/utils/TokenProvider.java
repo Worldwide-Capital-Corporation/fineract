@@ -25,6 +25,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.apache.fineract.farmersbank.security.data.JwtTokenData;
+import org.apache.fineract.farmersbank.security.data.SessionTokenData;
 import org.apache.fineract.useradministration.domain.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +54,7 @@ public class TokenProvider {
     private SecretKey key;
     private BCryptPasswordEncoder encoder;
 
-    private enum TokenType {
+    public enum TokenType {
 
         ACCESS_TOKEN("access_token"),
         REFRESH_TOKEN("refresh_token"),
@@ -92,13 +93,9 @@ public class TokenProvider {
         return generateToken(user, TokenType.ACCESS_TOKEN, null);
     }
 
-    public JwtTokenData generateMFAToken(AppUser user) {
-        return generateToken(user, TokenType.MFA_TOKEN, null);
-    }
-
     public JwtTokenData refreshToken(AppUser user, JwtTokenData accessTokenData) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put(ACCESS_TOKEN_UUID, accessTokenData.getUuid());
+        extraClaims.put(ACCESS_TOKEN_UUID, accessTokenData.uuid());
         return generateToken(user, TokenType.REFRESH_TOKEN, extraClaims);
     }
 
@@ -124,7 +121,10 @@ public class TokenProvider {
                         .signWith(key)
                         .compact();
         return new JwtTokenData(
-                token, uuid, ((expiresIn.getTime() - issuedAt.getTime()) / 1000) - refreshTokenBeforeTimeout);
+                token,
+                uuid,
+                ((expiresIn.getTime() - issuedAt.getTime()) / 1000),
+                ((expiresIn.getTime() - issuedAt.getTime()) / 1000) - refreshTokenBeforeTimeout);
     }
 
     private Date getTokenExpiry(TokenType tokenType) {
@@ -142,6 +142,38 @@ public class TokenProvider {
             return true;
         }
         return false;
+    }
+
+    public SessionTokenData decode(String token) throws JwtException {
+        Claims claims = getClaims(token);
+        if (notExpired(claims)) {
+            return new SessionTokenData(
+                    claims.getId(),
+                    claims.getSubject(),
+                    claims.get(TOKEN_TYPE, String.class),
+                    claims.get(GUID, String.class),
+                    claims.get(UUID, String.class),
+                    null,
+                    token
+            );
+        }
+        return null;
+    }
+
+    public SessionTokenData decodeRefreshToken(String token) throws JwtException {
+        Claims claims = getClaims(token);
+        if (notExpired(claims)) {
+            return new SessionTokenData(
+                    claims.getId(),
+                    claims.getSubject(),
+                    claims.get(TOKEN_TYPE, String.class),
+                    claims.get(GUID, String.class),
+                    claims.get(UUID, String.class),
+                    claims.get(ACCESS_TOKEN_UUID, String.class),
+                    token
+            );
+        }
+        return null;
     }
 
     public boolean isRefreshToken(String token) throws JwtException {
@@ -174,6 +206,10 @@ public class TokenProvider {
 
     public boolean isExpired(String token) throws JwtException {
         Claims claims = getClaims(token);
+        return claims.getExpiration().after(new Date(System.currentTimeMillis()));
+    }
+
+    public boolean notExpired(Claims claims) throws JwtException {
         return claims.getExpiration().after(new Date(System.currentTimeMillis()));
     }
 

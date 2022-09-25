@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.security.data;
+package org.apache.fineract.farmersbank.cache;
 
-
-public record JwtTokenData(
-        String token,
-        String uuid,
-        Long expireIn,
-        Long refreshIn) {}
+public interface CacheService {
+  void set(final String key, final String value);
+  void set(final String key, final String value, final Long expiresIn);
+  String get(final String key);
+}

@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.fineract.farmersbank.cache.CacheService;
 import org.apache.fineract.farmersbank.security.data.AuthUserData;
 import org.apache.fineract.farmersbank.security.data.JwtTokenData;
 import org.apache.fineract.farmersbank.security.utils.TokenProvider;
@@ -39,7 +40,6 @@ import org.apache.fineract.infrastructure.security.service.SpringSecurityPlatfor
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.useradministration.data.RoleData;
 import org.apache.fineract.useradministration.domain.AppUser;
-import org.apache.fineract.useradministration.domain.AppUserRepository;
 import org.apache.fineract.useradministration.domain.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -90,8 +90,8 @@ public class AuthenticationApiResource {
     private final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService;
     private final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext;
     private final ClientReadPlatformService clientReadPlatformService;
-    private final AppUserRepository repository;
     private final TokenProvider tokenProvider;
+    private final CacheService cacheService;
 
     @Autowired
     public AuthenticationApiResource(
@@ -99,14 +99,14 @@ public class AuthenticationApiResource {
             final DaoAuthenticationProvider customAuthenticationProvider,
             final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService,
             final SpringSecurityPlatformSecurityContext springSecurityPlatformSecurityContext,
-            final AppUserRepository repository,
             final TokenProvider jwtUtil,
+            final CacheService cacheService,
             ClientReadPlatformService aClientReadPlatformService) {
         this.customAuthenticationProvider = customAuthenticationProvider;
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.springSecurityPlatformSecurityContext = springSecurityPlatformSecurityContext;
-        this.repository = repository;
         this.tokenProvider = jwtUtil;
+        this.cacheService = cacheService;
         clientReadPlatformService = aClientReadPlatformService;
     }
 
@@ -197,18 +197,17 @@ public class AuthenticationApiResource {
             JwtTokenData refreshTokenData = tokenProvider.refreshToken(principal, accessTokenData);
 
             Long userId = principal.getId();
-            principal.setAccessTokenUuid(accessTokenData.getUuid());
+            cacheService.set("session:"+userId+":"+accessTokenData.uuid(), accessTokenData.uuid(), accessTokenData.expireIn());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            repository.save(principal);
             if (this.springSecurityPlatformSecurityContext.doesPasswordHasToBeRenewed(principal)) {
                 authenticatedUserData =
                         new AuthUserData(
                                 request.username,
                                 userId,
-                                accessTokenData.getToken(),
-                                refreshTokenData.getToken(),
-                                accessTokenData.getExpireIn(),
-                                refreshTokenData.getExpireIn(),
+                                accessTokenData.token(),
+                                refreshTokenData.token(),
+                                accessTokenData.refreshIn(),
+                                refreshTokenData.expireIn(),
                                 isTwoFactorRequired,
                                 isMFAAuthenticationRequired);
             } else {
@@ -224,10 +223,10 @@ public class AuthenticationApiResource {
                                 roles,
                                 permissions,
                                 principal.getId(),
-                                accessTokenData.getToken(),
-                                refreshTokenData.getToken(),
-                                accessTokenData.getExpireIn(),
-                                refreshTokenData.getExpireIn(),
+                                accessTokenData.token(),
+                                refreshTokenData.token(),
+                                accessTokenData.refreshIn(),
+                                refreshTokenData.expireIn(),
                                 isTwoFactorRequired,
                                 isMFAAuthenticationRequired,
                                 returnClientList ? clientReadPlatformService.retrieveUserClients(userId) : null);

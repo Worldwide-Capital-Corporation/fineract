@@ -39,6 +39,15 @@ services:
       retries: 10
     ports:
       - "5432:5432"
+  redis:
+    image: redis:7.0.5
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel debug --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - ./fineract-redis:/data
+
   fineract-server:
     image: fineract:latest
     volumes:

@@ -192,5 +192,6 @@ dependencyManagement {
         dependency 'io.jsonwebtoken:jjwt-impl:0.11.5'
         dependency 'io.jsonwebtoken:jjwt-jackson:0.11.5'
         dependency 'dev.samstevens.totp:totp-spring-boot-starter:1.7.1'
+        dependency 'redis.clients:jedis:4.3.0-m2'
     }
 }

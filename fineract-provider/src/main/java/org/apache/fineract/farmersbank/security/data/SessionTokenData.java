@@ -19,9 +19,11 @@
 
 package org.apache.fineract.farmersbank.security.data;
 
-
-public record JwtTokenData(
-        String token,
+public record SessionTokenData(
+        String id,
+        String username,
+        String tokenType,
+        String guid,
         String uuid,
-        Long expireIn,
-        Long refreshIn) {}
+        String accessTokenUuid,
+        String token) {}
