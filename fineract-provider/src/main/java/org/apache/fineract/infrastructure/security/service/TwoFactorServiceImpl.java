@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.fineract.farmersbank.security.data.TwoFactorData;
-import org.apache.fineract.farmersbank.service.AuthenticatorService;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.domain.EmailDetail;
 import org.apache.fineract.infrastructure.core.service.PlatformEmailService;
@@ -40,7 +38,6 @@ import org.apache.fineract.infrastructure.sms.domain.SmsMessage;
 import org.apache.fineract.infrastructure.sms.domain.SmsMessageRepository;
 import org.apache.fineract.infrastructure.sms.scheduler.SmsMessageScheduledJobService;
 import org.apache.fineract.useradministration.domain.AppUser;
-import org.apache.fineract.useradministration.domain.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.annotation.CacheEvict;
@@ -61,15 +58,12 @@ public class TwoFactorServiceImpl implements TwoFactorService {
     private final SmsMessageRepository smsMessageRepository;
 
     private final TwoFactorConfigurationService configurationService;
-    private final AuthenticatorService authenticatorService;
-    private final AppUserRepository appUserRepository;
 
     @Autowired
     public TwoFactorServiceImpl(AccessTokenGenerationService accessTokenGenerationService, PlatformEmailService emailService,
             SmsMessageScheduledJobService smsMessageScheduledJobService, OTPRequestRepository otpRequestRepository,
             TFAccessTokenRepository tfAccessTokenRepository, SmsMessageRepository smsMessageRepository,
-            TwoFactorConfigurationService configurationService, AuthenticatorService authenticatorService,
-                                AppUserRepository appUserRepository) {
+            TwoFactorConfigurationService configurationService) {
         this.accessTokenGenerationService = accessTokenGenerationService;
         this.emailService = emailService;
         this.smsMessageScheduledJobService = smsMessageScheduledJobService;
@@ -77,8 +71,6 @@ public class TwoFactorServiceImpl implements TwoFactorService {
         this.tfAccessTokenRepository = tfAccessTokenRepository;
         this.smsMessageRepository = smsMessageRepository;
         this.configurationService = configurationService;
-        this.authenticatorService = authenticatorService;
-        this.appUserRepository = appUserRepository;
     }
 
     @Override
@@ -179,26 +171,6 @@ public class TwoFactorServiceImpl implements TwoFactorService {
         tfAccessTokenRepository.save(accessToken);
 
         return accessToken;
-    }
-
-    @Override
-    public TwoFactorData getOTPDeliveryMethodsForUser(AppUser user) throws Exception {
-        List<OTPDeliveryMethod> otpDeliveryMethods = getDeliveryMethodsForUser(user);
-        if (configurationService.isAuthenticatorEnabled()){
-            if (!user.getIsAuthenticatorEnrolled()) {
-                String secret = authenticatorService.generateSecret();
-                user.setAuthenticatorSecret(secret);
-                appUserRepository.save(user);
-                return new TwoFactorData(
-                        true,
-                        otpDeliveryMethods,
-                        user.getIsAuthenticatorEnrolled(),
-                        authenticatorService.generateQRCode(user, secret));
-            } else {
-                return new TwoFactorData(true, otpDeliveryMethods, user.getIsAuthenticatorEnrolled(), null);
-            }
-        }
-        return new TwoFactorData(false, otpDeliveryMethods, user.getIsAuthenticatorEnrolled(), null);
     }
 
     @Override

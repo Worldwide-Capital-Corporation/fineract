@@ -75,6 +75,9 @@ public class AuthUserData {
     @SuppressWarnings("unused")
     private final boolean isTwoFactorAuthenticationRequired;
 
+    @SuppressWarnings("unused")
+    private final boolean isMFAAuthenticationRequired;
+
     public AuthUserData(final String username, final Collection<String> permissions) {
         this.username = username;
         this.userId = null;
@@ -92,6 +95,7 @@ public class AuthUserData {
         this.permissions = permissions;
         this.shouldRenewPassword = false;
         this.isTwoFactorAuthenticationRequired = false;
+        this.isMFAAuthenticationRequired = false;
         clients = null;
     }
 
@@ -110,6 +114,7 @@ public class AuthUserData {
             final Long tokenExpireIn,
             final Long refreshExpiresIn,
             final boolean isTwoFactorAuthenticationRequired,
+            final boolean isMFAAuthenticationRequired,
             Collection<Long> aListOfClientIDs) {
         this.username = username;
         this.officeId = officeId;
@@ -127,6 +132,7 @@ public class AuthUserData {
         this.permissions = permissions;
         this.shouldRenewPassword = false;
         this.isTwoFactorAuthenticationRequired = isTwoFactorAuthenticationRequired;
+        this.isMFAAuthenticationRequired = isMFAAuthenticationRequired;
         clients = aListOfClientIDs;
     }
 
@@ -137,7 +143,8 @@ public class AuthUserData {
             final String refreshToken,
             final Long tokenExpireIn,
             final Long refreshExpiresIn,
-            final boolean isTwoFactorAuthenticationRequired) {
+            final boolean isTwoFactorAuthenticationRequired,
+            final boolean isMFAAuthenticationRequired) {
         this.username = username;
         this.officeId = null;
         this.officeName = null;
@@ -154,6 +161,7 @@ public class AuthUserData {
         this.permissions = null;
         this.shouldRenewPassword = true;
         this.isTwoFactorAuthenticationRequired = isTwoFactorAuthenticationRequired;
+        this.isMFAAuthenticationRequired = isMFAAuthenticationRequired;
         clients = null;
     }
 }

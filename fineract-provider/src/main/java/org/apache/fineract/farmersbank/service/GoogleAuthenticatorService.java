@@ -25,6 +25,7 @@ import dev.samstevens.totp.qr.QrDataFactory;
 import dev.samstevens.totp.qr.QrGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import org.apache.fineract.useradministration.domain.AppUser;
+import org.apache.fineract.useradministration.domain.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,12 @@ public class GoogleAuthenticatorService implements AuthenticatorService {
     private final CodeVerifier verifier;
 
     @Autowired
-    public GoogleAuthenticatorService(QrDataFactory qrDataFactory, QrGenerator qrGenerator, SecretGenerator secretGenerator, CodeVerifier verifier){
+    public GoogleAuthenticatorService(
+            AppUserRepository repository,
+            QrDataFactory qrDataFactory,
+            QrGenerator qrGenerator,
+            SecretGenerator secretGenerator,
+            CodeVerifier verifier){
         this.qrDataFactory = qrDataFactory;
         this.qrGenerator = qrGenerator;
         this.secretGenerator = secretGenerator;

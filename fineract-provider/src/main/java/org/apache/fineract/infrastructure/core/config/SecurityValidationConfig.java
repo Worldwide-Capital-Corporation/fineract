@@ -32,9 +32,20 @@ public class SecurityValidationConfig {
     @Value("${fineract.security.oauth.enabled}")
     private Boolean oauthEnabled;
 
+    @Value("${fineract.security.2fa.enabled}")
+    private Boolean twoFactorEnabled;
+
+    @Value("${fineract.security.mfa.enabled}")
+    private Boolean multiFactorEnabled;
+
     @PostConstruct
     public void validate() {
         // NOTE: avoid NPE if these values are not set
+        validateAuthConfigs();
+        validateTwoFactorConfigs();
+    }
+
+    private void validateAuthConfigs(){
         if (!Boolean.TRUE.equals(basicAuthEnabled) && !Boolean.TRUE.equals(oauthEnabled)) {
             // NOTE: while we are already doing consistency checks we might as well cover this case; should not happen
             // as defaults are set in application.properties
@@ -45,6 +56,20 @@ public class SecurityValidationConfig {
         if (Boolean.TRUE.equals(basicAuthEnabled) && Boolean.TRUE.equals(oauthEnabled)) {
             throw new IllegalArgumentException(
                     "Too many authentication schemes selected. Please decide if you want to use basic OR OAuth2 authentication.");
+        }
+    }
+
+    private void validateTwoFactorConfigs(){
+        if (!Boolean.TRUE.equals(twoFactorEnabled) && !Boolean.TRUE.equals(multiFactorEnabled)) {
+            // NOTE: while we are already doing consistency checks we might as well cover this case; should not happen
+            // as defaults are set in application.properties
+            throw new IllegalArgumentException(
+                    "No two factor scheme selected. Please decide if you want to use Authenticator mobile app OR OTP when logging in.");
+        }
+
+        if (Boolean.TRUE.equals(twoFactorEnabled) && Boolean.TRUE.equals(multiFactorEnabled)) {
+            throw new IllegalArgumentException(
+                    "Too many two factor schemes selected. Please decide if you want to use Authenticator mobile app OR OTP when logging in.");
         }
     }
 }

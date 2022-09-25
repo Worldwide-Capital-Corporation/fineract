@@ -77,6 +77,9 @@ public class AuthenticationApiResource {
     @Value("${fineract.security.2fa.enabled}")
     private boolean twoFactorEnabled;
 
+    @Value("${fineract.security.mfa.enabled}")
+    private boolean mfaEnabled;
+
     public static class AuthenticateRequest {
 
         public String username;
@@ -185,6 +188,11 @@ public class AuthenticationApiResource {
                             && !principal.hasSpecificPermissionTo(
                             TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
 
+            boolean isMFAAuthenticationRequired =
+                    this.mfaEnabled
+                            && !principal.hasSpecificPermissionTo(
+                            TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
+
             JwtTokenData accessTokenData = tokenProvider.generate(principal);
             JwtTokenData refreshTokenData = tokenProvider.refreshToken(principal, accessTokenData);
 
@@ -201,7 +209,8 @@ public class AuthenticationApiResource {
                                 refreshTokenData.getToken(),
                                 accessTokenData.getExpireIn(),
                                 refreshTokenData.getExpireIn(),
-                                isTwoFactorRequired);
+                                isTwoFactorRequired,
+                                isMFAAuthenticationRequired);
             } else {
 
                 authenticatedUserData =
@@ -220,6 +229,7 @@ public class AuthenticationApiResource {
                                 accessTokenData.getExpireIn(),
                                 refreshTokenData.getExpireIn(),
                                 isTwoFactorRequired,
+                                isMFAAuthenticationRequired,
                                 returnClientList ? clientReadPlatformService.retrieveUserClients(userId) : null);
             }
         }

@@ -19,8 +19,6 @@
 package org.apache.fineract.infrastructure.security.service;
 
 import java.util.List;
-
-import org.apache.fineract.farmersbank.security.data.TwoFactorData;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.security.data.OTPDeliveryMethod;
 import org.apache.fineract.infrastructure.security.data.OTPRequest;
@@ -40,7 +38,5 @@ public interface TwoFactorService {
     TFAccessToken fetchAccessTokenForUser(AppUser user, String token);
 
     TFAccessToken invalidateAccessToken(AppUser user, JsonCommand command);
-
-    TwoFactorData getOTPDeliveryMethodsForUser(AppUser user) throws Exception;
 
 }

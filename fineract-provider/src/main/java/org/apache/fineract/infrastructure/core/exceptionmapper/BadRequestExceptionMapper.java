@@ -16,34 +16,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.fineract.infrastructure.core.exceptionmapper;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.fineract.infrastructure.core.data.ApiGlobalErrorResponse;
-import org.apache.fineract.useradministration.exception.UnAuthenticatedUserException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-/**
- * An {@link ExceptionMapper} to map {@link UnAuthenticatedUserException} thrown by platform into a HTTP API friendly
- * format.
- */
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+
 @Provider
 @Component
 @Scope("singleton")
 @Slf4j
-public class UnAuthenticatedUserExceptionMapper implements ExceptionMapper<UnAuthenticatedUserException> {
+public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
 
     @Override
-    public Response toResponse(@SuppressWarnings("unused") final UnAuthenticatedUserException exception) {
-        // Status code 401 really reads as: "Unauthenticated":
-        log.warn("Exception: {}, Message: {}", exception.getClass().getName(), exception.getMessage());
-        return Response.status(Status.UNAUTHORIZED).entity(ApiGlobalErrorResponse.unAuthenticated("Invalid authentication details!.")).type(MediaType.APPLICATION_JSON)
-                .build();
+    public Response toResponse(BadRequestException exception) {
+        final String defaultUserMessage = exception.getMessage();
+        log.warn("Exception: {}, Message: {}", exception.getClass().getName(), defaultUserMessage);
+        return Response.status(Response.Status.BAD_REQUEST).entity(ApiGlobalErrorResponse.badClientRequest(defaultUserMessage, defaultUserMessage, null))
+                .type(MediaType.APPLICATION_JSON).build();
     }
 }
+

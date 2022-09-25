@@ -330,6 +330,14 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
             }
         }
 
+        if (command.hasParameter(AppUserConstants.IS_AUTHENTICATOR_ENROLLED)) {
+            if (command.isChangeInBooleanParameterNamed(AppUserConstants.IS_AUTHENTICATOR_ENROLLED, this.isAuthenticatorEnrolled)) {
+                final boolean newValue = command.booleanPrimitiveValueOfParameterNamed(AppUserConstants.IS_AUTHENTICATOR_ENROLLED);
+                actualChanges.put(AppUserConstants.IS_AUTHENTICATOR_ENROLLED, newValue);
+                this.isAuthenticatorEnrolled = newValue;
+            }
+        }
+
         if (this.isSelfServiceUser && command.hasParameter(AppUserConstants.CLIENTS)) {
             actualChanges.put(AppUserConstants.CLIENTS, command.arrayValueOfParameterNamed(AppUserConstants.CLIENTS));
             Set<AppUserClientMapping> newClients = createAppUserClientMappings(clients);
@@ -744,7 +752,7 @@ public class AppUser extends AbstractPersistableCustom implements PlatformUser {
     }
 
     public boolean getIsAuthenticatorEnrolled() {
-        return isAuthenticatorEnrolled;
+        return isAuthenticatorEnrolled != null ? isAuthenticatorEnrolled : false;
     }
 
     public void setAuthenticatorEnrolled(Boolean authenticatorEnrolled) {

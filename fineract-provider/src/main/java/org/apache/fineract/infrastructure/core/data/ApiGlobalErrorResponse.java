@@ -57,13 +57,13 @@ public class ApiGlobalErrorResponse {
 
     private List<ApiParameterError> errors = new ArrayList<>();
 
-    public static ApiGlobalErrorResponse unAuthenticated() {
+    public static ApiGlobalErrorResponse unAuthenticated(String message) {
 
         final ApiGlobalErrorResponse globalErrorResponse = new ApiGlobalErrorResponse();
         globalErrorResponse.setHttpStatusCode("401");
         globalErrorResponse.setDeveloperMessage("Invalid authentication details were passed in api request.");
         globalErrorResponse.setUserMessageGlobalisationCode("error.msg.not.authenticated");
-        globalErrorResponse.setDefaultUserMessage("Unauthenticated. Please login.");
+        globalErrorResponse.setDefaultUserMessage(message);
 
         return globalErrorResponse;
     }

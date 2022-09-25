@@ -35,7 +35,8 @@ public class OAuth2ExceptionEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
         log.warn("Exception: {}, Message: {}", authException.getClass().getName(), authException.getMessage());
-        ApiGlobalErrorResponse errorResponse = ApiGlobalErrorResponse.unAuthenticated();
+    ApiGlobalErrorResponse errorResponse =
+        ApiGlobalErrorResponse.unAuthenticated("Invalid credentials!.");
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         try {

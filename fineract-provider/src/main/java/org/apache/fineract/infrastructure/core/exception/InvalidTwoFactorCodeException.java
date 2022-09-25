@@ -19,9 +19,9 @@
 
 package org.apache.fineract.infrastructure.core.exception;
 
-public class InvalidTwoFactorCodeException extends RuntimeException{
+public class InvalidTwoFactorCodeException extends AbstractPlatformException{
 
     public InvalidTwoFactorCodeException(String message) {
-        super(message);
+        super(message, message);
     }
 }

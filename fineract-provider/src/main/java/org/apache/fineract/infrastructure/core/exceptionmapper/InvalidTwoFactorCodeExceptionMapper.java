@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.fineract.infrastructure.core.data.ApiGlobalErrorResponse;
 import org.apache.fineract.infrastructure.core.exception.InvalidTwoFactorCodeException;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.MediaType;
@@ -32,12 +31,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-/**
- * An {@link ExceptionMapper} to map {@link AccessDeniedException} thrown by platform into a HTTP API friendly format.
- *
- * The {@link AccessDeniedException} is thrown by spring security on platform when an attempt is made to use
- * functionality for which the user does have sufficient privileges.
- */
 @Provider
 @Component
 @Scope("singleton")
@@ -50,7 +43,7 @@ public class InvalidTwoFactorCodeExceptionMapper implements ExceptionMapper<Inva
         // "Authenticated - but not authorized":
         final String defaultUserMessage = exception.getMessage();
         log.warn("Exception: {}, Message: {}", exception.getClass().getName(), defaultUserMessage);
-        return Response.status(Status.UNAUTHORIZED).entity(ApiGlobalErrorResponse.invalidTwoFactorCode(defaultUserMessage))
+        return Response.status(Status.FORBIDDEN).entity(ApiGlobalErrorResponse.invalidTwoFactorCode(defaultUserMessage))
                 .type(MediaType.APPLICATION_JSON).build();
     }
 }

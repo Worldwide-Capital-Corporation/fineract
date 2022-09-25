@@ -19,30 +19,12 @@
 
 package org.apache.fineract.farmersbank.security.data;
 
-import org.apache.fineract.infrastructure.security.data.OTPDeliveryMethod;
-
-import java.util.List;
-
 public class TwoFactorData {
-    @SuppressWarnings("unused")
-    private final Boolean usingAuthenticator;
-
-    @SuppressWarnings("unused")
-    private List<OTPDeliveryMethod> otpDeliveryMethods;
 
     @SuppressWarnings("unused")
     private final Boolean authenticatorEnrolled;
 
-    private final String qrCodeImage;
-
-    public TwoFactorData(
-            final Boolean usingAuthenticator,
-            final List<OTPDeliveryMethod> otpDeliveryMethods,
-            final Boolean authenticatorEnrolled,
-            final String qrCodeImage) {
-        this.usingAuthenticator = usingAuthenticator;
-        this.otpDeliveryMethods = otpDeliveryMethods;
+    public TwoFactorData(final Boolean authenticatorEnrolled) {
         this.authenticatorEnrolled = authenticatorEnrolled;
-        this.qrCodeImage = qrCodeImage;
     }
 }
