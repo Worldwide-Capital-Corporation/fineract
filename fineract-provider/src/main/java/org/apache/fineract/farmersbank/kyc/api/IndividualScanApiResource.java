@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
+import org.apache.fineract.farmersbank.kyc.domain.ClientScreening;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +54,12 @@ import java.io.IOException;
                 "An API capability that allows bank to verify if customers are PEP and are not sanctioned.")
 public class IndividualScanApiResource {
 
-    private final ToApiJsonSerializer<ScanResponse> apiJsonSerializerService;
+    private final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService;
     private final MemberCheckScanService kycService;
 
 
     @Autowired
-    public IndividualScanApiResource(final ToApiJsonSerializer<ScanResponse> apiJsonSerializerService,
+    public IndividualScanApiResource(final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService,
                                      final MemberCheckScanService kycService) {
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.kycService = kycService;
@@ -103,7 +104,7 @@ public class IndividualScanApiResource {
                     "Required parameter(s) not supplied");
         }
 
-        ScanResponse response = kycService.individualScan(request);
+        ClientScreening response = kycService.individualScan(request);
         return this.apiJsonSerializerService.serialize(response);
     }
 

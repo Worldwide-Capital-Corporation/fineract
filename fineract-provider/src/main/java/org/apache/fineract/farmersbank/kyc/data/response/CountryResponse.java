@@ -19,7 +19,7 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class Country {
+public class CountryResponse {
     public String countryType;
     public String countryValue;
 }

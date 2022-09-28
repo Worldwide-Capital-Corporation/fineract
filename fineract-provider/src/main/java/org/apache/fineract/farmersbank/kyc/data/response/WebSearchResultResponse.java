@@ -19,9 +19,16 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class DecisionDetail {
-    public String text;
-    public String matchDecision;
-    public String assessedRisk;
-    public String comment;
+public class WebSearchResultResponse {
+    public String title;
+    public String snippet;
+    public String mime;
+    public String link;
+    public String kind;
+    public String htmlTitle;
+    public String htmlSnippet;
+    public String htmlFormattedUrl;
+    public String formattedUrl;
+    public String fileFormat;
+    public String displayLink;
 }

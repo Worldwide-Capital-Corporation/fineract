@@ -17,22 +17,10 @@
  * under the License.
  */
 
+package org.apache.fineract.farmersbank.kyc.domain.repositories;
 
-package org.apache.fineract.farmersbank.kyc.data.response;
+import org.apache.fineract.farmersbank.kyc.domain.ScreeningResultEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.Date;
-
-public class MonitoringList {
-    public int id;
-    public boolean monitor;
-    public String addedBy;
-    public Date dateAdded;
-    public String memberNumber;
-    public String clientId;
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public String scriptNameFullName;
-    public String dob;
-    public String address;
-}
+public interface ResultEntityRepository extends JpaRepository<ScreeningResultEntity, Long>, JpaSpecificationExecutor<ScreeningResultEntity> {}

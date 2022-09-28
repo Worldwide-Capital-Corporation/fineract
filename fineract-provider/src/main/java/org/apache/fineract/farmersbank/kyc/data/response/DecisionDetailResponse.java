@@ -19,12 +19,9 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class LinkedIndividual {
-    public int id;
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public String category;
-    public String subcategories;
-    public String description;
+public class DecisionDetailResponse {
+    public String text;
+    public String matchDecision;
+    public String assessedRisk;
+    public String comment;
 }

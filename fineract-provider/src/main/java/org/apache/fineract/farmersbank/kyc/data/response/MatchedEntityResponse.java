@@ -19,8 +19,19 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class Location {
-    public String country;
-    public String city;
-    public String address;
+public class MatchedEntityResponse {
+    public Long resultId;
+    public Long uniqueId;
+    public ResultEntityResponse resultEntity;
+    public ResultEntityResponse monitoredOldEntity;
+    public String monitoringStatus;
+    public String matchedFields;
+    public String category;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public Long matchRate;
+    public String dob;
+    public String primaryLocation;
+    public DecisionDetailResponse decisionDetail;
 }

@@ -1,3 +1,5 @@
+package org.apache.fineract.farmersbank.kyc.data.response;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -17,12 +19,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.response;
-
 import java.util.ArrayList;
 
-public class MonitoredOldEntity {
-    public int uniqueId;
+public class ResultEntityResponse {
+    public Long uniqueId;
     public String category;
     public String categories;
     public String subcategory;
@@ -38,20 +38,20 @@ public class MonitoredOldEntity {
     public String placeOfBirth;
     public String primaryLocation;
     public String image;
-    public GeneralInfo generalInfo;
+    public GeneralInfoResponse generalInfo;
     public String furtherInformation;
     public String enterDate;
     public String lastReviewed;
-    public ArrayList<Description> descriptions;
-    public ArrayList<NameDetail> nameDetails;
+    public ArrayList<DescriptionResponse> descriptions;
+    public ArrayList<NameDetailResponse> nameDetails;
     public ArrayList<String> originalScriptNames;
-    public ArrayList<Role> roles;
-    public ArrayList<ImportantDate> importantDates;
-    public ArrayList<Location> locations;
-    public ArrayList<Country> countries;
-    public ArrayList<OfficialList> officialLists;
-    public ArrayList<IdNumber> idNumbers;
-    public ArrayList<Source> sources;
-    public ArrayList<LinkedIndividual> linkedIndividuals;
-    public ArrayList<LinkedCompany> linkedCompanies;
+    public ArrayList<ScanRoleResponse> roles;
+    public ArrayList<ImportantDateResponse> importantDates;
+    public ArrayList<LocationResponse> locations;
+    public ArrayList<CountryResponse> countries;
+    public ArrayList<OfficialListResponse> officialLists;
+    public ArrayList<IdNumberResponse> idNumbers;
+    public ArrayList<SourceResponse> sources;
+    public ArrayList<LinkedIndividualResponse> linkedIndividuals;
+    public ArrayList<LinkedCompanyResponse> linkedCompanies;
 }

@@ -17,14 +17,13 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.request;
+package org.apache.fineract.farmersbank.kyc.data.response;
 
-import org.apache.fineract.farmersbank.kyc.data.shared.Country;
-
-public class IdvParam {
-    public String mobileNumber;
-    public Country country;
-    public String idvType;
-    public boolean allowDuplicateIDVScan;
-    public String IdNumber;
+public class ScanRoleResponse {
+    public String title;
+    public String type;
+    public String status;
+    public String country;
+    public String from;
+    public String to;
 }

@@ -17,10 +17,22 @@
  * under the License.
  */
 
+
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class GeneralInfo {
-    public String additionalProp1;
-    public String additionalProp2;
-    public String additionalProp3;
+import java.util.Date;
+
+public class MonitoringListResponse {
+    public int id;
+    public boolean monitor;
+    public String addedBy;
+    public Date dateAdded;
+    public String memberNumber;
+    public String clientId;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public String scriptNameFullName;
+    public String dob;
+    public String address;
 }

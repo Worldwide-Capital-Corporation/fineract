@@ -17,14 +17,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.request;
+package org.apache.fineract.farmersbank.kyc.domain.repositories;
 
-import org.apache.fineract.farmersbank.kyc.data.shared.Country;
+import org.apache.fineract.farmersbank.kyc.domain.MatchedEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public class IdvParam {
-    public String mobileNumber;
-    public Country country;
-    public String idvType;
-    public boolean allowDuplicateIDVScan;
-    public String IdNumber;
-}
+public interface MatchedEntityRepository extends JpaRepository<MatchedEntity, Long>, JpaSpecificationExecutor<MatchedEntity> {}

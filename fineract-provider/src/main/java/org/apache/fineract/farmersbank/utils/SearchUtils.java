@@ -17,10 +17,13 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.response;
+package org.apache.fineract.farmersbank.utils;
 
-public class IdNumber {
-    public String type;
-    public String idNotes;
-    public String number;
+import java.util.Collection;
+import java.util.function.Predicate;
+
+public final class SearchUtils {
+    public static <T> T findByProperty(Collection<T> col, Predicate<T> filter) {
+        return col.stream().filter(filter).findFirst().orElse(null);
+    }
 }

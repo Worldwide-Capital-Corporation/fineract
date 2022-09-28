@@ -19,7 +19,10 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class ImportantDate {
-    public String dateType;
-    public String dateValue;
+public class NameDetailResponse {
+    public String nameType;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public String title;
 }

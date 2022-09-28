@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements. See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership. The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="1" author="fineract">
+        <createTable tableName="m_client_screening">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="scan_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="matched_number" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="image_url" type="VARCHAR(300)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_match" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_verified_match" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_pep" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_sip" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_sanctioned" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_involved_financial_crime" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_corrupt_bribery" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_rca" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_ter" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_decision_detail">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="decision_text" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="match_decision" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="assessed_risk" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="comment" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_general_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="additional_prop1" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="additional_prop2" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="additional_prop3" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_matched_entity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="screening_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="decision_detail_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="result_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="result_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="unique_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="monitoring_status" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="matched_fields" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="category" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="matched_rate" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="dob" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="primary_location" type="VARCHAR(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_result_entity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="general_info_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="unique_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="category" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="categories" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="subcategory" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="gender" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="deceased" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="primary_first_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="primary_middle_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="primary_last_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="title" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="position" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_birth" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="deceased_date" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="place_of_birth" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="primary_location" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="image" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="further_information" type="VARCHAR">
+                <constraints nullable="true"/>
+            </column>
+            <column name="enter_date" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_reviewed" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+
+        <createTable tableName="m_client_screening_description">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="result_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description1" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description2" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description3" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_linked_company">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="result_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="linked_company_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="monitored_old_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="category" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sub_categories" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_linked_individual">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="result_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="linked_individual_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="monitored_old_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="category" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sub_categories" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_id_numbers">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="result_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="id_notes" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="number" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_job_history">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="result_entity_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="type" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="country" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="from" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="to" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <createTable tableName="m_client_screening_web_search">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="screening_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="title" type="VARCHAR(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="snippet" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mime" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="link" type="VARCHAR(300)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="kind" type="VARCHAR(5600)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="html_title" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="html_snippet" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="html_formatted_url" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="formatted_url" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="file_format" type="VARCHAR(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="display_link" type="VARCHAR(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="client_id"
+                                 baseTableName="m_client_screening"
+                                 constraintName="fk_client_screening"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client"/>
+
+        <addForeignKeyConstraint baseColumnNames="screening_id"
+                                 baseTableName="m_client_screening_web_search"
+                                 constraintName="fk_web_search_screening"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening"/>
+
+        <addForeignKeyConstraint baseColumnNames="screening_id"
+                                 baseTableName="m_client_screening_matched_entity"
+                                 constraintName="fk_matched_entity_screening"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening"/>
+
+        <addForeignKeyConstraint baseColumnNames="decision_detail_id"
+                                 baseTableName="m_client_screening_matched_entity"
+                                 constraintName="fk_matched_entity_decision_detail"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_decision_detail"/>
+
+        <addForeignKeyConstraint baseColumnNames="general_info_id"
+                                 baseTableName="m_client_screening_result_entity"
+                                 constraintName="fk_result_entity_general_info"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_general_info"/>
+
+        <addForeignKeyConstraint baseColumnNames="result_entity_id"
+                                 baseTableName="m_client_screening_description"
+                                 constraintName="fk_description_result_entity"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_result_entity"/>
+
+        <addForeignKeyConstraint baseColumnNames="result_entity_id"
+                                 baseTableName="m_client_screening_linked_company"
+                                 constraintName="fk_linked_company_result_entity"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_result_entity"/>
+
+        <addForeignKeyConstraint baseColumnNames="result_entity_id"
+                                 baseTableName="m_client_screening_linked_individual"
+                                 constraintName="fk_linked_individual_result_entity"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_result_entity"/>
+
+        <addForeignKeyConstraint baseColumnNames="result_entity_id"
+                                 baseTableName="m_client_screening_id_numbers"
+                                 constraintName="fk_id_number_result_entity"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_result_entity"/>
+
+        <addForeignKeyConstraint baseColumnNames="result_entity_id"
+                                 baseTableName="m_client_screening_job_history"
+                                 constraintName="fk_job_history_result_entity"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_client_screening_result_entity"/>
+
+    </changeSet>
+</databaseChangeLog>

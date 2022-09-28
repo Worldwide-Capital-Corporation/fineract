@@ -22,11 +22,117 @@ package org.apache.fineract.farmersbank.kyc.data.response;
 import java.util.ArrayList;
 
 public class ScanResponse {
-    public Metadata metadata;
-    public int scanId;
+    // Categories
+    private static final String SIP = "SIP"; // Special interest person
+    private static final String PEP = "PEP";
+    private static final String TER = "TER"; // Terrorist
+    private static final String RCA = "RCA"; // Relatives and Close Associates
+
+    public boolean isExactMatch;
+    public MetadataResponse metadata;
+    public Long scanId;
     public String resultUrl;
-    public int matchedNumber;
-    public ArrayList<MatchedEntity> matchedEntities;
-    public ArrayList<WebSearchResult> webSearchResults;
+    public Long matchedNumber;
+    public ArrayList<MatchedEntityResponse> matchedEntities;
+    public ArrayList<WebSearchResultResponse> webSearchResults;
+
+    public String getPictureImageUrl(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            return entityResponse.resultEntity.image;
+        }
+        return null;
+    }
+
+    public boolean isPoliticalExposedPerson(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            if (entityResponse.category.contains(PEP)) {
+                return true;
+            }
+            for (DescriptionResponse descriptionResponse : entityResponse.resultEntity.descriptions){
+                if (descriptionResponse.description2.contains(PEP)) {
+                    return true;
+                }
+            }
+            for (SourceResponse sourceResponse : entityResponse.resultEntity.sources){
+                if (sourceResponse.categories.contains(PEP)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isSanctioned(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            for (DescriptionResponse descriptionResponse : entityResponse.resultEntity.descriptions){
+                if (descriptionResponse.description2.contains("Sanction")) {
+                    return true;
+                }
+            }
+            for (SourceResponse sourceResponse : entityResponse.resultEntity.sources){
+                if (sourceResponse.categories.contains("Sanction")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isInvolvedInFinancialCrime(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            for (DescriptionResponse descriptionResponse : entityResponse.resultEntity.descriptions){
+                if (descriptionResponse.description2.contains("Financial Crime") ||
+                        descriptionResponse.description2.contains("Law Enforcement")) {
+                    return true;
+                }
+            }
+            for (SourceResponse sourceResponse : entityResponse.resultEntity.sources){
+                if (sourceResponse.categories.contains("Financial Crime") ||
+                        sourceResponse.categories.contains("Law Enforcement")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isInvolvedInBriberyAndCorruption(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            for (DescriptionResponse descriptionResponse : entityResponse.resultEntity.descriptions){
+                if (descriptionResponse.description2.contains("Bribery") ||
+                        descriptionResponse.description2.contains("Corruption")) {
+                    return true;
+                }
+            }
+            for (SourceResponse sourceResponse : entityResponse.resultEntity.sources){
+                if (sourceResponse.categories.contains("Bribery") ||
+                        sourceResponse.categories.contains("Corruption")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isSpecialInterestPerson(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            return entityResponse.category.contains(SIP);
+        }
+        return false;
+    }
+
+    public boolean isTerrorist(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            return entityResponse.category.contains(TER);
+        }
+        return false;
+    }
+
+    public boolean isRelativeOrAssociate(){
+        for (MatchedEntityResponse entityResponse : matchedEntities) {
+            return entityResponse.category.contains(RCA);
+        }
+        return false;
+    }
 }
 

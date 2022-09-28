@@ -19,11 +19,12 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class Role {
-    public String title;
-    public String type;
-    public String status;
-    public String country;
-    public String from;
-    public String to;
+public class LinkedIndividualResponse {
+    public Long id;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public String category;
+    public String subcategories;
+    public String description;
 }

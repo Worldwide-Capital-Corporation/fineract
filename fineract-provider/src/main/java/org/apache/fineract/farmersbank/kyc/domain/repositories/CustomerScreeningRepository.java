@@ -17,21 +17,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.response;
+package org.apache.fineract.farmersbank.kyc.domain.repositories;
 
-public class MatchedEntity {
-    public int resultId;
-    public int uniqueId;
-    public ResultEntity resultEntity;
-    public MonitoredOldEntity monitoredOldEntity;
-    public String monitoringStatus;
-    public String matchedFields;
-    public String category;
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public int matchRate;
-    public String dob;
-    public String primaryLocation;
-    public DecisionDetail decisionDetail;
-}
+import org.apache.fineract.farmersbank.kyc.domain.ClientScreening;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface CustomerScreeningRepository extends JpaRepository<ClientScreening, Long>, JpaSpecificationExecutor<ClientScreening> {}

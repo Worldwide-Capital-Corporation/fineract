@@ -19,16 +19,10 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class WebSearchResult {
-    public String title;
-    public String snippet;
-    public String mime;
-    public String link;
-    public String kind;
-    public String htmlTitle;
-    public String htmlSnippet;
-    public String htmlFormattedUrl;
-    public String formattedUrl;
-    public String fileFormat;
-    public String displayLink;
+public class LinkedCompanyResponse {
+    public Long id;
+    public String name;
+    public String category;
+    public String subcategories;
+    public String description;
 }

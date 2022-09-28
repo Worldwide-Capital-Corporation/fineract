@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.response;
+package org.apache.fineract.farmersbank.kyc.domain.repositories;
 
-public class Description {
-    public String description1;
-    public String description2;
-    public String description3;
-}
+import org.apache.fineract.farmersbank.kyc.domain.Description;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface DescriptionRepository extends JpaRepository<Description, Long>, JpaSpecificationExecutor<Description> {}

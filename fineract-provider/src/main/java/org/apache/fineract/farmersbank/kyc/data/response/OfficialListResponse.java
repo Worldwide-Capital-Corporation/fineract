@@ -19,10 +19,10 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class LinkedCompany {
-    public int id;
-    public String name;
+public class OfficialListResponse {
+    public String keyword;
     public String category;
-    public String subcategories;
     public String description;
+    public String country;
+    public boolean isCurrent;
 }

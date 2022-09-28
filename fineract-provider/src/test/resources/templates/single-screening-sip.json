@@ -1,0 +1,876 @@
+{
+  "metadata": {
+    "message": "1 match found for PEP and Sanctions."
+  },
+  "scanId": 4600711,
+  "resultUrl": "https://demo.membercheck.com/login?scanId=4600711",
+  "matchedNumber": 1,
+  "matchedEntities": [
+    {
+      "resultId": 31662702,
+      "uniqueId": 1214221,
+      "resultEntity": {
+        "uniqueId": 1214221,
+        "category": "SIP",
+        "categories": "Special Interest Person (SIP) - Sanctions Lists, Special Interest Person (SIP) - Financial Crime, Special Interest Person (SIP) - Law Enforcement, Special Interest Person (SIP) - Regulatory Enforcement, Special Interest Person (SIP) - Bribery and Corruption",
+        "gender": "Male",
+        "deceased": "NO",
+        "primaryFirstName": "Donald",
+        "primaryMiddleName": "John",
+        "primaryLastName": "Trump",
+        "dateOfBirth": "14 Jun 1946",
+        "placeOfBirth": "",
+        "primaryLocation": "United States of America",
+        "image": "https://secure.c6-intelligence.com/c6images/0020855000/0020851600.jpg",
+        "generalInfo": {},
+        "furtherInformation": "Designated as a sanctioned person involved in terrorist and human rights activities against Iran and Iranian citizens by the Ministry of Foreign Affairs of Iran. The sanction designation was issued in compliance with the Law on Combating Human Rights Violations and US Adventurous and Terrorist Actions in the Region, ratified by the Iranian Parliament.\r\nRegulatory Enforcement Lists\r\nRep. Risk: Bribery and Corruption - Corrupt Practices\r\nRep. Risk: Financial Crime and Fraud - Embezzlement\r\nRep. Risk: Financial Crime and Fraud - Financial and Non-Financial Fraud\r\nRep. Risk: Financial Crime and Fraud - Money Laundering\r\nRep. Risk: Financial Crime and Fraud - Tax Offences\r\n|Profile of Interest|Civil Servants|\r\n|Profile of Interest|Senior Government Officials|\r\n|Position|Former Business Ambassador for Scotland (GlobalScot); from 04-2006 to 12-2015; United States of America (the); Executive Branch - Senior Diplomats|\r\n|Position|Former President - US Presidency; from 08-11-2016 to 01-2021; United States of America (the); Executive Branch - Head of State and Deputy|\r\n",
+        "descriptions": [
+          {
+            "description1": "Special Interest Person (SIP)",
+            "description2": "Sanctions Lists",
+            "description3": ""
+          },
+          {
+            "description1": "Special Interest Person (SIP)",
+            "description2": "Financial Crime",
+            "description3": ""
+          },
+          {
+            "description1": "Special Interest Person (SIP)",
+            "description2": "Law Enforcement",
+            "description3": ""
+          },
+          {
+            "description1": "Special Interest Person (SIP)",
+            "description2": "Regulatory Enforcement",
+            "description3": ""
+          },
+          {
+            "description1": "Special Interest Person (SIP)",
+            "description2": "Bribery and Corruption",
+            "description3": ""
+          }
+        ],
+        "nameDetails": [
+          {
+            "nameType": "Also Known As",
+            "firstName": "Donald",
+            "lastName": "John Trump"
+          },
+          {
+            "nameType": "Also Known As",
+            "firstName": "Donald",
+            "middleName": "J",
+            "lastName": "Trump"
+          },
+          {
+            "nameType": "Also Known As",
+            "lastName": "The Donald"
+          },
+          {
+            "nameType": "Also Known As",
+            "firstName": "Donald",
+            "lastName": "Trump"
+          }
+        ],
+        "originalScriptNames": [],
+        "importantDates": [
+          {
+            "dateType": "Date of Birth",
+            "dateValue": "14 Jun 1946"
+          }
+        ],
+        "locations": [
+          {
+            "country": "United States of America",
+            "city": "Washington",
+            "address": "1600 Pennsylvania Avenue NW, The White House District of Columbia 20500"
+          },
+          {
+            "country": "United States of America",
+            "city": "New York City",
+            "address": "725 Fifth Avenue, Manhattan New York 10022"
+          },
+          {
+            "country": "United States of America",
+            "city": "Atlantic City",
+            "address": "New Jersey"
+          },
+          {
+            "country": "United States of America",
+            "city": "Queens",
+            "address": "New York"
+          },
+          {
+            "country": "United States of America",
+            "address": "Pennsylvania"
+          }
+        ],
+        "countries": [],
+        "officialLists": [
+          {
+            "keyword": "Ministry of Foreign Affairs of the Islamic Republic of Iran",
+            "description": "Ministry of Foreign Affairs of the Islamic Republic of Iran",
+            "isCurrent": true
+          }
+        ],
+        "idNumbers": [],
+        "sources": [
+          {
+            "url": "https://ag.ny.gov/press-release/2022/attorney-general-james-sues-donald-trump-years-financial-fraud",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "https://oag.dc.gov/release/op-ed-we-sued-trump-emoluments-violations-fights",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "https://mfa.gov.ir/portal/NewsView/624989/%D9%85%D8%AA%D9%86-%DA%A9%D8%A7%D9%85%D9%84-%D8%A8%DB%8C%D8%A7%D9%86%DB%8C%D9%87-%D8%AA%D9%81%D8%B5%DB%8C%D9%84%DB%8C-%D9%88%D8%B2%D8%A7%D8%B1%D8%AA-%D8%A7%D9%85%D9%88%D8%B1-%D8%AE%D8%A7%D8%B1%D8%AC%D9%87-%D8%AC%D9%85%D9%87%D9%88%D8%B1%DB%8C-%D8%A7%D8%B3%D9%84%D8%A7%D9%85%DB%8C-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86-%D8%AF%D8%B1-%D8%AE%D8%B5%D9%88%D8%B5-%D8%AC%D8%B1%D8%A7%DB%8C%D9%85-%D9%85%D9%82%D8%A7%D9%85%D8%A7%D8%AA-%D8%A7%D8%B1%D8%B4%D8%AF-%D8%A7%D9%85%D8%B1%DB%8C%DA%A9%D8%A7%DB%8C%DB%8C",
+            "categories": "Sanction"
+          },
+          {
+            "url": "https://www.salon.com/2020/05/19/judge-rejects-trumps-bid-to-stay-lawsuit-accusing-his-family-of-promoting-pyramid-scheme/",
+            "categories": "Adverse Media"
+          },
+          {
+            "url": "https://www.courthousenews.com/wp-content/uploads/2018/10/trump-rico.pdf",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "https://www.propublica.org/article/political-and-taxpayer-spending-at-trump-properties-16-1-million?",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "https://ag.ny.gov/press-release/attorney-general-underwood-announces-lawsuit-against-donald-j-trump-foundation-and-its",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "http://abcnews.go.com/Politics/wireStory/25m-deal-trump-university-fraud-lawsuits-moves-forward-52882718",
+            "categories": "PEP, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://nymag.com/daily/intelligencer/2018/01/4-new-trump-corruption-stories-from-the-last-day-alone.html",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "http://www.msnbc.com/rachel-maddow-show/widespread-corruption-allegations-add-trump-worlds-troubles",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "https://www.bloomberg.com/news/articles/2017-07-20/mueller-is-said-to-expand-probe-to-trump-business-transactions?cmpid=socialflow-twitter-business&utm_content=business&utm_campaign=socialflow-organic&utm_source=twitter&utm_medium=social",
+            "categories": "PEP, ID/V, Adverse Media"
+          },
+          {
+            "url": "http://economictimes.indiatimes.com/news/international/world-news/lawsuit-against-donald-trump-for-anti-corruption-rules-violation/articleshow/59120518.cms?utm_source=contentofinterest&utm_medium=text&utm_campaign=cppst",
+            "categories": "PEP, ID/V, Adverse Media"
+          },
+          {
+            "url": "http://www.politicususa.com/2017/06/12/embezzlement-fraud-complaint-filed-donald-eric-trump-york-ag.html",
+            "categories": "PEP, ID/V, Adverse Media"
+          },
+          {
+            "url": "http://www.chicagotribune.com/news/nationworld/ct-trump-revealed-classified-information-russians-20170515-story.html",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "https://oag.ca.gov/news/press-releases/attorney-general-xavier-becerra-files-amicus-brief-city-and-county-san-francisco",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "https://www.icij.org/blog/2016/09/trumps-organization-did-business-iranian-bank-later-linked-terrorism",
+            "categories": "PEP, Corporate/Business"
+          },
+          {
+            "url": "http://www.theatlantic.com/politics/archive/2017/01/donald-trump-scandals/474726/",
+            "categories": "PEP"
+          },
+          {
+            "url": "https://www.whitehouse.gov/administration/president-trump",
+            "categories": "PEP, ID/V"
+          },
+          {
+            "url": "https://www.whitehouse.gov/about-the-white-house/presidents/donald-j-trump/",
+            "categories": "ID/V"
+          },
+          {
+            "url": "http://qz.com/836148/president-elect-donald-trump-asks-to-postpone-trump-university-fraud-trial-because-he-is-a-political-novice/",
+            "categories": "PEP, ID/V, Adverse Media"
+          },
+          {
+            "url": "http://www.nydailynews.com/opinion/kenneth-f-mccallion-trump-real-estate-built-corruption-article-1.2856797",
+            "categories": "ID/V, Adverse Media"
+          },
+          {
+            "url": "http://thehill.com/latino/303691-trump-accused-of-tax-fraud-in-mexico",
+            "categories": "ID/V, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://www.vox.com/policy-and-politics/2016/10/31/13474280/trump-foundation-criminal-charges",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "http://www.reuters.com/article/us-brazil-corruption-trump-idUSKCN12S05D",
+            "categories": "PEP, ID/V, Adverse Media"
+          },
+          {
+            "url": "http://www.telesurtv.net/english/news/Trump-Accused-of-32-Million-Fraud-in-Unbuilt-Resort-in-Mexico-20161023-0016.html",
+            "categories": "Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://narcosphere.narconews.com/notebook/bill-conroy/2016/10/casino-owned-presidential-candidate-donald-trump-violated-us-anti-money",
+            "categories": "Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "https://www.mintpressnews.com/trump-foundation-ordered-stop-fundraising-fraud/221121/",
+            "categories": "ID/V, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/trump-tax-bombshell-may-not-have-paid-for-18-years_us_57f07866e4b082aad9bbadad",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "http://finance.yahoo.com/news/12-donald-trump-businesses-that-no-longer-exist-204923129.html",
+            "categories": "PEP, Corporate/Business"
+          },
+          {
+            "url": "http://www.biography.com/people/donald-trump-9511238",
+            "categories": "PEP, ID/V"
+          }
+        ],
+        "linkedIndividuals": [
+          {
+            "id": 320286516,
+            "firstName": "Elliott",
+            "middleName": "B",
+            "lastName": "Broidy",
+            "category": "SIP/RCA",
+            "description": "Elliott B Broidy is an associate of Donald John Trump"
+          },
+          {
+            "id": 320460928,
+            "firstName": "Jared",
+            "lastName": "Kushner",
+            "category": "PEP/SIP",
+            "description": "Jared Kushner is a son-in-law of Donald John Trump"
+          },
+          {
+            "id": 320966583,
+            "firstName": "Rudolph",
+            "middleName": "William",
+            "lastName": "Giuliani",
+            "category": "PEP/SIP",
+            "description": "Rudolph William Giuliani is an associate of Donald John Trump"
+          },
+          {
+            "id": 321193267,
+            "firstName": "Donald",
+            "middleName": "John",
+            "lastName": "Trump",
+            "category": "SIP/RCA",
+            "description": "Donald John Trump is a son of Donald John Trump"
+          },
+          {
+            "id": 320667399,
+            "firstName": "Thomas",
+            "middleName": "Joseph",
+            "lastName": "Barrack",
+            "category": "PEP/SIP",
+            "description": "Thomas Joseph Barrack is an associate of Donald John Trump"
+          },
+          {
+            "id": 321193124,
+            "firstName": "Ivanka",
+            "lastName": "Trump",
+            "category": "PEP/SIP",
+            "description": "Ivanka Trump is a daughter of Donald John Trump"
+          },
+          {
+            "id": 321193269,
+            "firstName": "Eric",
+            "middleName": "F",
+            "lastName": "Trump",
+            "category": "SIP/RCA",
+            "description": "Eric F Trump is a son of Donald John Trump"
+          },
+          {
+            "id": 321048245,
+            "firstName": "Conrad",
+            "middleName": "Moffat",
+            "lastName": "Black",
+            "category": "PEP/SIP",
+            "description": "Conrad Moffat Black is an associate of Donald John Trump"
+          },
+          {
+            "id": 320413339,
+            "firstName": "Carla",
+            "lastName": "Bruni",
+            "category": "SIP",
+            "description": "Carla Bruni is a romantic partner of Donald John Trump"
+          },
+          {
+            "id": 320991220,
+            "firstName": "Michael",
+            "middleName": "Dean",
+            "lastName": "Cohen",
+            "category": "SIP/RCA",
+            "description": "Michael Dean Cohen is a lawyer of Donald John Trump"
+          },
+          {
+            "id": 320286991,
+            "firstName": "Paul",
+            "middleName": "John",
+            "lastName": "Manafort",
+            "category": "SIP/RCA",
+            "description": "Paul John Manafort is an associate of Donald John Trump"
+          },
+          {
+            "id": 321193268,
+            "firstName": "Ivana",
+            "middleName": "Zelnickova",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Ivana Zelnickova Trump is a former spouse of Donald John Trump"
+          },
+          {
+            "id": 320286845,
+            "firstName": "Donald",
+            "middleName": "John",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Donald John Trump is a grandson of Donald John Trump"
+          },
+          {
+            "id": 320286876,
+            "firstName": "William",
+            "middleName": "L.",
+            "lastName": "Walton",
+            "category": "SIP/RCA",
+            "description": "William L. Walton is a personal adviser of Donald John Trump"
+          },
+          {
+            "id": 320286877,
+            "firstName": "Barbaros",
+            "lastName": "Muratoglu",
+            "category": "RCA",
+            "description": "Barbaros Muratoglu is an associate of Donald John Trump"
+          },
+          {
+            "id": 320286906,
+            "firstName": "Richard",
+            "middleName": "W",
+            "lastName": "Gates",
+            "category": "SIP/RCA",
+            "description": "Richard W Gates is a former programme manager Donald John Trump"
+          },
+          {
+            "id": 320731771,
+            "firstName": "Semyon",
+            "lastName": "Kislin",
+            "category": "PEP",
+            "description": "Semyon Kislin is an associate of Donald John Trump"
+          },
+          {
+            "id": 320286517,
+            "firstName": "Felix",
+            "middleName": "Henry",
+            "lastName": "Sater",
+            "category": "SIP/RCA",
+            "description": "Felix Henry Sater is an associate of Donald John Trump"
+          },
+          {
+            "id": 320286632,
+            "firstName": "Tevfik",
+            "lastName": "Arif",
+            "category": "PEP",
+            "description": "Tevfik Arif is an associate of Donald John Trump"
+          },
+          {
+            "id": 320286826,
+            "firstName": "Corey",
+            "lastName": "Lewandowski",
+            "category": "RCA",
+            "description": "Corey Lewandowski is an associate of Donald John Trump"
+          },
+          {
+            "id": 320305050,
+            "firstName": "Tristan Milos",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Tristan Milos Trump is a grandson of Donald John Trump"
+          },
+          {
+            "id": 320305051,
+            "firstName": "Theodore",
+            "middleName": "James",
+            "lastName": "Kushner",
+            "category": "RCA",
+            "description": "Theodore James Kushner is a grandson of Donald John Trump"
+          },
+          {
+            "id": 320286832,
+            "firstName": "Vanessa",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Vanessa Trump is a daughter-in-law of Donald John Trump"
+          },
+          {
+            "id": 320286833,
+            "firstName": "Arabella",
+            "middleName": "Rose",
+            "lastName": "Kushner",
+            "category": "RCA",
+            "description": "Arabella Rose Kushner is a granddaughter of Donald John Trump"
+          },
+          {
+            "id": 320286834,
+            "firstName": "Joseph",
+            "middleName": "Frederick",
+            "lastName": "Kushner",
+            "category": "RCA",
+            "description": "Joseph Frederick Kushner is a grandson of Donald John Trump"
+          },
+          {
+            "id": 320286836,
+            "firstName": "Lara",
+            "lastName": "Yunaska",
+            "category": "RCA",
+            "description": "Lara Yunaska is a daughter-in-law of Donald John Trump"
+          },
+          {
+            "id": 320286838,
+            "firstName": "Melania",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Melania Trump is the spouse of Donald John Trump"
+          },
+          {
+            "id": 320286840,
+            "firstName": "Robert",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Robert Trump is a brother of Donald John Trump"
+          },
+          {
+            "id": 320286841,
+            "firstName": "Susan",
+            "lastName": "Cara-Madden",
+            "category": "SIP",
+            "description": "Susan Cara-Madden is an associate of Donald John Trump"
+          },
+          {
+            "id": 320286842,
+            "firstName": "Chloe",
+            "middleName": "Sophia",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Chloe Sophia Trump is a granddaughter of Donald John Trump"
+          },
+          {
+            "id": 320286843,
+            "firstName": "Kai",
+            "middleName": "Madison",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Kai Madison Trump is a granddaughter of Donald John Trump"
+          },
+          {
+            "id": 320286844,
+            "firstName": "Spencer",
+            "middleName": "Fredercik",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Spencer Fredercik Trump is a grandson of Donald John Trump"
+          },
+          {
+            "id": 320286848,
+            "firstName": "Fred",
+            "middleName": "Christ",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Fred Christ Trump is the late father of Donald John Trump"
+          },
+          {
+            "id": 320286854,
+            "firstName": "Roger",
+            "middleName": "Jason",
+            "lastName": "Stone",
+            "category": "SIP/RCA",
+            "description": "Roger Jason Stone is a personal adviser of Donald John Trump"
+          },
+          {
+            "id": 320426305,
+            "firstName": "George",
+            "lastName": "Papadopoulos",
+            "category": "SIP/RCA",
+            "description": "George Papadopoulos is a personal adviser of Donald John Trump"
+          },
+          {
+            "id": 320426306,
+            "firstName": "Carter",
+            "lastName": "Page",
+            "category": "RCA",
+            "description": "Carter Page is a personal adviser of Donald John Trump"
+          },
+          {
+            "id": 320286992,
+            "firstName": "Marc",
+            "middleName": "E",
+            "lastName": "Kasowitz",
+            "category": "SIP/RCA",
+            "description": "Marc E Kasowitz is a lawyer of Donald John Trump"
+          },
+          {
+            "id": 320286504,
+            "firstName": "Maryanne",
+            "middleName": "Trump",
+            "lastName": "Barry",
+            "category": "PEP",
+            "description": "Maryanne Trump Barry is a sister of Donald John Trump"
+          },
+          {
+            "id": 320286601,
+            "firstName": "Marla",
+            "lastName": "Maples",
+            "category": "SIP/RCA",
+            "description": "Marla Maples is a former spouse of Donald John Trump"
+          },
+          {
+            "id": 320286837,
+            "firstName": "Tiffany",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Tiffany Trump is a daughter of Donald John Trump"
+          },
+          {
+            "id": 320286839,
+            "firstName": "Barron",
+            "middleName": "William",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Barron William Trump is a son of Donald John Trump"
+          },
+          {
+            "id": 320286849,
+            "firstName": "Mary",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Mary Trump is the late mother of Donald John Trump"
+          },
+          {
+            "id": 320286910,
+            "firstName": "Sam",
+            "lastName": "Clovis",
+            "category": "RCA",
+            "description": "Sam Clovis is a personal adviser of Donald John Trump"
+          },
+          {
+            "id": 320286912,
+            "firstName": "J",
+            "middleName": "D",
+            "lastName": "Gordon",
+            "category": "RCA",
+            "description": "J D Gordon is a personal adviser of Donald John Trump"
+          }
+        ],
+        "linkedCompanies": [
+          {
+            "id": 321191929,
+            "name": "Hon Hai Precision Industry Co",
+            "category": "SIE",
+            "description": "Visitor"
+          },
+          {
+            "id": 321194367,
+            "name": "The Trump Organization Incorporated",
+            "category": "SIE",
+            "description": "Chairperson / President (since 1971)"
+          },
+          {
+            "id": 320985110,
+            "name": "Trump Hotels & Casino Resorts Inc",
+            "category": "SIE",
+            "description": "Former Owner"
+          },
+          {
+            "id": 321191962,
+            "name": "Miss U.S.A.",
+            "category": "SIE",
+            "description": "Former Owner (1996-2015)"
+          },
+          {
+            "id": 317764148,
+            "name": "The Donald J. Trump Foundation Incorporated",
+            "category": "SIE",
+            "description": "Director"
+          },
+          {
+            "id": 317764167,
+            "name": "T International Realty LLC",
+            "category": "SIE",
+            "description": "Former President (-January 2017)"
+          },
+          {
+            "id": 318011416,
+            "name": "Trump Plaza Hotel & Casino",
+            "category": "SIE",
+            "description": "Owner (1988)"
+          },
+          {
+            "id": 317079816,
+            "name": "Trump University",
+            "category": "SIE",
+            "description": "Founder"
+          },
+          {
+            "id": 321191963,
+            "name": "Miss Universe",
+            "category": "SIE",
+            "description": "Former Owner (1996-2015)"
+          },
+          {
+            "id": 320930884,
+            "name": "Miss Universe Organisation",
+            "category": "SIE",
+            "description": "Former Owner (1996-2015)"
+          },
+          {
+            "id": 321191964,
+            "name": "Miss Teen U.S.A.",
+            "category": "SIE",
+            "description": "Former Owner (1996-2015)"
+          },
+          {
+            "id": 321191965,
+            "name": "Trump Tower",
+            "category": "SIE",
+            "description": "Owner (since 1982)"
+          },
+          {
+            "id": 321191918,
+            "name": "Trump Marina Associates",
+            "category": "SIE",
+            "description": "Former Owner"
+          },
+          {
+            "id": 321191919,
+            "name": "Trump Plaza Associates LLC",
+            "category": "SIE",
+            "description": "Former Chairperson (1982-2009)"
+          },
+          {
+            "id": 321191934,
+            "name": "Trump Shuttle",
+            "category": "SIE",
+            "description": "Former Owner (1989-1992)"
+          },
+          {
+            "id": 321191961,
+            "name": "The Apprentice",
+            "category": "SIE",
+            "description": "Former Producer and Host (2003-2015)"
+          },
+          {
+            "id": 321191966,
+            "name": "Trump Parc",
+            "category": "SIE",
+            "description": "Owner"
+          },
+          {
+            "id": 321191967,
+            "name": "Trump National Golf Club",
+            "category": "SIE",
+            "description": "Owner"
+          },
+          {
+            "id": 321191969,
+            "name": "Trump Mortgage",
+            "category": "SIE",
+            "description": "Former Owner (2006-2007)"
+          },
+          {
+            "id": 321191970,
+            "name": "Trump Steaks",
+            "category": "SIE",
+            "description": "Former Owner (2007-N/A)"
+          },
+          {
+            "id": 321191971,
+            "name": "Trump Vodka",
+            "category": "SIE",
+            "description": "Former Owner (2006 – 2011)"
+          },
+          {
+            "id": 321191972,
+            "name": "Trump Magazine",
+            "category": "SIE",
+            "description": "Former Owner (2007–2009)"
+          },
+          {
+            "id": 321191973,
+            "name": "The New Jersey Generals",
+            "category": "SIE",
+            "description": "Former Owner (1983–1985)"
+          },
+          {
+            "id": 320453793,
+            "name": "Trump SoHo #3810, Llc",
+            "category": "SIE",
+            "description": "Developer"
+          },
+          {
+            "id": 321191979,
+            "name": "Trump International Hotel & Tower Fort Lauderdale",
+            "category": "SIE",
+            "description": "Name Licenser"
+          },
+          {
+            "id": 317079853,
+            "name": "Trump Institute",
+            "category": "SIE",
+            "description": "Name Licenser"
+          },
+          {
+            "id": 316394641,
+            "name": "Cadre, Inc.",
+            "category": "SIE",
+            "description": "Co-Owner"
+          },
+          {
+            "id": 321192011,
+            "name": "Trump Organization LLC",
+            "category": "SIE",
+            "description": "Trump Organization LLC is owned or controlled by Donald John Trump"
+          },
+          {
+            "id": 314424686,
+            "name": "Hard Rock Hotel & Casino Atlantic City",
+            "category": "SIE",
+            "description": "Former Owner (1990 - 2016)"
+          }
+        ]
+      },
+      "matchedFields": "FullPrimaryName, Gender, DOB",
+      "category": "SIP",
+      "firstName": "Donald",
+      "middleName": "John",
+      "lastName": "Trump",
+      "matchRate": 100,
+      "dob": "14 Jun 1946",
+      "primaryLocation": "United States of America"
+    }
+  ],
+  "webSearchResults": [
+    {
+      "title": "Donald J. Trump - The White House",
+      "snippet": "The biography for President Trump and past presidents is courtesy of the White House Historical Association. Donald John Trump was born in Queens, New York, ...",
+      "link": "https://www.whitehouse.gov/about-the-white-house/presidents/donald-j-trump/",
+      "kind": "customsearch#result",
+      "htmlTitle": "Donald J. Trump - The White House",
+      "htmlSnippet": "The biography for President Trump and past presidents is courtesy of the White House Historical Association. <b>Donald John Trump</b> was born in Queens, New York,&nbsp;...",
+      "htmlFormattedUrl": "https://www.whitehouse.gov/about-the-white-house/.../donald-j-trump/",
+      "formattedUrl": "https://www.whitehouse.gov/about-the-white-house/.../donald-j-trump/",
+      "displayLink": "www.whitehouse.gov"
+    },
+    {
+      "title": "Articles of Impeachment Against Donald John Trump",
+      "snippet": "Dec 18, 2019 ... Resolved, That Donald John Trump, President of the United States, is impeached for high crimes and misdemeanors and that the following ...",
+      "mime": "application/pdf",
+      "link": "https://www.congress.gov/116/bills/hres755/BILLS-116hres755enr.pdf",
+      "kind": "customsearch#result",
+      "htmlTitle": "Articles of Impeachment Against <b>Donald John Trump</b>",
+      "htmlSnippet": "Dec 18, 2019 <b>...</b> Resolved, That <b>Donald John Trump</b>, President of the United States, is impeached for high crimes and misdemeanors and that the following&nbsp;...",
+      "htmlFormattedUrl": "https://www.congress.gov/116/bills/hres755/BILLS-116hres755enr.pdf",
+      "formattedUrl": "https://www.congress.gov/116/bills/hres755/BILLS-116hres755enr.pdf",
+      "fileFormat": "PDF/Adobe Acrobat",
+      "displayLink": "www.congress.gov"
+    },
+    {
+      "title": "Donald Trump - Wikipedia",
+      "snippet": "Donald John Trump (born June 14, 1946) is an American politician, media personality, and businessman who served as the 45th president of the United States ...",
+      "link": "https://en.wikipedia.org/wiki/Donald_Trump",
+      "kind": "customsearch#result",
+      "htmlTitle": "Donald Trump - Wikipedia",
+      "htmlSnippet": "<b>Donald John Trump</b> (born June 14, 1946) is an American politician, media personality, and businessman who served as the 45th president of the United States&nbsp;...",
+      "htmlFormattedUrl": "https://en.wikipedia.org/wiki/Donald_Trump",
+      "formattedUrl": "https://en.wikipedia.org/wiki/Donald_Trump",
+      "displayLink": "en.wikipedia.org"
+    },
+    {
+      "title": "Full Text: Trump Impeachment Article For 'Incitement Of Insurrection ...",
+      "snippet": "Feb 9, 2021 ... Resolved, the Donald John Trump, President of the United States, is impeached for high crimes and misdemeanors and that the following article of ...",
+      "link": "https://www.npr.org/sections/trump-impeachment-effort-live-updates/2021/01/11/955631105/impeachment-resolution-cites-trumps-incitement-of-capitol-insurrection",
+      "kind": "customsearch#result",
+      "htmlTitle": "Full Text: Trump Impeachment Article For &#39;Incitement Of Insurrection ...",
+      "htmlSnippet": "Feb 9, 2021 <b>...</b> Resolved, the <b>Donald John Trump</b>, President of the United States, is impeached for high crimes and misdemeanors and that the following article of&nbsp;...",
+      "htmlFormattedUrl": "https://www.npr.org/.../impeachment-resolution-cites-trumps-incitement-of- capitol-insurrection",
+      "formattedUrl": "https://www.npr.org/.../impeachment-resolution-cites-trumps-incitement-of- capitol-insurrection",
+      "displayLink": "www.npr.org"
+    },
+    {
+      "title": "Meet Donald Trump: Everything You Need To Know (And Probably ...",
+      "snippet": "Jul 27, 2015 ... Here's everything you need to know (and probably didn't know) about the 2016 presidential candidate. &#151; -- Name: Donald John Trump.",
+      "link": "https://abcnews.go.com/Politics/meet-donald-trump-2016-republican-presidential-candidate/story?id=32108595",
+      "kind": "customsearch#result",
+      "htmlTitle": "Meet Donald Trump: Everything You Need To Know (And Probably ...",
+      "htmlSnippet": "Jul 27, 2015 <b>...</b> Here&#39;s everything you need to know (and probably didn&#39;t know) about the 2016 presidential candidate. &amp;#151; -- Name: <b>Donald John Trump</b>.",
+      "htmlFormattedUrl": "https://abcnews.go.com/Politics/meet-donald-trump-2016.../story?id...",
+      "formattedUrl": "https://abcnews.go.com/Politics/meet-donald-trump-2016.../story?id...",
+      "displayLink": "abcnews.go.com"
+    },
+    {
+      "title": "The Impeachment of Donald John Trump Evidentiary Record from ...",
+      "snippet": "The Impeachment of Donald John Trump Evidentiary Record from the House of Representatives (116th) · Documents Transmitted to the House Committee on the Judiciary ...",
+      "link": "https://judiciary.house.gov/the-impeachment-of-donald-john-trump/",
+      "kind": "customsearch#result",
+      "htmlTitle": "The Impeachment of <b>Donald John Trump</b> Evidentiary Record from ...",
+      "htmlSnippet": "The Impeachment of <b>Donald John Trump</b> Evidentiary Record from the House of Representatives (116th) &middot; Documents Transmitted to the House Committee on the Judiciary&nbsp;...",
+      "htmlFormattedUrl": "https://judiciary.house.gov/the-impeachment-of-<b>donald-john-trump</b>/",
+      "formattedUrl": "https://judiciary.house.gov/the-impeachment-of-donald-john-trump/",
+      "displayLink": "judiciary.house.gov"
+    },
+    {
+      "title": "The truth about Trump's uncle and what it means for his presidency ...",
+      "snippet": "Mar 12, 2020 ... ... both the children of his sister Elizabeth — but not for brother Fred's children, including Donald. John Trump made this choice despite ...",
+      "link": "https://www.washingtonpost.com/outlook/2020/03/12/truth-about-trumps-uncle-what-it-means-his-presidency/",
+      "kind": "customsearch#result",
+      "htmlTitle": "The truth about Trump&#39;s uncle and what it means for his presidency ...",
+      "htmlSnippet": "Mar 12, 2020 <b>...</b> ... both the children of his sister Elizabeth — but not for brother Fred&#39;s children, including <b>Donald. John Trump</b> made this choice despite&nbsp;...",
+      "htmlFormattedUrl": "https://www.washingtonpost.com/.../truth-about-trumps-uncle-what-it-means- his-presidency/",
+      "formattedUrl": "https://www.washingtonpost.com/.../truth-about-trumps-uncle-what-it-means- his-presidency/",
+      "displayLink": "www.washingtonpost.com"
+    },
+    {
+      "title": "Donald Trump | Biography, Education, & Facts | Britannica",
+      "snippet": "Aug 26, 2022 ... Donald Trump, in full Donald John Trump, (born June 14, 1946, New York, New York, U.S.), 45th president of the United States (2017–21).",
+      "link": "https://www.britannica.com/biography/Donald-Trump",
+      "kind": "customsearch#result",
+      "htmlTitle": "Donald Trump | Biography, Education, &amp; Facts | Britannica",
+      "htmlSnippet": "Aug 26, 2022 <b>...</b> Donald Trump, in full <b>Donald John Trump</b>, (born June 14, 1946, New York, New York, U.S.), 45th president of the United States (2017–21).",
+      "htmlFormattedUrl": "https://www.britannica.com/biography/Donald-Trump",
+      "formattedUrl": "https://www.britannica.com/biography/Donald-Trump",
+      "displayLink": "www.britannica.com"
+    },
+    {
+      "title": "Impeachment Trial of Donald John Trump | United States Senator ...",
+      "snippet": "Feb 5, 2020 ... Impeachment Trial of Donald John Trump Senator John Cornyn of Texas. Mr. President, I would like to submit this statement for the record ...",
+      "link": "https://www.cornyn.senate.gov/content/news/impeachment-trial-donald-john-trump",
+      "kind": "customsearch#result",
+      "htmlTitle": "Impeachment Trial of <b>Donald John Trump</b> | United States Senator ...",
+      "htmlSnippet": "Feb 5, 2020 <b>...</b> Impeachment Trial of <b>Donald John Trump</b> Senator John Cornyn of Texas. Mr. President, I would like to submit this statement for the record&nbsp;...",
+      "htmlFormattedUrl": "https://www.cornyn.senate.gov/.../impeachment-trial-<b>donald-john-trump</b>",
+      "formattedUrl": "https://www.cornyn.senate.gov/.../impeachment-trial-donald-john-trump",
+      "displayLink": "www.cornyn.senate.gov"
+    },
+    {
+      "title": "10 Things You Didn't Know About Donald Trump",
+      "snippet": "May 2, 2011 ... Donald John Trump was born on June 14, 1946, in Queens, New York, one of five children to Fred Trump, a real estate developer, and Mary Anne ...",
+      "link": "https://www.usnews.com/news/articles/2011/05/02/10-things-you-didnt-know-about-donald-trump",
+      "kind": "customsearch#result",
+      "htmlTitle": "10 Things You Didn&#39;t Know About Donald Trump",
+      "htmlSnippet": "May 2, 2011 <b>...</b> <b>Donald John Trump</b> was born on June 14, 1946, in Queens, New York, one of five children to Fred Trump, a real estate developer, and Mary Anne&nbsp;...",
+      "htmlFormattedUrl": "https://www.usnews.com/.../10-things-you-didnt-know-about-donald-trump",
+      "formattedUrl": "https://www.usnews.com/.../10-things-you-didnt-know-about-donald-trump",
+      "displayLink": "www.usnews.com"
+    }
+  ]
+}

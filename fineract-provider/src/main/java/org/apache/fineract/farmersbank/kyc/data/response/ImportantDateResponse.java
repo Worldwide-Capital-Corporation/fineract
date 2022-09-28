@@ -19,6 +19,7 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class Metadata {
-    public String message;
+public class ImportantDateResponse {
+    public String dateType;
+    public String dateValue;
 }

@@ -17,11 +17,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.response;
+package org.apache.fineract.farmersbank.kyc.domain.repositories;
 
-public class Source {
-    public String url;
-    public String categories;
-    public String dates;
-    public String cachedUrl;
-}
+import org.apache.fineract.farmersbank.kyc.domain.ScreeningJobHistory;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface JobHistoryRepository extends JpaRepository<ScreeningJobHistory, Long>, JpaSpecificationExecutor<ScreeningJobHistory> {}

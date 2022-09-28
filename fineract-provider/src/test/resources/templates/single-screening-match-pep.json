@@ -1,0 +1,277 @@
+{
+  "metadata": {
+    "message": "1 match found for PEP and Sanctions."
+  },
+  "scanId": 4598462,
+  "resultUrl": "https://demo.membercheck.com/login?scanId=4598462",
+  "matchedNumber": 1,
+  "matchedEntities": [
+    {
+      "resultId": 31659627,
+      "uniqueId": 16927093,
+      "resultEntity": {
+        "uniqueId": 16927093,
+        "category": "PEP",
+        "categories": "Politically Exposed Person (PEP)",
+        "gender": "Male",
+        "deceased": "NO",
+        "primaryFirstName": "Cleopas",
+        "primaryMiddleName": "Sipho",
+        "primaryLastName": "Dlamini",
+        "title": null,
+        "position": null,
+        "dateOfBirth": null,
+        "deceasedDate": null,
+        "placeOfBirth": "",
+        "primaryLocation": "Swaziland",
+        "image": "https://secure.c6-intelligence.com/c6images/ari0202117/_VB6OY3Pk.png",
+        "generalInfo": {
+          "nationality": "Swazi"
+        },
+        "furtherInformation": "PEP Tier 1\r\n",
+        "xmlFurtherInformation": {
+          "#cdata-section": "PEP Tier 1\r\n"
+        },
+        "enterDate": "2019-02-04",
+        "descriptions": [
+          {
+            "description1": "Politically Exposed Person (PEP)",
+            "description2": "PEP Tier 1",
+            "description3": ""
+          }
+        ],
+        "nameDetails": [
+          {
+            "nameType": "Also Known As",
+            "firstName": "Dlamini",
+            "middleName": "Sipho",
+            "lastName": "Cleopas"
+          },
+          {
+            "nameType": "Also Known As",
+            "firstName": "Dlamini",
+            "middleName": "Cleopas",
+            "lastName": "Sipho"
+          },
+          {
+            "nameType": "Also Known As",
+            "firstName": "Sipho",
+            "middleName": "Dlamini",
+            "lastName": "Cleopas"
+          },
+          {
+            "nameType": "Also Known As",
+            "firstName": "Sipho",
+            "middleName": "Cleopas",
+            "lastName": "Dlamini"
+          }
+        ],
+        "originalScriptNames": [],
+        "roles": [
+          {
+            "title": "Prime Minister | Cabinet of Eswatini",
+            "country": "Swaziland",
+            "from": "16 July 2021",
+            "to": null
+          },
+          {
+            "title": "Member | House of Assembly (Lower Chamber)",
+            "country": "Swaziland",
+            "from": "15 July 2021",
+            "to": null
+          },
+          {
+            "title": "Former Member | Senate (Upper Chamber)",
+            "country": "Swaziland",
+            "from": "19 October 2018",
+            "to": "14 July 2021"
+          }
+        ],
+        "importantDates": [],
+        "locations": [
+          {
+            "country": "Swaziland",
+            "city": null,
+            "address": ""
+          }
+        ],
+        "countries": [],
+        "officialLists": [],
+        "idNumbers": [],
+        "sources": [
+          {
+            "url": "http://www.gov.sz/images/PM/PM-Profile-Cleopas-Dlamini.pdf",
+            "categories": "PEP",
+            "dates_Urls": {
+              "2021-09-22": ""
+            }
+          },
+          {
+            "url": "http://www.gov.sz/index.php/latest-news/204-latest-news/2481-king-appoints-cleopas-dlamini-as-prime-minister",
+            "categories": "PEP",
+            "dates_Urls": {
+              "2021-09-22": ""
+            }
+          },
+          {
+            "url": "http://www.parliament.gov.sz/senate/list/",
+            "categories": "PEP, ID/V",
+            "dates_Urls": {
+              "2021-04-30": ""
+            }
+          },
+          {
+            "url": "http://www.elections.org.sz/online/news-events/",
+            "categories": "PEP",
+            "dates_Urls": {
+              "2019-01-30": "https://secure.c6-intelligence.com/c6images/0024495000/0024490423.pdf"
+            }
+          }
+        ],
+        "linkedIndividuals": [],
+        "linkedCompanies": []
+      },
+      "matchedFields": "PrimaryName, Gender",
+      "category": "PEP",
+      "firstName": "Cleopas",
+      "middleName": "Sipho",
+      "lastName": "Dlamini",
+      "matchRate": null,
+      "dob": "",
+      "primaryLocation": "Swaziland",
+      "decisionDetail": null
+    }
+  ],
+  "webSearchResults": [
+    {
+      "title": "Cleopas Dlamini - Wikipedia",
+      "snippet": "Cleopas Dlamini (cropped).jpg. 11th Prime Minister of Eswatini · Incumbent. Assumed office 19 July 2021. Monarch, Mswati III. Deputy, Themba N. Masuku.",
+      "mime": null,
+      "link": "https://en.wikipedia.org/wiki/Cleopas_Dlamini",
+      "kind": "customsearch#result",
+      "htmlTitle": "<b>Cleopas Dlamini</b> - Wikipedia",
+      "htmlSnippet": "<b>Cleopas Dlamini</b> (cropped).jpg. 11th Prime Minister of Eswatini &middot; Incumbent. Assumed office 19 July 2021. Monarch, Mswati III. Deputy, Themba N. Masuku.",
+      "htmlFormattedUrl": "https://en.wikipedia.org/wiki/<b>Cleopas_Dlamini</b>",
+      "formattedUrl": "https://en.wikipedia.org/wiki/Cleopas_Dlamini",
+      "fileFormat": null,
+      "displayLink": "en.wikipedia.org"
+    },
+    {
+      "title": "Eswatini's King Mswati Names Cleopas Dlamini as Prime Minister ...",
+      "snippet": "Jul 16, 2021 ... Eswatini's King Mswati III has appointed Cleopas Dlamini as the nation's prime minister, more than six months after the death of the ...",
+      "mime": null,
+      "link": "https://www.bloomberg.com/news/articles/2021-07-16/eswatini-s-king-mswati-names-cleopas-dlamini-as-prime-minister",
+      "kind": "customsearch#result",
+      "htmlTitle": "Eswatini&#39;s King Mswati Names <b>Cleopas Dlamini</b> as Prime Minister ...",
+      "htmlSnippet": "Jul 16, 2021 <b>...</b> Eswatini&#39;s King Mswati III has appointed <b>Cleopas Dlamini</b> as the nation&#39;s prime minister, more than six months after the death of the&nbsp;...",
+      "htmlFormattedUrl": "https://www.bloomberg.com/.../eswatini-s-king-mswati-names-<b>cleopas- dlamini</b>-as-prime-minister",
+      "formattedUrl": "https://www.bloomberg.com/.../eswatini-s-king-mswati-names-cleopas- dlamini-as-prime-minister",
+      "fileFormat": null,
+      "displayLink": "www.bloomberg.com"
+    },
+    {
+      "title": "Cleopas Dlamini: Eswatini PM says police fired on civilians during ...",
+      "snippet": "Eswatini's Prime Minister, Cleopas Dlamini, has told the BBC that police fired on civilians during deadly protests that have rocked the kingdom this year.",
+      "mime": null,
+      "link": "https://www.bbc.com/news/av/world-africa-59405848",
+      "kind": "customsearch#result",
+      "htmlTitle": "<b>Cleopas Dlamini</b>: Eswatini PM says police fired on civilians during ...",
+      "htmlSnippet": "Eswatini&#39;s Prime Minister, <b>Cleopas Dlamini</b>, has told the BBC that police fired on civilians during deadly protests that have rocked the kingdom this year.",
+      "htmlFormattedUrl": "https://www.bbc.com/news/av/world-africa-59405848",
+      "formattedUrl": "https://www.bbc.com/news/av/world-africa-59405848",
+      "fileFormat": null,
+      "displayLink": "www.bbc.com"
+    },
+    {
+      "title": "New PM Cleopas Dlamini has his work cut out – Inhlase",
+      "snippet": "Jul 23, 2021 ... New PM Cleopas Dlamini has his work cut out ... King Mswati III has appointed Cleopas Sipho Dlamini as new Prime Minister of the Kingdom of ...",
+      "mime": null,
+      "link": "https://inhlase.com/new-pm-cleopas-dlamini-has-his-work-cut-out/",
+      "kind": "customsearch#result",
+      "htmlTitle": "New PM <b>Cleopas Dlamini</b> has his work cut out – Inhlase",
+      "htmlSnippet": "Jul 23, 2021 <b>...</b> New PM <b>Cleopas Dlamini</b> has his work cut out ... King Mswati III has appointed Cleopas Sipho Dlamini as new Prime Minister of the Kingdom of&nbsp;...",
+      "htmlFormattedUrl": "https://inhlase.com/new-pm-<b>cleopas-dlamini</b>-has-his-work-cut-out/",
+      "formattedUrl": "https://inhlase.com/new-pm-cleopas-dlamini-has-his-work-cut-out/",
+      "fileFormat": null,
+      "displayLink": "inhlase.com"
+    },
+    {
+      "title": "King appoints Cleopas Dlamini as Prime Minister",
+      "snippet": "King appoints Cleopas Dlamini as Prime Minister. Leave a message. +.",
+      "mime": null,
+      "link": "https://www.gov.sz/index.php/latest-news/204-latest-news/2481-king-appoints-cleopas-dlamini-as-prime-minister",
+      "kind": "customsearch#result",
+      "htmlTitle": "King appoints <b>Cleopas Dlamini</b> as Prime Minister",
+      "htmlSnippet": "King appoints <b>Cleopas Dlamini</b> as Prime Minister. Leave a message. +.",
+      "htmlFormattedUrl": "https://www.gov.sz/.../2481-king-appoints-<b>cleopas-dlamini</b>-as-prime-minister",
+      "formattedUrl": "https://www.gov.sz/.../2481-king-appoints-cleopas-dlamini-as-prime-minister",
+      "fileFormat": null,
+      "displayLink": "www.gov.sz"
+    },
+    {
+      "title": "Can eSwatini's monarchy recover from the ongoing crisis ...",
+      "snippet": "Aug 7, 2021 ... After criticising the government, he replaced acting prime minister Themba Masuku with Cleopas Dlamini, the former CEO of the same public ...",
+      "mime": null,
+      "link": "https://www.aljazeera.com/opinions/2021/8/7/can-eswatinis-monarchy-recover-from-the-crisis",
+      "kind": "customsearch#result",
+      "htmlTitle": "Can eSwatini&#39;s monarchy recover from the ongoing crisis ...",
+      "htmlSnippet": "Aug 7, 2021 <b>...</b> After criticising the government, he replaced acting prime minister Themba Masuku with <b>Cleopas Dlamini</b>, the former CEO of the same public&nbsp;...",
+      "htmlFormattedUrl": "https://www.aljazeera.com/.../can-eswatinis-monarchy-recover-from-the-crisis",
+      "formattedUrl": "https://www.aljazeera.com/.../can-eswatinis-monarchy-recover-from-the-crisis",
+      "fileFormat": null,
+      "displayLink": "www.aljazeera.com"
+    },
+    {
+      "title": "Eswatini's King Mswati III appoints Cleopas Dlamini as new Prime ...",
+      "snippet": "Jul 16, 2021 ... Opposition leader Mlungisi Makhanya of Pudemo was reportedly one of those arrested. Eswatini PM Cleopas Dlamini. Cleopas Dlamini, Eswatini's new ...",
+      "mime": null,
+      "link": "https://nation.africa/kenya/news/africa/eswatini-s-king-mswati-iii-appoints-cleopas-dlamini-as-new-prime-minister--3476096",
+      "kind": "customsearch#result",
+      "htmlTitle": "Eswatini&#39;s King Mswati III appoints <b>Cleopas Dlamini</b> as new Prime ...",
+      "htmlSnippet": "Jul 16, 2021 <b>...</b> Opposition leader Mlungisi Makhanya of Pudemo was reportedly one of those arrested. Eswatini PM <b>Cleopas Dlamini</b>. <b>Cleopas Dlamini</b>, Eswatini&#39;s new&nbsp;...",
+      "htmlFormattedUrl": "https://nation.africa/.../eswatini-s-king-mswati-iii-appoints-<b>cleopas-dlamini</b>-as- new-prime-minister--3476096",
+      "formattedUrl": "https://nation.africa/.../eswatini-s-king-mswati-iii-appoints-cleopas-dlamini-as- new-prime-minister--3476096",
+      "fileFormat": null,
+      "displayLink": "nation.africa"
+    },
+    {
+      "title": "File:Cleopas Dlamini (cropped).jpg - Wikimedia Commons",
+      "snippet": "Apr 25, 2022 ... File:Cleopas Dlamini (cropped).jpg. Size of this preview: 482 × 599 pixels. Other resolutions: 193 × 240 pixels | 386 × 480 pixels | 841 ...",
+      "mime": null,
+      "link": "https://commons.wikimedia.org/wiki/File:Cleopas_Dlamini_(cropped).jpg",
+      "kind": "customsearch#result",
+      "htmlTitle": "File:<b>Cleopas Dlamini</b> (cropped).jpg - Wikimedia Commons",
+      "htmlSnippet": "Apr 25, 2022 <b>...</b> File:<b>Cleopas Dlamini</b> (cropped).jpg. Size of this preview: 482 × 599 pixels. Other resolutions: 193 × 240 pixels | 386 × 480 pixels | 841&nbsp;...",
+      "htmlFormattedUrl": "https://commons.wikimedia.org/wiki/File:<b>Cleopas_Dlamini</b>_(cropped).jpg",
+      "formattedUrl": "https://commons.wikimedia.org/wiki/File:Cleopas_Dlamini_(cropped).jpg",
+      "fileFormat": null,
+      "displayLink": "commons.wikimedia.org"
+    },
+    {
+      "title": "Cleopas Dlamini – Wikipédia, a enciclopédia livre",
+      "snippet": "Cleopas Dlamini. Língua · Vigiar · Editar. Cleopas Sipho Dlamini é um empresário de Essuatíni que atua como primeiro-ministro de seu país desde 19 de julho ...",
+      "mime": null,
+      "link": "https://pt.wikipedia.org/wiki/Cleopas_Dlamini",
+      "kind": "customsearch#result",
+      "htmlTitle": "<b>Cleopas Dlamini</b> – Wikipédia, a enciclopédia livre",
+      "htmlSnippet": "<b>Cleopas Dlamini</b>. Língua &middot; Vigiar &middot; Editar. Cleopas Sipho Dlamini é um empresário de Essuatíni que atua como primeiro-ministro de seu país desde 19 de julho&nbsp;...",
+      "htmlFormattedUrl": "https://pt.wikipedia.org/wiki/<b>Cleopas_Dlamini</b>",
+      "formattedUrl": "https://pt.wikipedia.org/wiki/Cleopas_Dlamini",
+      "fileFormat": null,
+      "displayLink": "pt.wikipedia.org"
+    },
+    {
+      "title": "Cleopas Dlamini - Wikidata",
+      "snippet": "Jul 16, 2021 ... Cleopas Dlamini. Ejecutivo y político suazi. Traditional Chinese. No label defined. No description defined. Chinese. 克利奧帕斯.",
+      "mime": null,
+      "link": "https://www.wikidata.org/wiki/Q107600891",
+      "kind": "customsearch#result",
+      "htmlTitle": "<b>Cleopas Dlamini</b> - Wikidata",
+      "htmlSnippet": "Jul 16, 2021 <b>...</b> <b>Cleopas Dlamini</b>. Ejecutivo y político suazi. Traditional Chinese. No label defined. No description defined. Chinese. 克利奧帕斯.",
+      "htmlFormattedUrl": "https://www.wikidata.org/wiki/Q107600891",
+      "formattedUrl": "https://www.wikidata.org/wiki/Q107600891",
+      "fileFormat": null,
+      "displayLink": "www.wikidata.org"
+    }
+  ]
+}

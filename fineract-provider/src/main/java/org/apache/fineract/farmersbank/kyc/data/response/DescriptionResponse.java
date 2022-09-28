@@ -19,10 +19,8 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class OfficialList {
-    public String keyword;
-    public String category;
-    public String description;
-    public String country;
-    public boolean isCurrent;
+public class DescriptionResponse {
+    public String description1;
+    public String description2;
+    public String description3;
 }

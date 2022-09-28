@@ -17,12 +17,10 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.response;
+package org.apache.fineract.farmersbank.kyc.domain.repositories;
 
-public class NameDetail {
-    public String nameType;
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public String title;
-}
+import org.apache.fineract.farmersbank.kyc.domain.LinkedCompany;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface LinkedCompaniesRepository extends JpaRepository<LinkedCompany, Long>, JpaSpecificationExecutor<LinkedCompany> {}
