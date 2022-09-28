@@ -19,11 +19,9 @@
 
 package org.apache.fineract.farmersbank.kyc.data.response;
 
-import java.util.Date;
-
 public class IdVerificationResponse {
     public String organisation;
     public String user;
-    public Date date;
+    public String date;
     public String idvStatus;
 }

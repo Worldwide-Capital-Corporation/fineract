@@ -20,6 +20,7 @@
 package org.apache.fineract.farmersbank.kyc.service;
 
 import okhttp3.ResponseBody;
+import org.apache.fineract.farmersbank.kyc.api.IdVerificationApiResource;
 import org.apache.fineract.farmersbank.kyc.client.IdVerificationClient;
 import org.apache.fineract.farmersbank.kyc.configs.KYCConfiguration;
 import org.apache.fineract.farmersbank.kyc.data.request.IdVerificationRequest;
@@ -45,7 +46,7 @@ public class MemberCheckIdVerificationService implements KYCConfiguration {
         this.client = retrofit.create(IdVerificationClient.class);
     }
 
-    public Long singleVerification(IdVerificationRequest request) throws IOException {
+    public IdVerificationApiResource.IdVerificationScanIdResponse singleVerification(IdVerificationRequest request) throws IOException {
         Call<Long> retrofitCall = client.singleVerification(API_KEY, request);
 
         Response<Long> response = retrofitCall.execute();
@@ -54,7 +55,7 @@ public class MemberCheckIdVerificationService implements KYCConfiguration {
             throw new IOException(response.errorBody() != null
                     ? response.errorBody().string() : "Unknown error");
         }
-        return response.body();
+        return new IdVerificationApiResource.IdVerificationScanIdResponse(response.body());
     }
 
     public IdVerificationResponse idVerificationResult(Long scanId) throws IOException {
