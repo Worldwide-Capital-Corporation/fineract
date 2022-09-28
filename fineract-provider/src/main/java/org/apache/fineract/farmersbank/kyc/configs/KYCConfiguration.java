@@ -22,5 +22,5 @@ package org.apache.fineract.farmersbank.kyc.configs;
 public interface KYCConfiguration {
 
     static final String API_BASE_URL = "https://demo.api.membercheck.com"; // TODO: - MOVE TO PROPERTIES
-    static final String API_KEY = "45c6085499664afebd3266eb7d2780a5"; // TODO: - USE VAULT TO STORE SECRETS
+    static final String API_KEY = "36eabfe7d6094f4bb44a3a51bc154cb6"; // TODO: - USE VAULT TO STORE SECRETS
 }

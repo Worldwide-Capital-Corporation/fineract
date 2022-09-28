@@ -40,7 +40,6 @@ public class MonitoredOldEntity {
     public String image;
     public GeneralInfo generalInfo;
     public String furtherInformation;
-    public ArrayList<Object> xmlFurtherInformation;
     public String enterDate;
     public String lastReviewed;
     public ArrayList<Description> descriptions;
