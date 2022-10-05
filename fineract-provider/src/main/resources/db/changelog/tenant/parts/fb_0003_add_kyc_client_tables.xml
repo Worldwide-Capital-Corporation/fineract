@@ -66,6 +66,10 @@
             <column name="is_ter" defaultValueBoolean="false" type="boolean">
                 <constraints nullable="true"/>
             </column>
+            <column name="risk_rating" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="next_kyc_screening_date" type="DATETIME"/>
             <column name="created_by" type="BIGINT"/>
             <column name="created_on_utc" type="DATETIME"/>
             <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
@@ -425,6 +429,98 @@
             <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
         </createTable>
 
+        <createTable tableName="m_code_value_description">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="code_value_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="description" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="order_position" type="INT">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_active" defaultValueBoolean="true" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_mandatory" defaultValueBoolean="false" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <update tableName="m_code_value">
+            <column name="code_value" value="Identity Document" />
+            <where>code_value = 'Passport'</where>
+        </update>
+
+        <update tableName="m_code_value">
+            <column name="code_value" value="Proof Of Income" />
+            <where>code_value = 'Id'</where>
+        </update>
+
+        <update tableName="m_code_value">
+            <column name="code_value" value="Proof of Address" />
+            <where>code_value = 'Drivers License'</where>
+        </update>
+
+        <update tableName="m_code_value">
+            <column name="code_value" value="Tax Document" />
+            <where>code_value = 'Any Other Id Type'</where>
+        </update>
+
+        <insert tableName="m_code_value_description">
+            <column name="code_value_id" value="1"/>
+            <column name="name" value="ID Document"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value_description">
+            <column name="code_value_id" value="1"/>
+            <column name="name" value="Passport"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value_description">
+            <column name="code_value_id" value="2"/>
+            <column name="name" value="Payslip"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value_description">
+            <column name="code_value_id" value="2"/>
+            <column name="name" value="Employer Confirmation letter"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value_description">
+            <column name="code_value_id" value="3"/>
+            <column name="name" value="Utility Bill"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value_description">
+            <column name="code_value_id" value="3"/>
+            <column name="name" value="Bank Statement"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+        </insert>
+
+        <addForeignKeyConstraint baseColumnNames="code_value_id"
+                                 baseTableName="m_code_value_description"
+                                 constraintName="fk_code_description"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_code_value"/>
+
         <addForeignKeyConstraint baseColumnNames="client_id"
                                  baseTableName="m_client_screening"
                                  constraintName="fk_client_screening"
@@ -484,6 +580,6 @@
                                  constraintName="fk_job_history_result_entity"
                                  referencedColumnNames="id"
                                  referencedTableName="m_client_screening_result_entity"/>
-
     </changeSet>
 </databaseChangeLog>
+

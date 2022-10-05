@@ -18,6 +18,7 @@
  */
 package org.apache.fineract.portfolio.client.api;
 
+import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,6 +27,8 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -52,6 +55,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
 import org.apache.fineract.commands.service.PortfolioCommandSourceWritePlatformService;
+import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
+import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.bulkimport.service.BulkImportWorkbookPopulatorService;
 import org.apache.fineract.infrastructure.bulkimport.service.BulkImportWorkbookService;
 import org.apache.fineract.infrastructure.core.api.ApiRequestParameterHelper;
@@ -73,6 +78,8 @@ import org.apache.fineract.portfolio.savings.data.SavingsAccountData;
 import org.apache.fineract.portfolio.savings.service.SavingsAccountReadPlatformService;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -95,6 +102,10 @@ public class ClientsApiResource {
     private final BulkImportWorkbookService bulkImportWorkbookService;
     private final BulkImportWorkbookPopulatorService bulkImportWorkbookPopulatorService;
     private final GuarantorReadPlatformService guarantorReadPlatformService;
+    private final MemberCheckScanService scanService;
+
+    private static final Logger logger
+            = LoggerFactory.getLogger(ClientsApiResource.class);
 
     @GET
     @Path("template")
@@ -221,9 +232,31 @@ public class ClientsApiResource {
                 .build(); //
 
         final CommandProcessingResult result = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
-
+        CreateClientRequest request = new Gson().fromJson(apiRequestBodyAsJson, CreateClientRequest.class);
+        try {
+            scanService.individualScan(IndividualScanRequest.createNew(
+                    request.firstname,
+                    request.middleName,
+                    request.lastname,
+                    request.gender,
+                    request.dateOfBirth
+            ), result.getClientId());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
         return this.toApiJsonSerializer.serialize(result);
     }
+
+    public static class CreateClientRequest {
+
+        public String firstname;
+        public String lastname;
+        public String middleName;
+        public String gender;
+        public String dateOfBirth;
+        public String dateFormat;
+    }
+
 
     @PUT
     @Path("{clientId}")

@@ -23,6 +23,7 @@ import org.apache.fineract.farmersbank.kyc.client.ScanClient;
 import org.apache.fineract.farmersbank.kyc.configs.KYCConfiguration;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
 import org.apache.fineract.farmersbank.kyc.data.request.OrganisationScanRequest;
+import org.apache.fineract.farmersbank.kyc.data.response.ClientKycScreeningData;
 import org.apache.fineract.farmersbank.kyc.data.response.IdNumberResponse;
 import org.apache.fineract.farmersbank.kyc.data.response.MatchedEntityResponse;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
@@ -45,7 +46,10 @@ import org.apache.fineract.farmersbank.kyc.domain.repositories.MatchedEntityRepo
 import org.apache.fineract.farmersbank.kyc.domain.repositories.ResultEntityRepository;
 import org.apache.fineract.farmersbank.kyc.domain.repositories.WebSearchRepository;
 import org.apache.fineract.farmersbank.utils.SearchUtils;
+import org.apache.fineract.portfolio.client.domain.Client;
+import org.apache.fineract.portfolio.client.domain.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -54,6 +58,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -69,6 +74,8 @@ public class MemberCheckScanService implements KYCConfiguration {
     private final ResultEntityRepository resultEntityRepository;
     private final LinkedIndividualsRepository linkedIndividualsRepository;
     private final LinkedCompaniesRepository linkedCompaniesRepository;
+    private final ClientRepository clientRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public MemberCheckScanService(
@@ -80,7 +87,9 @@ public class MemberCheckScanService implements KYCConfiguration {
             final JobHistoryRepository jobHistoryRepository,
             final ResultEntityRepository resultEntityRepository,
             final LinkedIndividualsRepository linkedIndividualsRepository,
-            final LinkedCompaniesRepository linkedCompaniesRepository
+            final LinkedCompaniesRepository linkedCompaniesRepository,
+            final ClientRepository clientRepository,
+            final JdbcTemplate jdbcTemplate
     ) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
@@ -96,9 +105,11 @@ public class MemberCheckScanService implements KYCConfiguration {
         this.resultEntityRepository = resultEntityRepository;
         this.linkedIndividualsRepository = linkedIndividualsRepository;
         this.linkedCompaniesRepository = linkedCompaniesRepository;
+        this.clientRepository = clientRepository;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public ClientScreening individualScan(IndividualScanRequest request) throws IOException {
+    public ClientScreening individualScan(IndividualScanRequest request, Long clientId) throws IOException {
         Call<ScanResponse> retrofitCall = scanClient.individualScan(API_KEY, request);
         Response<ScanResponse> response = retrofitCall.execute();
 
@@ -110,7 +121,8 @@ public class MemberCheckScanService implements KYCConfiguration {
         ScanResponse scanResponse = response.body();
 
         if (scanResponse.matchedNumber != 0){
-            ClientScreening kycScreening = repository.save(ClientScreening.createNew(scanResponse));
+            Client client = clientRepository.getReferenceById(clientId);
+            ClientScreening kycScreening = repository.save(ClientScreening.createNew(scanResponse, client));
             Set<WebSearch> webSearch = WebSearch.createNew(scanResponse.webSearchResults, kycScreening);
             webSearchRepository.saveAll(webSearch);
             for (MatchedEntityResponse matchedEntityResponse : scanResponse.matchedEntities) {
@@ -129,7 +141,8 @@ public class MemberCheckScanService implements KYCConfiguration {
             }
             return kycScreening;
         } else if(scanResponse.matchedNumber == 0){
-            ClientScreening kycScreening = ClientScreening.createFromNoMatch(scanResponse);
+            Client client = clientRepository.getReferenceById(clientId);
+            ClientScreening kycScreening = ClientScreening.createFromNoMatch(scanResponse, client);
             return repository.save(kycScreening);
         }
         return null;
@@ -152,10 +165,8 @@ public class MemberCheckScanService implements KYCConfiguration {
         if (isExactMatch(request, response)){
             response.isExactMatch = true;
             return response;
-        } else if (isPositiveMatch(request, response)){
-            response.isExactMatch = false;
-            return response;
         } else {
+            response.isExactMatch = false;
             return response;
         }
     }
@@ -171,10 +182,14 @@ public class MemberCheckScanService implements KYCConfiguration {
         return false;
     }
 
-    private boolean isPositiveMatch(IndividualScanRequest request, ScanResponse response){
-        // check for matching names
-        // check for matching dob
-        // check for matching picture
-        return true;
+    public ClientKycScreeningData getLatestScreening(Long clientId) {
+
+        final ClientScreeningMapper rm = new ClientScreeningMapper();
+        final String sql = "select " + rm.schema() + " where cs.client_id=?";
+        List<ClientKycScreeningData> results =  this.jdbcTemplate.query(sql, rm, clientId); // NOSONAR
+        if (results != null && results.size() > 0) {
+            return results.get(0);
+        }
+        return null;
     }
 }

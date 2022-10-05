@@ -19,6 +19,7 @@
 
 package org.apache.fineract.farmersbank.kyc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ import org.apache.fineract.infrastructure.core.domain.AbstractAuditableWithUTCDa
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -76,15 +78,18 @@ public class MatchedEntity extends AbstractAuditableWithUTCDateTimeCustom {
     @Column(name = "primary_location")
     private String primaryLocation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("matchedEntities")
     @JoinColumn(name = "screening_id")
     private ClientScreening clientScreening;
 
-    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("decisionDetail")
     @JoinColumn(name = "decision_detail_id")
     private DecisionDetail decisionDetail;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("resultEntity")
     @JoinColumn(name = "result_entity_id")
     private ScreeningResultEntity resultEntity;
 

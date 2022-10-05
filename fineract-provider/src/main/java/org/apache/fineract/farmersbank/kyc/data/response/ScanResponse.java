@@ -134,5 +134,21 @@ public class ScanResponse {
         }
         return false;
     }
+
+    public String riskRating() {
+        if (matchedNumber == 0){
+            return "LOW";
+        }
+        
+        if (isTerrorist() || isInvolvedInFinancialCrime() || isSanctioned()){
+            return "HIGH";
+        }
+
+        if(isPoliticalExposedPerson() || isRelativeOrAssociate() || isInvolvedInBriberyAndCorruption()) {
+            return "MEDIUM";
+        }
+
+        return "LOW";
+    }
 }
 

@@ -19,6 +19,10 @@
 
 package org.apache.fineract.farmersbank.kyc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
 import org.apache.fineract.infrastructure.core.domain.AbstractAuditableWithUTCDateTimeCustom;
@@ -31,11 +35,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
 @Entity
+@Getter
+@Setter
 @Table(name = "m_client_screening")
 public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
 
@@ -75,13 +83,24 @@ public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
     @Column(name = "is_rca")
     private boolean isRelativeAssociate;
 
+    @Column(name = "risk_rating")
+    private String riskRating;
+
+    @Column(name = "next_kyc_screening_date")
+    private OffsetDateTime nextKycScreeningDate ;
+
     @ManyToOne(optional = false)
+    @JsonIgnoreProperties("clientScreenings")
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
+    @JsonIgnore
+    @JsonIgnoreProperties("clientScreening")
     @OneToMany(mappedBy="clientScreening", cascade = CascadeType.ALL)
     public Set<MatchedEntity> matchedEntities = new HashSet<>();
 
+    @JsonIgnore
+    @JsonIgnoreProperties("clientScreening")
     @OneToMany(mappedBy="clientScreening", cascade = CascadeType.ALL)
     private Set<WebSearch> webSearchResults = new HashSet<>();
 
@@ -98,7 +117,8 @@ public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
             boolean isPep,
             boolean isSpecialInterestPerson,
             boolean isTerrorist,
-            boolean isRelativeAssociate
+            boolean isRelativeAssociate,
+            String riskRating
     ) {
         this.scanId = scanId;
         this.matchedNumber = matchedNumber;
@@ -112,11 +132,13 @@ public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
         this.isSpecialInterestPerson = isSpecialInterestPerson;
         this.isTerrorist = isTerrorist;
         this.isRelativeAssociate = isRelativeAssociate;
+        this.nextKycScreeningDate = OffsetDateTime.now(ZoneId.of("Africa/Harare")).plusYears(1);
+        this.riskRating = riskRating;
     }
 
     protected ClientScreening() {}
 
-    public static ClientScreening createNew(ScanResponse response) {
+    public static ClientScreening createNew(ScanResponse response, Client client) {
         ClientScreening screening = new ClientScreening(
                 response.scanId,
                 response.matchedNumber,
@@ -129,19 +151,16 @@ public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
                 response.isPoliticalExposedPerson(),
                 response.isSpecialInterestPerson(),
                 response.isTerrorist(),
-                response.isRelativeOrAssociate()
+                response.isRelativeOrAssociate(),
+                response.riskRating()
         );
+        screening.setClient(client);
         return screening;
     }
 
-    public void addWebSearch(WebSearch webSearch) {
-        webSearch.setClientScreening(this);
-        webSearchResults.add(webSearch);
-    }
 
-
-    public static ClientScreening createFromNoMatch(ScanResponse response) {
-        return new ClientScreening(
+    public static ClientScreening createFromNoMatch(ScanResponse response, Client client) {
+        ClientScreening screening = new ClientScreening(
                 response.scanId,
                 response.matchedNumber,
                 null,
@@ -153,7 +172,10 @@ public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
                 false,
                 false,
                 false,
-                false
+                false,
+                "LOW"
         );
+        screening.setClient(client);
+        return screening;
     }
 }

@@ -19,9 +19,12 @@
 
 package org.apache.fineract.farmersbank.kyc.data.request;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class IndividualScanRequest {
     public String matchType;
-    public int closeMatchRateThreshold;
+    public Long closeMatchRateThreshold;
     public String whitelist;
     public String residence;
     public String blankAddress;
@@ -40,5 +43,35 @@ public class IndividualScanRequest {
     public String updateMonitoringList;
     public String includeWebSearch;
     public IdvParam idvParam;
+
+    public static IndividualScanRequest createNew(
+            String firstName,
+            String middleName,
+            String lastName,
+            String gender,
+            String dob) {
+        return new IndividualScanRequest(
+                "Close",
+                80L,
+                "Apply",
+                "Ignore",
+                "ApplyResidenceCountry",
+                "Apply",
+                "No",
+                "",
+                "",
+                firstName,
+                middleName,
+                lastName,
+                "",
+                gender,
+                dob,
+                "",
+                "Yes",
+                "No",
+                "Yes",
+                null
+        );
+    }
 }
 

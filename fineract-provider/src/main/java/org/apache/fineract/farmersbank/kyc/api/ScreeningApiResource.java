@@ -19,7 +19,6 @@
 
 package org.apache.fineract.farmersbank.kyc.api;
 
-import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,18 +28,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
+import org.apache.fineract.farmersbank.kyc.data.response.ClientKycScreeningData;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
-import org.apache.fineract.farmersbank.kyc.domain.ClientScreening;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -48,32 +46,32 @@ import java.io.IOException;
 
 @Component
 @Scope("singleton")
-@Path("/screening")
+@Path("/screening/result")
 @Tag(
         name = "Scan customer PEP & Sanctions status",
         description =
                 "An API capability that allows bank to verify if customers are PEP and are not sanctioned.")
-public class IndividualScanApiResource {
+public class ScreeningApiResource {
 
-    private final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService;
+    private final ToApiJsonSerializer<ClientKycScreeningData> apiJsonSerializerService;
     private final MemberCheckScanService kycService;
 
 
     @Autowired
-    public IndividualScanApiResource(final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService,
-                                     final MemberCheckScanService kycService) {
+    public ScreeningApiResource(final ToApiJsonSerializer<ClientKycScreeningData> apiJsonSerializerService,
+                                final MemberCheckScanService kycService) {
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.kycService = kycService;
     }
 
-    @POST
+    @GET
     @Path("{clientId}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Operation(
-            summary = "Scan an individual PEP and sanction status",
+            summary = "Customer screening result",
             description =
-                    "Perform a customer check to verify if a customer is a PEP or is sanctioned.")
+                    "Get the latest customer screening result")
     @RequestBody(
             required = true,
             content =
@@ -84,7 +82,7 @@ public class IndividualScanApiResource {
                                     IndividualScanRequest.class)))
     @ApiResponses({
             @ApiResponse(
-                    responseCode = "201",
+                    responseCode = "200",
                     description = "OK",
                     content =
                     @Content(
@@ -94,24 +92,13 @@ public class IndividualScanApiResource {
                                             ScanResponse.class))),
             @ApiResponse(responseCode = "400", description = "Unauthenticated. Please login")
     })
-    public String individualScan(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId,
-                                 @Parameter(hidden = true) final String apiRequestBodyAsJson) throws IOException {
-        IndividualScanRequest request =
-                new Gson().fromJson(apiRequestBodyAsJson, IndividualScanRequest.class);
-        if (request == null) {
+    public String customerKycScreening(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId) throws IOException {
+        if (clientId == null) {
             throw new IllegalArgumentException(
-                    "Invalid JSON in BODY  of POST to /scan");
-        }
-        if (!isRequestValid()) {
-            throw new IllegalArgumentException(
-                    "Required parameter(s) not supplied");
+                    "client id parameter required");
         }
 
-        ClientScreening response = kycService.individualScan(request, clientId);
+        ClientKycScreeningData response = kycService.getLatestScreening(clientId);
         return this.apiJsonSerializerService.serialize(response);
-    }
-
-    private boolean isRequestValid() {
-        return true;
     }
 }
