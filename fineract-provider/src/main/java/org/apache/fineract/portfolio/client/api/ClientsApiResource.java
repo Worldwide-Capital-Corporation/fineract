@@ -18,7 +18,6 @@
  */
 package org.apache.fineract.portfolio.client.api;
 
-import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +27,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -55,7 +53,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
 import org.apache.fineract.commands.service.PortfolioCommandSourceWritePlatformService;
-import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.bulkimport.service.BulkImportWorkbookPopulatorService;
 import org.apache.fineract.infrastructure.bulkimport.service.BulkImportWorkbookService;
@@ -102,7 +99,7 @@ public class ClientsApiResource {
     private final BulkImportWorkbookService bulkImportWorkbookService;
     private final BulkImportWorkbookPopulatorService bulkImportWorkbookPopulatorService;
     private final GuarantorReadPlatformService guarantorReadPlatformService;
-    private final MemberCheckScanService scanService;
+    private final MemberCheckScanService kycScreeningService;
 
     private static final Logger logger
             = LoggerFactory.getLogger(ClientsApiResource.class);
@@ -232,30 +229,10 @@ public class ClientsApiResource {
                 .build(); //
 
         final CommandProcessingResult result = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
-        CreateClientRequest request = new Gson().fromJson(apiRequestBodyAsJson, CreateClientRequest.class);
-        try {
-            scanService.individualScan(IndividualScanRequest.createNew(
-                    request.firstname,
-                    request.middleName,
-                    request.lastname,
-                    request.gender,
-                    request.dateOfBirth
-            ), result.getClientId());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
+        kycScreeningService.kycScreening(result.getClientId());
         return this.toApiJsonSerializer.serialize(result);
     }
 
-    public static class CreateClientRequest {
-
-        public String firstname;
-        public String lastname;
-        public String middleName;
-        public String gender;
-        public String dateOfBirth;
-        public String dateFormat;
-    }
 
 
     @PUT

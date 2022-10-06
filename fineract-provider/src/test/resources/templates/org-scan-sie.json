@@ -1,0 +1,376 @@
+{
+  "isExactMatch": false,
+  "metadata": {
+    "message": "1 match found."
+  },
+  "scanId": 4706798,
+  "resultUrl": "https://demo.membercheck.com/login?corpScanId=4706798",
+  "matchedNumber": 1,
+  "matchedEntities": [
+    {
+      "resultId": 31680983,
+      "uniqueId": 2519384,
+      "resultEntity": {
+        "uniqueId": 2519384,
+        "category": "SIE",
+        "categories": "Special Interest Entity (SIE) - Financial Crime, Special Interest Entity (SIE) - Law Enforcement, Special Interest Entity (SIE) - Regulatory Enforcement",
+        "primaryLocation": "725 Fifth Avenue, New York 10022, New York, United States of America",
+        "generalInfo": {},
+        "furtherInformation": "Email address: press@trumporg.com\r\nType: Domestic business corporation\r\nRep. Risk: Financial Crime and Fraud - Financial and Non-Financial Fraud\r\n|Business Registration Date|23/04/1981|\r\n|Business Registration Number|694908|\r\n|Business Registration Status|Active|\r\nRegulatory Enforcement Lists\r\n",
+        "enterDate": "2008-02-07",
+        "descriptions": [
+          {
+            "description1": "Special Interest Entity (SIE)",
+            "description2": "Financial Crime",
+            "description3": ""
+          },
+          {
+            "description1": "Special Interest Entity (SIE)",
+            "description2": "Law Enforcement",
+            "description3": ""
+          },
+          {
+            "description1": "Special Interest Entity (SIE)",
+            "description2": "Regulatory Enforcement",
+            "description3": ""
+          }
+        ],
+        "nameDetails": [
+          {
+            "nameType": "Also Known As"
+          },
+          {
+            "nameType": "Also Known As"
+          },
+          {
+            "nameType": "Also Known As"
+          },
+          {
+            "nameType": "Also Known As"
+          },
+          {
+            "nameType": "Also Known As"
+          },
+          {
+            "nameType": "Also Known As"
+          }
+        ],
+        "originalScriptNames": [],
+        "locations": [
+          {
+            "country": "United States of America",
+            "city": "New York",
+            "address": "725 Fifth Avenue, New York 10022"
+          }
+        ],
+        "countries": [],
+        "officialLists": [],
+        "idNumbers": [],
+        "sources": [
+          {
+            "url": "https://ag.ny.gov/press-release/2022/attorney-general-james-sues-donald-trump-years-financial-fraud",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "https://ag.ny.gov/press-release/2021/statement-attorney-general-james-criminal-indictment-trump-organization-and-cfo",
+            "categories": "Law Enforcement, Corporate/Business"
+          },
+          {
+            "url": "https://appext20.dos.ny.gov/corp_public/CORPSEARCH.ENTITY_INFORMATION?p_token=54CFBDC3B4D7C1698C76DE19FE718DDAEF4251A183C6660DB58DE7525A390A9D44ECB5175A9B3508141A1A9C43D8FF1F&p_nameid=79798FF2DDB19537&p_corpid=BF1B23C3E11A066B&p_captcha=13530&p_captcha_check=54CFBDC3B4D7C1698C76DE19FE718DDAEF4251A183C6660DB58DE7525A390A9D9F477E21FE18694830C06ABE3922E102&p_entity_name=%54%48%45%20%54%52%55%4D%50%20%4F%52%47%41%4E%49%5A%41%54%49%4F%4E%2C%20%49%4E%43%2E%20&p_name_type=%41&p_search_type=%42%45%47%49%4E%53&p_srch_results_page=0",
+            "categories": "Corporate/Business"
+          },
+          {
+            "url": "https://www.courthousenews.com/wp-content/uploads/2018/10/trump-rico.pdf",
+            "categories": "Law Enforcement"
+          },
+          {
+            "url": "https://www.propublica.org/article/political-and-taxpayer-spending-at-trump-properties-16-1-million?",
+            "categories": "PEP, Adverse Media"
+          },
+          {
+            "url": "http://thehill.com/blogs/blog-briefing-room/news/379078-complaint-filed-against-trump-organizations-real-estate-partner",
+            "categories": "Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "https://www.reuters.com/article/us-trump-panama/panama-court-evicts-trump-management-from-hotel-in-bitter-spat-idUSKBN1GH2XN",
+            "categories": "PEP, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://www.newyorker.com/magazine/2017/03/13/donald-trumps-worst-deal?mbid=social_facebook",
+            "categories": "Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://www.timesofisrael.com/trump-hotel-in-baku-tied-to-corrupt-oligarchs-irans-revolutionary-guards-report/",
+            "categories": "PEP, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "https://apnews.com/90c95dfef76244e49dcce682960bcd0b/Dominican-deal-tests-Trump's-pledge-of-no-new-foreign-deals",
+            "categories": "Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "https://appext20.dos.ny.gov/corp_public/CORPSEARCH.ENTITY_INFORMATION?p_token=55CFCD8842EAD9C944A04B7F7AF732DA39E4DA20057073F6B5D9C891EF31D52817D0ECCED7F5C42F96E8632C84ED849B&p_nameid=42CE217EA141A38F&p_corpid=BF1B23C3E11A066B&p_captcha=14194&p_captcha_check=75D20FDCC92747E4&p_entity_name=%74%68%65%20%74%72%75%6D%70%20%6F%72%67%61%6E%69%7A%61%74%69%6F%6E&p_name_type=%41&p_search_type=%42%45%47%49%4E%53&p_srch_results_page=0",
+            "categories": "ID/V, Corporate/Business"
+          },
+          {
+            "url": "https://www.bloomberg.com/news/features/2017-02-15/why-the-trump-organization-was-cited-in-a-brazil-corruption-probe",
+            "categories": "Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "https://blogs.wsj.com/cfo/2016/11/05/donald-trumps-loyal-numbers-man/",
+            "categories": "Corporate/Business"
+          },
+          {
+            "url": "https://www.washingtonpost.com/business/economy/eric-trumps-trip-to-uruguay-cost-taxpayers-97830-in-hotel-bills/2017/02/03/ababd64e-e95c-11e6-bf6f-301b6b443624_story.html?utm_term=.0ea90486a0b1",
+            "categories": "PEP, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "http://www.trump.com/connect-with-us/",
+            "categories": "ID/V, Corporate/Business"
+          },
+          {
+            "url": "http://www.sun-sentinel.com/real-estate/news/fl-trump-suit-hotel-fort-lauderdale-20160427-story.html",
+            "categories": "PEP, Corporate/Business, Adverse Media"
+          },
+          {
+            "url": "https://www.bbc.com/news/world-us-canada-38591754",
+            "categories": "PEP, Corporate/Business"
+          },
+          {
+            "url": "http://www.reuters.com/article/us-brazil-corruption-trump-exclusive-idUSKBN12W58P",
+            "categories": "ID/V, Adverse Media"
+          },
+          {
+            "url": "http://www.biography.com/people/donald-trump-9511238",
+            "categories": "PEP, ID/V"
+          },
+          {
+            "url": "http://www.businessinsider.com/meet-donald-trumps-five-children-2015-7",
+            "categories": "PEP, ID/V"
+          },
+          {
+            "url": "http://www.nbcnews.com/politics/2016-election/candidates/donald-trump",
+            "categories": "ID/V"
+          },
+          {
+            "url": "http://news.bbc.co.uk/1/hi/scotland/north_east/7229473.stm",
+            "categories": "ID/V, Adverse Media"
+          }
+        ],
+        "linkedIndividuals": [
+          {
+            "id": 321193051,
+            "firstName": "Donald",
+            "middleName": "John",
+            "lastName": "Trump",
+            "category": "SIP",
+            "description": "Chairperson / President (since 1971)"
+          },
+          {
+            "id": 321193267,
+            "firstName": "Donald",
+            "middleName": "John",
+            "lastName": "Trump",
+            "category": "SIP/RCA",
+            "description": "Executive Vice President"
+          },
+          {
+            "id": 321193124,
+            "firstName": "Ivanka",
+            "lastName": "Trump",
+            "category": "PEP/SIP",
+            "description": "Executive Vice President of Acquisitions and Development"
+          },
+          {
+            "id": 321193269,
+            "firstName": "Eric",
+            "middleName": "F",
+            "lastName": "Trump",
+            "category": "SIP/RCA",
+            "description": "Executive Vice President of Acquisitions and Development"
+          },
+          {
+            "id": 321193268,
+            "firstName": "Ivana",
+            "middleName": "Zelnickova",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Former Vice President in Charge of Design (1978-)"
+          },
+          {
+            "id": 321040244,
+            "firstName": "Allen",
+            "middleName": "Howard",
+            "lastName": "Weisselberg",
+            "category": "SIP/RCA",
+            "description": "Chief Financial Officer"
+          },
+          {
+            "id": 317764960,
+            "firstName": "Jim",
+            "lastName": "Petrus",
+            "category": "RCA",
+            "description": "Former Chief Operating Officer (2005-2015)"
+          },
+          {
+            "id": 320286848,
+            "firstName": "Fred",
+            "middleName": "Christ",
+            "lastName": "Trump",
+            "category": "RCA",
+            "description": "Founder / Owner"
+          },
+          {
+            "id": 317057076,
+            "firstName": "Alan",
+            "lastName": "Garten",
+            "category": "RCA",
+            "description": "Executive Vice President/General Counsel"
+          }
+        ],
+        "linkedCompanies": [
+          {
+            "id": 320985110,
+            "name": "Trump Hotels & Casino Resorts Inc",
+            "category": "SIE",
+            "description": "-"
+          },
+          {
+            "id": 317741641,
+            "name": "Black Manafort Stone and Kelly",
+            "category": "SIE",
+            "description": "Black Manafort Stone and Kelly has lobbied on behalf of the Trump Organisation on gaming, taxes and other issues related to Trump's hotels."
+          },
+          {
+            "id": 317764167,
+            "name": "T International Realty LLC",
+            "category": "SIE",
+            "description": "Trump International Realty is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 318011416,
+            "name": "Trump Plaza Hotel & Casino",
+            "category": "SIE",
+            "description": "-"
+          },
+          {
+            "id": 321191965,
+            "name": "Trump Tower",
+            "category": "SIE",
+            "description": "The Trump International Hotel & Tower New York is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 315397282,
+            "name": "Cap Cana, S.A",
+            "category": "SIE",
+            "description": "Cap Cana is an associate of the Trump Organisation."
+          },
+          {
+            "id": 320453793,
+            "name": "Trump SoHo #3810, Llc",
+            "category": "SIE",
+            "description": "Trump SoHo is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 321191979,
+            "name": "Trump International Hotel & Tower Fort Lauderdale",
+            "category": "SIE",
+            "description": "The Trump Organisation was involved with the development of the failed Trump International Hotel & Tower Fort Lauderdale."
+          },
+          {
+            "id": 320925828,
+            "name": "Trump International Hotel & Tower Chicago",
+            "category": "SIE",
+            "description": "The Trump International Hotel & Tower Chicago is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 320925829,
+            "name": "Trump Ocean Club International Hotel & Tower Panama",
+            "category": "SIE",
+            "description": "Trump Ocean Club International Hotel & Tower Panama is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 320925830,
+            "name": "Trump International Hotel Las Vegas",
+            "category": "SIE",
+            "description": "The Trump International Hotel Las Vegas is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 320288754,
+            "name": "Trump Old Post Office LLC",
+            "category": "SIE",
+            "description": "Trump International Hotel is owned by the Trump Organisation."
+          },
+          {
+            "id": 320308737,
+            "name": "IREO Management Private Limited",
+            "category": "SIE",
+            "description": "IREO is a partner in the real estate investment business of the Trump Organisation."
+          },
+          {
+            "id": 314719880,
+            "name": "Trump International Hotel & Tower Waikiki Beach Walk",
+            "category": "SIE",
+            "description": "The Trump International Hotel & Tower Waikiki Beach Walk is a subsidiary of the Trump Organisation."
+          },
+          {
+            "id": 314868942,
+            "name": "Hyatt Hotels Corporation",
+            "category": "SIE",
+            "description": "The Trump Organisation is a business associate of the Hyatts Hotel Corporation."
+          },
+          {
+            "id": 314922264,
+            "name": "LSH Barra Empreendimentos Imobiliarios S.A.",
+            "category": "SIE",
+            "description": "LSH Real Estate Enterprise is a former business partner of the Trump Organisation."
+          },
+          {
+            "id": 314931069,
+            "name": "Fundo de Investimento em Participacoes LSH – Multiestrategia",
+            "category": "SIE",
+            "description": "FIP LSH is an associate of the Trump Organisation."
+          },
+          {
+            "id": 314931070,
+            "name": "LSH Barra Hotel",
+            "category": "SIE",
+            "description": "LSH Barra Hotel is a joined project of the Trump Organisation and LSH Real Estate Enterprise Plc."
+          },
+          {
+            "id": 314964441,
+            "name": "Trump Ocean Club International Hotel and Tower",
+            "category": "SIE",
+            "description": "Trump Ocean Club International Hotel and Tower is owned and managed by The Trump Organization."
+          }
+        ]
+      },
+      "matchedFields": "FullPrimaryName",
+      "category": "SIE",
+      "primaryLocation": "725 Fifth Avenue, New York 10022, New York, United States of America"
+    }
+  ],
+  "webSearchResults": [
+    {
+      "title": "The Trump Organization Inc in New York, NY - (212) 832-2000 - Profile",
+      "snippet": "The CEO of The Trump Organization is Eric Trump. Where is The Trump Organization incorporated? The Trump Organization is incorporated ...",
+      "link": "https://www.buzzfile.com/business/The-Trump-Organization-Inc-212-832-2000",
+      "kind": "customsearch#result",
+      "htmlTitle": "The Trump Organization Inc in New York, NY - (212) 832-2000 - Profile",
+      "htmlSnippet": "The CEO of The Trump Organization is Eric Trump. Where is <b>The Trump Organization incorporated</b>? The Trump Organization is incorporated&nbsp;...",
+      "htmlFormattedUrl": "https://www.buzzfile.com/.../The-Trump-Organization-Inc-212-832-2000",
+      "formattedUrl": "https://www.buzzfile.com/.../The-Trump-Organization-Inc-212-832-2000",
+      "displayLink": "www.buzzfile.com"
+    },
+    {
+      "title": "Letitia James vs. Donald J. Trump: What is the New York Attorney ...",
+      "snippet": "A: The Trump Organization, incorporated in New York, has some 500 other entities, many of which are LLCs registered in Delaware.",
+      "link": "https://allhomes.news/letitia-james-vs-donald-j-trump-what-is-the-new-york-attorney-general-about-to-do-to-trump-and-his-company/",
+      "kind": "customsearch#result",
+      "htmlTitle": "Letitia James vs. Donald J. Trump: What is the New York Attorney ...",
+      "htmlSnippet": "A: <b>The Trump Organization, incorporated</b> in New York, has some 500 other entities, many of which are LLCs registered in Delaware.",
+      "htmlFormattedUrl": "https://allhomes.news/letitia-james-vs-donald-j-trump-what-is-the-new-york- attorney-general-about-to-do-to-trump-and-his-company/",
+      "formattedUrl": "https://allhomes.news/letitia-james-vs-donald-j-trump-what-is-the-new-york- attorney-general-about-to-do-to-trump-and-his-company/",
+      "displayLink": "allhomes.news"
+    }
+  ]
+}

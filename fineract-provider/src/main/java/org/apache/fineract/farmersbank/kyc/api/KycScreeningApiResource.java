@@ -19,7 +19,6 @@
 
 package org.apache.fineract.farmersbank.kyc.api;
 
-import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,6 +32,7 @@ import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
 import org.apache.fineract.farmersbank.kyc.domain.ClientScreening;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
+import org.apache.fineract.portfolio.client.domain.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -53,17 +53,20 @@ import java.io.IOException;
         name = "Scan customer PEP & Sanctions status",
         description =
                 "An API capability that allows bank to verify if customers are PEP and are not sanctioned.")
-public class IndividualScanApiResource {
+public class KycScreeningApiResource {
 
     private final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService;
     private final MemberCheckScanService kycService;
+    private final ClientRepository clientRepository;
 
 
     @Autowired
-    public IndividualScanApiResource(final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService,
-                                     final MemberCheckScanService kycService) {
+    public KycScreeningApiResource(final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService,
+                                   final MemberCheckScanService kycService,
+                                   final ClientRepository clientRepository) {
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.kycService = kycService;
+        this.clientRepository = clientRepository;
     }
 
     @POST
@@ -94,24 +97,14 @@ public class IndividualScanApiResource {
                                             ScanResponse.class))),
             @ApiResponse(responseCode = "400", description = "Unauthenticated. Please login")
     })
-    public String individualScan(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId,
-                                 @Parameter(hidden = true) final String apiRequestBodyAsJson) throws IOException {
-        IndividualScanRequest request =
-                new Gson().fromJson(apiRequestBodyAsJson, IndividualScanRequest.class);
-        if (request == null) {
+    public String individualScan(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId) throws IOException {
+        if (clientId == null) {
             throw new IllegalArgumentException(
-                    "Invalid JSON in BODY  of POST to /scan");
-        }
-        if (!isRequestValid()) {
-            throw new IllegalArgumentException(
-                    "Required parameter(s) not supplied");
+                    "clientId parameter required");
         }
 
-        ClientScreening response = kycService.individualScan(request, clientId);
+        ClientScreening response = kycService.kycScreening(clientId);
         return this.apiJsonSerializerService.serialize(response);
     }
 
-    private boolean isRequestValid() {
-        return true;
-    }
 }

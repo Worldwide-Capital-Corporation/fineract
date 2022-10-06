@@ -21,6 +21,7 @@ package org.apache.fineract.farmersbank.security.api;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.fineract.farmersbank.cache.CacheService;
 import org.apache.fineract.farmersbank.security.data.TwoFactorData;
 import org.apache.fineract.farmersbank.service.AuthenticatorService;
 import org.apache.fineract.infrastructure.core.exception.InvalidTwoFactorCodeException;
@@ -32,6 +33,7 @@ import org.apache.fineract.useradministration.domain.AppUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -44,6 +46,7 @@ import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.util.UUID;
 
 
 @Path("/multifactor")
@@ -77,19 +80,25 @@ public class MultiFactorAuthApiResource {
     private final PlatformSecurityContext context;
     private final AppUserRepository repository;
     private final AuthenticatorService authenticatorService;
+    private final CacheService cacheService;
+    @Value("${fineract.security.mfa.session.length}")
+    private Long mfaSessionLength;
 
     @Autowired
     public MultiFactorAuthApiResource( final ToApiJsonSerializer<MultiFactorAuthStatus> statusSerializer,
                                        final ToApiJsonSerializer<TwoFactorData> verifySerializer,
                                        final PlatformSecurityContext context,
                                        final AppUserRepository repository,
-                                       final AuthenticatorService authenticatorService) {
+                                       final AuthenticatorService authenticatorService,
+                                       final CacheService cacheService
+                                       ) {
 
         this.statusSerializer = statusSerializer;
         this.verifySerializer = verifySerializer;
         this.context = context;
         this.repository = repository;
         this.authenticatorService = authenticatorService;
+        this.cacheService = cacheService;
     }
 
     @GET
@@ -138,6 +147,7 @@ public class MultiFactorAuthApiResource {
                 user.setAuthenticatorEnrolled(true);
                 repository.save(user);
             }
+            cacheService.set("mfa-session:"+user.getId(), UUID.randomUUID().toString(), mfaSessionLength);
             return verifySerializer.serialize(new TwoFactorData(true));
         } else {
             throw new InvalidTwoFactorCodeException("Invalid code!");

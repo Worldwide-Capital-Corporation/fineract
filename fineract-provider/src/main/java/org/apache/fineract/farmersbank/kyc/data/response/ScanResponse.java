@@ -25,6 +25,7 @@ public class ScanResponse {
     // Categories
     private static final String SIP = "SIP"; // Special interest person
     private static final String PEP = "PEP";
+    private static final String SIE = "SIE";
     private static final String TER = "TER"; // Terrorist
     private static final String RCA = "RCA"; // Relatives and Close Associates
 
@@ -45,16 +46,16 @@ public class ScanResponse {
 
     public boolean isPoliticalExposedPerson(){
         for (MatchedEntityResponse entityResponse : matchedEntities) {
-            if (entityResponse.category.contains(PEP)) {
+            if (entityResponse.category.contains(PEP) || entityResponse.category.contains(SIE)) {
                 return true;
             }
             for (DescriptionResponse descriptionResponse : entityResponse.resultEntity.descriptions){
-                if (descriptionResponse.description2.contains(PEP)) {
+                if (descriptionResponse.description2.contains(PEP) || descriptionResponse.description2.contains(SIE)) {
                     return true;
                 }
             }
             for (SourceResponse sourceResponse : entityResponse.resultEntity.sources){
-                if (sourceResponse.categories.contains(PEP)) {
+                if (sourceResponse.categories.contains(PEP) || sourceResponse.categories.contains(SIE)) {
                     return true;
                 }
             }
@@ -65,12 +66,12 @@ public class ScanResponse {
     public boolean isSanctioned(){
         for (MatchedEntityResponse entityResponse : matchedEntities) {
             for (DescriptionResponse descriptionResponse : entityResponse.resultEntity.descriptions){
-                if (descriptionResponse.description2.contains("Sanction")) {
+                if (descriptionResponse.description2.contains("Sanction") || descriptionResponse.description2.contains("Regulatory Enforcement")) {
                     return true;
                 }
             }
             for (SourceResponse sourceResponse : entityResponse.resultEntity.sources){
-                if (sourceResponse.categories.contains("Sanction")) {
+                if (sourceResponse.categories.contains("Sanction") || sourceResponse.categories.contains("Regulatory Enforcement")) {
                     return true;
                 }
             }

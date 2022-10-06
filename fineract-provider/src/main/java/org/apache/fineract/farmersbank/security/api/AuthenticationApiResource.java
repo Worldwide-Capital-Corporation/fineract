@@ -190,6 +190,7 @@ public class AuthenticationApiResource {
 
             boolean isMFAAuthenticationRequired =
                     this.mfaEnabled
+                            && !isMfaSessionValid(principal.getId())
                             && !principal.hasSpecificPermissionTo(
                             TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
 
@@ -234,5 +235,9 @@ public class AuthenticationApiResource {
         }
 
         return this.apiJsonSerializerService.serialize(authenticatedUserData);
+    }
+
+    private boolean isMfaSessionValid(Long userId) {
+        return cacheService.get("mfa-session:"+userId) != null;
     }
 }

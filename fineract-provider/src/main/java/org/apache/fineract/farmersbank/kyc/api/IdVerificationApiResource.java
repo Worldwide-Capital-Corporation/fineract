@@ -106,18 +106,10 @@ public class IdVerificationApiResource {
             throw new IllegalArgumentException(
                     "Invalid JSON in BODY  of POST to /kyc/id");
         }
-        if (!isRequestValid()) {
-            throw new IllegalArgumentException(
-                    "Required parameter(s) not supplied");
-        }
 
         IdVerificationScanIdResponse response = kycService.singleVerification(request);
 
         return this.apiJsonSerializerService.serialize(response);
-    }
-
-    private boolean isRequestValid() {
-        return true;
     }
 
 }

@@ -46,8 +46,11 @@ import org.apache.fineract.farmersbank.kyc.domain.repositories.MatchedEntityRepo
 import org.apache.fineract.farmersbank.kyc.domain.repositories.ResultEntityRepository;
 import org.apache.fineract.farmersbank.kyc.domain.repositories.WebSearchRepository;
 import org.apache.fineract.farmersbank.utils.SearchUtils;
+import org.apache.fineract.infrastructure.codes.domain.CodeValue;
 import org.apache.fineract.portfolio.client.domain.Client;
 import org.apache.fineract.portfolio.client.domain.ClientRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -58,7 +61,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -76,6 +82,9 @@ public class MemberCheckScanService implements KYCConfiguration {
     private final LinkedCompaniesRepository linkedCompaniesRepository;
     private final ClientRepository clientRepository;
     private final JdbcTemplate jdbcTemplate;
+
+    private static final Logger logger
+            = LoggerFactory.getLogger(MemberCheckScanService.class);
 
     @Autowired
     public MemberCheckScanService(
@@ -109,7 +118,46 @@ public class MemberCheckScanService implements KYCConfiguration {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public ClientScreening individualScan(IndividualScanRequest request, Long clientId) throws IOException {
+    public ClientScreening kycScreening(Long clientId){
+        Client client = clientRepository.getReferenceById(clientId);
+        if (client.getLegalForm() == 1){
+
+            try {
+                return individualScan(
+                        IndividualScanRequest.createNew(
+                        client.getFirstname(),
+                        Optional.ofNullable(client.getMiddlename()).orElse(""),
+                        client.getLastname(),
+                        Optional.ofNullable(client.gender()).map(CodeValue::label).orElse(""),
+                        Optional.ofNullable(client.dateOfBirth()).map(date -> getFormattedDateString(date)).orElse("")
+                        ),
+                        client
+                );
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+        try {
+            return organisationScan(
+                    OrganisationScanRequest.createNew(
+                            client.getDisplayName(),
+                            "",
+                            "",
+                            ""
+                    ),
+                    client);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    private String getFormattedDateString(LocalDate date) {
+        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatters);
+    }
+
+    public ClientScreening individualScan(IndividualScanRequest request, Client client) throws IOException {
         Call<ScanResponse> retrofitCall = scanClient.individualScan(API_KEY, request);
         Response<ScanResponse> response = retrofitCall.execute();
 
@@ -121,34 +169,14 @@ public class MemberCheckScanService implements KYCConfiguration {
         ScanResponse scanResponse = response.body();
 
         if (scanResponse.matchedNumber != 0){
-            Client client = clientRepository.getReferenceById(clientId);
-            ClientScreening kycScreening = repository.save(ClientScreening.createNew(scanResponse, client));
-            Set<WebSearch> webSearch = WebSearch.createNew(scanResponse.webSearchResults, kycScreening);
-            webSearchRepository.saveAll(webSearch);
-            for (MatchedEntityResponse matchedEntityResponse : scanResponse.matchedEntities) {
-                ScreeningResultEntity resultEntity = ScreeningResultEntity.createNewFrom(matchedEntityResponse.resultEntity);
-                matchedEntityRepository.save(MatchedEntity.createNew(matchedEntityResponse, kycScreening, resultEntity));
-                if (matchedEntityResponse.resultEntity.descriptions != null)
-                    descriptionRepository.saveAll(Description.createNew(matchedEntityResponse.resultEntity.descriptions, resultEntity));
-                if (matchedEntityResponse.resultEntity.roles != null)
-                    jobHistoryRepository.saveAll(ScreeningJobHistory.createNew(matchedEntityResponse.resultEntity.roles, resultEntity));
-                if (matchedEntityResponse.resultEntity.idNumbers != null)
-                    idNumbersRepository.saveAll(ScreeningIdNumbers.createNew(matchedEntityResponse.resultEntity.idNumbers, resultEntity));
-                if (matchedEntityResponse.resultEntity.linkedIndividuals != null)
-                    linkedIndividualsRepository.saveAll(LinkedIndividual.createNew(matchedEntityResponse.resultEntity.linkedIndividuals, resultEntity));
-                if (matchedEntityResponse.resultEntity.linkedCompanies != null)
-                    linkedCompaniesRepository.saveAll(LinkedCompany.createNew(matchedEntityResponse.resultEntity.linkedCompanies, resultEntity));
-            }
-            return kycScreening;
+            return saveKycScreeningResults(scanResponse, client, false);
         } else if(scanResponse.matchedNumber == 0){
-            Client client = clientRepository.getReferenceById(clientId);
-            ClientScreening kycScreening = ClientScreening.createFromNoMatch(scanResponse, client);
-            return repository.save(kycScreening);
+            return saveNoMatchKycResults(scanResponse, client);
         }
         return null;
     }
 
-    public ScanResponse organisationScan(OrganisationScanRequest request) throws IOException {
+    public ClientScreening organisationScan(OrganisationScanRequest request, Client client) throws IOException {
         Call<ScanResponse> retrofitCall = scanClient.organisationScan(API_KEY, request);
 
         Response<ScanResponse> response = retrofitCall.execute();
@@ -157,7 +185,40 @@ public class MemberCheckScanService implements KYCConfiguration {
             throw new IOException(response.errorBody() != null
                     ? response.errorBody().string() : "Unknown error");
         }
-        return response.body();
+        ScanResponse scanResponse = response.body();
+
+        if (scanResponse.matchedNumber != 0){
+            return saveKycScreeningResults(scanResponse, client, true);
+        } else if(scanResponse.matchedNumber == 0){
+            return saveNoMatchKycResults(scanResponse, client);
+        }
+        return null;
+    }
+
+    private ClientScreening saveKycScreeningResults(ScanResponse scanResponse, Client client, boolean isOrganisation) {
+        ClientScreening kycScreening = repository.save(ClientScreening.createNew(scanResponse, client));
+        Set<WebSearch> webSearch = WebSearch.createNew(scanResponse.webSearchResults, kycScreening);
+        webSearchRepository.saveAll(webSearch);
+        for (MatchedEntityResponse matchedEntityResponse : scanResponse.matchedEntities) {
+            ScreeningResultEntity resultEntity = ScreeningResultEntity.createNewFrom(matchedEntityResponse.resultEntity);
+            matchedEntityRepository.save(MatchedEntity.createNew(matchedEntityResponse, kycScreening, resultEntity));
+            if (matchedEntityResponse.resultEntity.descriptions != null)
+                descriptionRepository.saveAll(Description.createNew(matchedEntityResponse.resultEntity.descriptions, resultEntity));
+            if (matchedEntityResponse.resultEntity.roles != null)
+                jobHistoryRepository.saveAll(ScreeningJobHistory.createNew(matchedEntityResponse.resultEntity.roles, resultEntity));
+            if (matchedEntityResponse.resultEntity.idNumbers != null)
+                idNumbersRepository.saveAll(ScreeningIdNumbers.createNew(matchedEntityResponse.resultEntity.idNumbers, resultEntity));
+            if (matchedEntityResponse.resultEntity.linkedIndividuals != null)
+                linkedIndividualsRepository.saveAll(LinkedIndividual.createNew(matchedEntityResponse.resultEntity.linkedIndividuals, resultEntity));
+            if (matchedEntityResponse.resultEntity.linkedCompanies != null)
+                linkedCompaniesRepository.saveAll(LinkedCompany.createNew(matchedEntityResponse.resultEntity.linkedCompanies, resultEntity));
+        }
+        return kycScreening;
+    }
+
+    private ClientScreening saveNoMatchKycResults(ScanResponse scanResponse, Client client) {
+        ClientScreening kycScreening = ClientScreening.createFromNoMatch(scanResponse, client);
+        return repository.save(kycScreening);
     }
 
     @SuppressWarnings("unused")

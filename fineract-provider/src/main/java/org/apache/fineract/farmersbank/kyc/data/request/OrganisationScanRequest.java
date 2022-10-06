@@ -19,6 +19,9 @@
 
 package org.apache.fineract.farmersbank.kyc.data.request;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class OrganisationScanRequest {
     public String matchType;
     public String whitelist;
@@ -31,4 +34,25 @@ public class OrganisationScanRequest {
     public String includeResultEntities;
     public String updateMonitoringList;
     public String includeWebSearch;
+
+    public static OrganisationScanRequest createNew(
+            String companyName,
+            String registrationNumber,
+            String entityNumber,
+            String address
+    ){
+        return new OrganisationScanRequest(
+                "ExactMidName",
+                "Ignore",
+                companyName,
+                "",
+                registrationNumber,
+                entityNumber,
+                "",
+                address,
+                "Yes",
+                "No",
+                "Yes"
+        );
+    }
 }
