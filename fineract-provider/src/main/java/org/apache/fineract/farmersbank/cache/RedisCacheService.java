@@ -19,6 +19,9 @@
 
 package org.apache.fineract.farmersbank.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -29,15 +32,19 @@ public class RedisCacheService implements CacheService {
 
     private JedisPool pool;
 
-    @Value("${fineract.tenant.redis.host}")
-    private String redisHost;
+    private static final Logger logger
+            = LoggerFactory.getLogger(RedisCacheService.class);
 
-    @Value("${fineract.tenant.redis.token}")
-    private String redisToken;
-
-
-    public RedisCacheService() {
-        this.pool = new JedisPool(redisHost, 6379, null, redisToken);
+    @Autowired
+    public RedisCacheService(
+            @Value("${fineract.tenant.redis.host}") String redisHost,
+            @Value("${fineract.tenant.redis.token}") String redisToken
+    ) {
+        try {
+            this.pool = new JedisPool(redisHost, 6379, null, redisToken);
+        } catch (Exception e){
+            logger.error(e.getMessage(), e);
+        }
     }
 
     @Override
