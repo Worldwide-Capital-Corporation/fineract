@@ -19,6 +19,7 @@
 
 package org.apache.fineract.farmersbank.cache;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -28,8 +29,15 @@ public class RedisCacheService implements CacheService {
 
     private JedisPool pool;
 
+    @Value("${fineract.tenant.redis.host}")
+    private String redisHost;
+
+    @Value("${fineract.tenant.redis.token}")
+    private String redisToken;
+
+
     public RedisCacheService() {
-        this.pool = new JedisPool("localhost", 6379, null, "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81");
+        this.pool = new JedisPool(redisHost, 6379, null, redisToken);
     }
 
     @Override

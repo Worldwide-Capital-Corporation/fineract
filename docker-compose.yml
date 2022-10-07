@@ -102,6 +102,8 @@ services:
       - FINERACT_DEFAULT_TENANTDB_NAME=farmers_bank_default
       - FINERACT_DEFAULT_TENANTDB_DESCRIPTION=Farmers Bank
       - JAVA_TOOL_OPTIONS="-Xmx1G"
+      - FINERACT_TENANT_REDIS_HOSTNAME=redis
+      - FINERACT_TENANT_REDIS_TOKEN=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
 
 #version: '3.7'
 #services:
