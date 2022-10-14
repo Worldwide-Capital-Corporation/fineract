@@ -31,6 +31,7 @@ import java.sql.Date;
 public class ClientKycScreeningData {
     private long id;
     private long clientId;
+    private long clientType;
     private boolean isPep;
     private boolean isSip;
     private boolean isSanctioned;
