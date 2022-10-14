@@ -29,7 +29,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import org.apache.fineract.infrastructure.security.api.AuthenticationApiResource;
+
+import org.apache.fineract.farmersbank.security.api.AuthenticationApiResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Scope;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("singleton")
-@ConditionalOnProperty("fineract.security.basicauth.enabled")
+@ConditionalOnProperty("fineract.security.oauth.enabled")
 @Path("/self/authentication")
 @Tag(name = "Self Authentication", description = "Authenticates the credentials provided and returns the set roles and permissions allowed")
 public class SelfAuthenticationApiResource {
