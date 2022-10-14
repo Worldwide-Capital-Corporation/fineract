@@ -39,6 +39,14 @@ services:
       retries: 10
     ports:
       - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: innocent.magagula@farmersbank.co.sz
+      PGADMIN_DEFAULT_PASSWORD: skdcnwauicn2ucnaecasdsajdnizucawencascdca
+    ports:
+      - "5050:80"
   redis:
     image: redis:7.0.5
     restart: always
