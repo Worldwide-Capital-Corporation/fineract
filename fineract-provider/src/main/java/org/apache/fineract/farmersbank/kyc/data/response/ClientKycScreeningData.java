@@ -23,7 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 
 @AllArgsConstructor
 @Getter
@@ -40,5 +39,8 @@ public class ClientKycScreeningData {
     private boolean isRca;
     private boolean isTerrorist;
     private String riskRating;
-    private Date screeningDate;
+    private long screeningDate;
+    private long matches;
+    private boolean isVerifiedMatch;
+    private String imageUrl;
 }

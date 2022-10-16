@@ -28,15 +28,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
+import org.apache.fineract.farmersbank.kyc.data.response.ClientRiskRating;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
-import org.apache.fineract.farmersbank.kyc.domain.ClientScreening;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
-import org.apache.fineract.portfolio.client.domain.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -55,18 +53,15 @@ import java.io.IOException;
                 "An API capability that allows bank to verify if customers are PEP and are not sanctioned.")
 public class KycScreeningApiResource {
 
-    private final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService;
+    private final ToApiJsonSerializer<ClientRiskRating> apiJsonSerializerService;
     private final MemberCheckScanService kycService;
-    private final ClientRepository clientRepository;
 
 
     @Autowired
-    public KycScreeningApiResource(final ToApiJsonSerializer<ClientScreening> apiJsonSerializerService,
-                                   final MemberCheckScanService kycService,
-                                   final ClientRepository clientRepository) {
+    public KycScreeningApiResource(final ToApiJsonSerializer<ClientRiskRating> apiJsonSerializerService,
+                                   final MemberCheckScanService kycService) {
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.kycService = kycService;
-        this.clientRepository = clientRepository;
     }
 
     @POST
@@ -97,14 +92,13 @@ public class KycScreeningApiResource {
                                             ScanResponse.class))),
             @ApiResponse(responseCode = "400", description = "Unauthenticated. Please login")
     })
-    public String individualScan(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId) throws IOException {
+    public String clientScreening(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId) throws IOException {
         if (clientId == null) {
             throw new IllegalArgumentException(
                     "clientId parameter required");
         }
-
-        ClientScreening response = kycService.kycScreening(clientId);
+        kycService.kycScreening(clientId);
+        ClientRiskRating response = kycService.getScreeningHistory(clientId, 5);
         return this.apiJsonSerializerService.serialize(response);
     }
-
 }

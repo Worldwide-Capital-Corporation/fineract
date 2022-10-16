@@ -24,6 +24,7 @@ import org.apache.fineract.farmersbank.kyc.configs.KYCConfiguration;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
 import org.apache.fineract.farmersbank.kyc.data.request.OrganisationScanRequest;
 import org.apache.fineract.farmersbank.kyc.data.response.ClientKycScreeningData;
+import org.apache.fineract.farmersbank.kyc.data.response.ClientRiskRating;
 import org.apache.fineract.farmersbank.kyc.data.response.IdNumberResponse;
 import org.apache.fineract.farmersbank.kyc.data.response.MatchedEntityResponse;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
@@ -63,6 +64,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -121,7 +123,6 @@ public class MemberCheckScanService implements KYCConfiguration {
     public ClientScreening kycScreening(Long clientId){
         Client client = clientRepository.getReferenceById(clientId);
         if (client.getLegalForm() == 1){
-
             try {
                 return individualScan(
                         IndividualScanRequest.createNew(
@@ -246,11 +247,21 @@ public class MemberCheckScanService implements KYCConfiguration {
     public ClientKycScreeningData getLatestScreening(Long clientId) {
 
         final ClientScreeningMapper rm = new ClientScreeningMapper();
-        final String sql = "select " + rm.schema() + " where cs.client_id=?";
+        final String sql = "select " + rm.schema() + " where cs.client_id=? ORDER BY cs.id DESC";
         List<ClientKycScreeningData> results =  this.jdbcTemplate.query(sql, rm, clientId); // NOSONAR
         if (results != null && results.size() > 0) {
             return results.get(0);
         }
         return null;
+    }
+
+    public ClientRiskRating getScreeningHistory(Long clientId, int limit) {
+        final ClientScreeningMapper rm = new ClientScreeningMapper();
+        final String sql = "select " + rm.schema() + " where cs.client_id=? ORDER BY cs.id DESC LIMIT "+limit;
+        List<ClientKycScreeningData> results =  this.jdbcTemplate.query(sql, rm, clientId); // NOSONAR
+        if (results != null && results.size() > 0) {
+            return new ClientRiskRating(results.get(0), results);
+        }
+        return new ClientRiskRating(null, new ArrayList<>());
     }
 }

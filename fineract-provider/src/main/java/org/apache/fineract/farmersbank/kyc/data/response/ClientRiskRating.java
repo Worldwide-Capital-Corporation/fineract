@@ -17,8 +17,18 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.shared;
+package org.apache.fineract.farmersbank.kyc.data.response;
 
-public class Country {
-    public String code;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@AllArgsConstructor
+@Getter
+@Setter
+public class ClientRiskRating {
+    private ClientKycScreeningData latest;
+    private List<ClientKycScreeningData> history;
 }

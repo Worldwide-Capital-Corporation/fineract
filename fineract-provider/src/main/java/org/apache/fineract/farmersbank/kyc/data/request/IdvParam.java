@@ -19,11 +19,8 @@
 
 package org.apache.fineract.farmersbank.kyc.data.request;
 
-import org.apache.fineract.farmersbank.kyc.data.shared.Country;
-
 public class IdvParam {
     public String mobileNumber;
-    public Country country;
     public String idvType;
     public boolean allowDuplicateIDVScan;
     public String IdNumber;

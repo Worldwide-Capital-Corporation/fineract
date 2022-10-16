@@ -28,7 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
-import org.apache.fineract.farmersbank.kyc.data.response.ClientKycScreeningData;
+import org.apache.fineract.farmersbank.kyc.data.response.ClientRiskRating;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
@@ -53,12 +53,12 @@ import java.io.IOException;
                 "An API capability that allows bank to verify if customers are PEP and are not sanctioned.")
 public class ScreeningApiResource {
 
-    private final ToApiJsonSerializer<ClientKycScreeningData> apiJsonSerializerService;
+    private final ToApiJsonSerializer<ClientRiskRating> apiJsonSerializerService;
     private final MemberCheckScanService kycService;
 
 
     @Autowired
-    public ScreeningApiResource(final ToApiJsonSerializer<ClientKycScreeningData> apiJsonSerializerService,
+    public ScreeningApiResource(final ToApiJsonSerializer<ClientRiskRating> apiJsonSerializerService,
                                 final MemberCheckScanService kycService) {
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.kycService = kycService;
@@ -97,8 +97,7 @@ public class ScreeningApiResource {
             throw new IllegalArgumentException(
                     "client id parameter required");
         }
-
-        ClientKycScreeningData response = kycService.getLatestScreening(clientId);
+        ClientRiskRating response = kycService.getScreeningHistory(clientId, 5);
         return this.apiJsonSerializerService.serialize(response);
     }
 }

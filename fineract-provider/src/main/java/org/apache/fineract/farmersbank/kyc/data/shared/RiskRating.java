@@ -17,14 +17,8 @@
  * under the License.
  */
 
-package org.apache.fineract.farmersbank.kyc.data.request;
+package org.apache.fineract.farmersbank.kyc.data.shared;
 
-public class IdVerificationRequest {
-    public String firstName;
-    public String middleName;
-    public String lastName;
-    public String scriptNameFullName;
-    public String mobileNumber;
-    public String idvType;
-    public boolean allowDuplicateIDVScan;
+public enum RiskRating {
+    LOW, MEDIUM, HIGH
 }

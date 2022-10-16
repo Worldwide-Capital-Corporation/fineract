@@ -165,7 +165,7 @@ public class ClientScreening extends AbstractAuditableWithUTCDateTimeCustom {
                 response.matchedNumber,
                 null,
                 false,
-                false,
+                true,
                 false,
                 false,
                 false,

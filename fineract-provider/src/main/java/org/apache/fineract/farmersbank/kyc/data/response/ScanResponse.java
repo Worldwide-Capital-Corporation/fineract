@@ -141,11 +141,11 @@ public class ScanResponse {
             return "LOW";
         }
         
-        if (isTerrorist() || isInvolvedInFinancialCrime() || isSanctioned()){
+        if (isTerrorist() || isInvolvedInFinancialCrime()){
             return "HIGH";
         }
 
-        if(isPoliticalExposedPerson() || isRelativeOrAssociate() || isInvolvedInBriberyAndCorruption()) {
+        if(isPoliticalExposedPerson() || isRelativeOrAssociate() || isInvolvedInBriberyAndCorruption() || isSanctioned()) {
             return "MEDIUM";
         }
 
