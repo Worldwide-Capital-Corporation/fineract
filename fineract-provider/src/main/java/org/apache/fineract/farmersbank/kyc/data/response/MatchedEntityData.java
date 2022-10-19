@@ -23,12 +23,27 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClientRiskRating {
-    private ClientKycScreeningData latest;
-    private List<MatchedEntityData> matches;
+public class MatchedEntityData {
+    private long id;
+    private long screeningId;
+    private long resultEntityId;
+    private Long resultId;
+    private Long uniqueId;
+    private String monitoringStatus;
+    private String matchedFields;
+    private String category;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private Long matchRate;
+    private String dob;
+    private String primaryLocation;
+    private String categories;
+    private String gender;
+    private String location;
+    private String imageUrl;
+    private boolean isVerifiedMatch;
 }

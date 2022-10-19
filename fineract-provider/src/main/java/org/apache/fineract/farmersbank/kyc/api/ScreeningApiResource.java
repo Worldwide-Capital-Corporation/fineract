@@ -19,6 +19,7 @@
 
 package org.apache.fineract.farmersbank.kyc.api;
 
+import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -97,7 +99,55 @@ public class ScreeningApiResource {
             throw new IllegalArgumentException(
                     "client id parameter required");
         }
-        ClientRiskRating response = kycService.getScreeningHistory(clientId, 5);
+        ClientRiskRating response = kycService.getScreeningHistory(clientId, 1);
         return this.apiJsonSerializerService.serialize(response);
+    }
+
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    @Operation(
+            summary = "Customer screening result",
+            description =
+                    "Mark matched result verified match")
+    @RequestBody(
+            required = true,
+            content =
+            @Content(
+                    schema =
+                    @Schema(
+                            implementation =
+                                    IndividualScanRequest.class)))
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OK",
+                    content =
+                    @Content(
+                            schema =
+                            @Schema(
+                                    implementation =
+                                            ScanResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Unauthenticated. Please login")
+    })
+    public String markVerified(@Parameter(hidden = true) final String apiRequestBodyAsJson) {
+        VerifyScreening request =
+                new Gson().fromJson(apiRequestBodyAsJson, VerifyScreening.class);
+        if (request == null) {
+            throw new IllegalArgumentException(
+                    "Invalid JSON in BODY  of POST to /screening/result");
+        }
+        if (request.matchId == 0 || request.clientId == 0 || request.screeningId == 0) {
+            throw new IllegalArgumentException(
+                    "matchId or clientId or screeningId is null in JSON of POST to /screening/result");
+        }
+        ClientRiskRating response = kycService.markVerifiedMatch(request);
+        return this.apiJsonSerializerService.serialize(response);
+    }
+
+    public static class VerifyScreening {
+        public long matchId;
+        public long screeningId;
+        public long clientId;
     }
 }

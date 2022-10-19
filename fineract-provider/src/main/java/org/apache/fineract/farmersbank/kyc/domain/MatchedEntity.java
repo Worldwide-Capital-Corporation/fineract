@@ -51,6 +51,9 @@ public class MatchedEntity extends AbstractAuditableWithUTCDateTimeCustom {
     @Column(name = "unique_id")
     private Long uniqueId;
 
+    @Column(name = "is_verified_match")
+    private boolean isVerifiedMatch;
+
     @Column(name = "monitoring_status")
     private String monitoringStatus;
 
@@ -96,6 +99,7 @@ public class MatchedEntity extends AbstractAuditableWithUTCDateTimeCustom {
     public MatchedEntity(
             Long resultId,
             Long uniqueId,
+            boolean isVerifiedMatch,
             String monitoringStatus,
             String matchedFields,
             String category,
@@ -107,6 +111,7 @@ public class MatchedEntity extends AbstractAuditableWithUTCDateTimeCustom {
             String primaryLocation) {
         this.resultId = resultId;
         this.uniqueId = uniqueId;
+        this.isVerifiedMatch = isVerifiedMatch;
         this.monitoringStatus = monitoringStatus;
         this.matchedFields = matchedFields;
         this.category = category;
@@ -126,6 +131,7 @@ public class MatchedEntity extends AbstractAuditableWithUTCDateTimeCustom {
             MatchedEntity entity = new MatchedEntity(
                     matchedEntityResponse.resultId,
                     matchedEntityResponse.uniqueId,
+                    false,
                     matchedEntityResponse.monitoringStatus,
                     matchedEntityResponse.matchedFields,
                     matchedEntityResponse.category,
@@ -151,6 +157,7 @@ public class MatchedEntity extends AbstractAuditableWithUTCDateTimeCustom {
             new MatchedEntity(
                 response.resultId,
                 response.uniqueId,
+                false,
                 response.monitoringStatus,
                 response.matchedFields,
                 response.category,

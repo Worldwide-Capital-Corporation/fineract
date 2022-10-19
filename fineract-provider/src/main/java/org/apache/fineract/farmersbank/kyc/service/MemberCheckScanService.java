@@ -19,6 +19,7 @@
 
 package org.apache.fineract.farmersbank.kyc.service;
 
+import org.apache.fineract.farmersbank.kyc.api.ScreeningApiResource;
 import org.apache.fineract.farmersbank.kyc.client.ScanClient;
 import org.apache.fineract.farmersbank.kyc.configs.KYCConfiguration;
 import org.apache.fineract.farmersbank.kyc.data.request.IndividualScanRequest;
@@ -26,6 +27,7 @@ import org.apache.fineract.farmersbank.kyc.data.request.OrganisationScanRequest;
 import org.apache.fineract.farmersbank.kyc.data.response.ClientKycScreeningData;
 import org.apache.fineract.farmersbank.kyc.data.response.ClientRiskRating;
 import org.apache.fineract.farmersbank.kyc.data.response.IdNumberResponse;
+import org.apache.fineract.farmersbank.kyc.data.response.MatchedEntityData;
 import org.apache.fineract.farmersbank.kyc.data.response.MatchedEntityResponse;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
 import org.apache.fineract.farmersbank.kyc.domain.ClientScreening;
@@ -64,7 +66,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -260,8 +261,23 @@ public class MemberCheckScanService implements KYCConfiguration {
         final String sql = "select " + rm.schema() + " where cs.client_id=? ORDER BY cs.id DESC LIMIT "+limit;
         List<ClientKycScreeningData> results =  this.jdbcTemplate.query(sql, rm, clientId); // NOSONAR
         if (results != null && results.size() > 0) {
-            return new ClientRiskRating(results.get(0), results);
+            ClientKycScreeningData screeningData = results.get(0);
+            final MatchedEntityMapper matchedEntityMapper = new MatchedEntityMapper();
+            final String matchSql = "select " + matchedEntityMapper.schema() + " where me.screening_id=? ";
+            List<MatchedEntityData> matches = this.jdbcTemplate.query(matchSql, matchedEntityMapper, screeningData.getId()); // NOSONAR
+            if (matches != null && matches.size() > 0) {
+                return new ClientRiskRating(results.get(0), matches);
+            }
+            return new ClientRiskRating(results.get(0), null);
         }
-        return new ClientRiskRating(null, new ArrayList<>());
+        return null;
+    }
+
+    public ClientRiskRating markVerifiedMatch(ScreeningApiResource.VerifyScreening request) {
+        final String updateMatchedEntitySql = "UPDATE m_client_screening SET is_verified_match=true where id="+request.screeningId;
+        this.jdbcTemplate.execute(updateMatchedEntitySql);
+        final String updateResultSql = "UPDATE m_client_screening_matched_entity SET is_verified_match=true where id="+request.matchId;
+        this.jdbcTemplate.execute(updateResultSql);
+        return getScreeningHistory(request.clientId, 1);
     }
 }
