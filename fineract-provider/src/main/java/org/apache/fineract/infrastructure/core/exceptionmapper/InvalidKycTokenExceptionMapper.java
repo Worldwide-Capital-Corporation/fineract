@@ -35,7 +35,7 @@ import javax.ws.rs.ext.Provider;
 @Component
 @Scope("singleton")
 @Slf4j
-public class InvalidTwoFactorCodeExceptionMapper implements ExceptionMapper<InvalidTwoFactorCodeException> {
+public class InvalidKycTokenExceptionMapper implements ExceptionMapper<InvalidTwoFactorCodeException> {
 
     @Override
     public Response toResponse(final InvalidTwoFactorCodeException exception) {
@@ -43,7 +43,7 @@ public class InvalidTwoFactorCodeExceptionMapper implements ExceptionMapper<Inva
         // "Authenticated - but not authorized":
         final String defaultUserMessage = exception.getMessage();
         log.warn("Exception: {}, Message: {}", exception.getClass().getName(), defaultUserMessage);
-        return Response.status(Status.FORBIDDEN).entity(ApiGlobalErrorResponse.invalidTwoFactorCode(defaultUserMessage))
+        return Response.status(Status.FORBIDDEN).entity(ApiGlobalErrorResponse.invalidKycToken(defaultUserMessage))
                 .type(MediaType.APPLICATION_JSON).build();
     }
 }

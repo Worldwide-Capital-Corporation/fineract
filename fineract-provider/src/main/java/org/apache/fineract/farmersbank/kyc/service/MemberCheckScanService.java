@@ -50,6 +50,7 @@ import org.apache.fineract.farmersbank.kyc.domain.repositories.ResultEntityRepos
 import org.apache.fineract.farmersbank.kyc.domain.repositories.WebSearchRepository;
 import org.apache.fineract.farmersbank.utils.SearchUtils;
 import org.apache.fineract.infrastructure.codes.domain.CodeValue;
+import org.apache.fineract.infrastructure.core.exception.InvalidKycTokenException;
 import org.apache.fineract.portfolio.client.domain.Client;
 import org.apache.fineract.portfolio.client.domain.ClientRepository;
 import org.slf4j.Logger;
@@ -121,38 +122,23 @@ public class MemberCheckScanService implements KYCConfiguration {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public ClientScreening kycScreening(Long clientId){
+      public ClientScreening kycScreening(Long clientId) throws Exception {
         Client client = clientRepository.getReferenceById(clientId);
-        if (client.getLegalForm() == 1){
-            try {
-                return individualScan(
-                        IndividualScanRequest.createNew(
-                        client.getFirstname(),
-                        Optional.ofNullable(client.getMiddlename()).orElse(""),
-                        client.getLastname(),
-                        Optional.ofNullable(client.gender()).map(CodeValue::label).orElse(""),
-                        Optional.ofNullable(client.dateOfBirth()).map(date -> getFormattedDateString(date)).orElse("")
-                        ),
-                        client
-                );
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
+        if (client.getLegalForm() == 1) {
+          return individualScan(
+              IndividualScanRequest.createNew(
+                  client.getFirstname(),
+                  Optional.ofNullable(client.getMiddlename()).orElse(""),
+                  client.getLastname(),
+                  Optional.ofNullable(client.gender()).map(CodeValue::label).orElse(""),
+                  Optional.ofNullable(client.dateOfBirth())
+                      .map(date -> getFormattedDateString(date))
+                      .orElse("")),
+              client);
         }
-        try {
-            return organisationScan(
-                    OrganisationScanRequest.createNew(
-                            client.getDisplayName(),
-                            "",
-                            "",
-                            ""
-                    ),
-                    client);
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return null;
-    }
+        return organisationScan(
+            OrganisationScanRequest.createNew(client.getDisplayName(), "", "", ""), client);
+      }
 
     private String getFormattedDateString(LocalDate date) {
         DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -164,8 +150,9 @@ public class MemberCheckScanService implements KYCConfiguration {
         Response<ScanResponse> response = retrofitCall.execute();
 
         if (!response.isSuccessful()) {
-            throw new IOException(response.errorBody() != null
-                    ? response.errorBody().string() : "Unknown error");
+            String message = response.errorBody() != null
+                    ? response.errorBody().string() : "Unknown error";
+            throw new InvalidKycTokenException(message);
         }
 
         ScanResponse scanResponse = response.body();
@@ -184,9 +171,11 @@ public class MemberCheckScanService implements KYCConfiguration {
         Response<ScanResponse> response = retrofitCall.execute();
 
         if (!response.isSuccessful()) {
-            throw new IOException(response.errorBody() != null
-                    ? response.errorBody().string() : "Unknown error");
+            String message = response.errorBody() != null
+                    ? response.errorBody().string() : "Unknown error";
+            throw new InvalidKycTokenException(message);
         }
+
         ScanResponse scanResponse = response.body();
 
         if (scanResponse.matchedNumber != 0){

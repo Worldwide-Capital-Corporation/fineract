@@ -42,7 +42,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 
 @Component
 @Scope("singleton")
@@ -92,7 +91,7 @@ public class KycScreeningApiResource {
                                             ScanResponse.class))),
             @ApiResponse(responseCode = "400", description = "Unauthenticated. Please login")
     })
-    public String clientScreening(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId) throws IOException {
+    public String clientScreening(@Parameter(description = "clientId") @PathParam("clientId") final Long clientId) throws Exception {
         if (clientId == null) {
             throw new IllegalArgumentException(
                     "clientId parameter required");

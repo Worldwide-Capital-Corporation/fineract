@@ -79,6 +79,17 @@ public class ApiGlobalErrorResponse {
         return globalErrorResponse;
     }
 
+    public static ApiGlobalErrorResponse invalidKycToken(String message) {
+
+        final ApiGlobalErrorResponse globalErrorResponse = new ApiGlobalErrorResponse();
+        globalErrorResponse.setHttpStatusCode("403");
+        globalErrorResponse.setDeveloperMessage("Membercheck API exception.");
+        globalErrorResponse.setUserMessageGlobalisationCode("error.msg.kyc.invalid.apikey");
+        globalErrorResponse.setDefaultUserMessage(message);
+
+        return globalErrorResponse;
+    }
+
     public static ApiGlobalErrorResponse invalidTenantIdentifier() {
 
         final ApiGlobalErrorResponse globalErrorResponse = new ApiGlobalErrorResponse();

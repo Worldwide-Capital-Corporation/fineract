@@ -19,9 +19,9 @@
 
 package org.apache.fineract.infrastructure.core.exception;
 
-public class InvalidTwoFactorCodeException extends AbstractPlatformException{
+public class InvalidKycTokenException extends AbstractPlatformException{
 
-    public InvalidTwoFactorCodeException(String message) {
+    public InvalidKycTokenException(String message) {
         super(message, message);
     }
 }

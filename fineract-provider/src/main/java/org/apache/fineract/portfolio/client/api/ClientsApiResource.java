@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package org.apache.fineract.portfolio.client.api;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,6 +69,8 @@ import org.apache.fineract.infrastructure.security.service.PlatformSecurityConte
 import org.apache.fineract.portfolio.accountdetails.data.AccountSummaryCollectionData;
 import org.apache.fineract.portfolio.accountdetails.service.AccountDetailsReadPlatformService;
 import org.apache.fineract.portfolio.client.data.ClientData;
+import org.apache.fineract.portfolio.client.data.ClientIdentifierData;
+import org.apache.fineract.portfolio.client.service.ClientIdentifierReadPlatformService;
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.portfolio.loanaccount.guarantor.data.ObligeeData;
 import org.apache.fineract.portfolio.loanaccount.guarantor.service.GuarantorReadPlatformService;
@@ -100,6 +103,7 @@ public class ClientsApiResource {
     private final BulkImportWorkbookPopulatorService bulkImportWorkbookPopulatorService;
     private final GuarantorReadPlatformService guarantorReadPlatformService;
     private final MemberCheckScanService kycScreeningService;
+    private final ClientIdentifierReadPlatformService clientIdentifierReadPlatformService;
 
     private static final Logger logger
             = LoggerFactory.getLogger(ClientsApiResource.class);
@@ -229,11 +233,18 @@ public class ClientsApiResource {
                 .build(); //
 
         final CommandProcessingResult result = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
-        kycScreeningService.kycScreening(result.getClientId());
+        final Collection<ClientIdentifierData> clientIdentifiers = this.clientIdentifierReadPlatformService
+                .retrieveClientIdentifiers(result.getClientId());
+        for (ClientIdentifierData data : clientIdentifiers) {
+
+        }
+        try {
+            kycScreeningService.kycScreening(result.getClientId());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         return this.toApiJsonSerializer.serialize(result);
     }
-
-
 
     @PUT
     @Path("{clientId}")
