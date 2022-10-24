@@ -236,7 +236,9 @@ public class ClientsApiResource {
         final Collection<ClientIdentifierData> clientIdentifiers = this.clientIdentifierReadPlatformService
                 .retrieveClientIdentifiers(result.getClientId());
         for (ClientIdentifierData data : clientIdentifiers) {
-
+            final CommandWrapper command = new CommandWrapperBuilder().createClientIdentifier(result.getClientId())
+                    .withJson(apiRequestBodyAsJson).build();
+            // final CommandProcessingResult documentCommand = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
         }
         try {
             kycScreeningService.kycScreening(result.getClientId());

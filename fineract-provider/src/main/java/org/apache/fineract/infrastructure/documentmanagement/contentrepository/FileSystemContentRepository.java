@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.fineract.infrastructure.core.domain.Base64EncodedImage;
-import org.apache.fineract.infrastructure.core.service.ThreadLocalContextUtil;
 import org.apache.fineract.infrastructure.documentmanagement.command.DocumentCommand;
 import org.apache.fineract.infrastructure.documentmanagement.data.DocumentData;
 import org.apache.fineract.infrastructure.documentmanagement.data.FileData;
@@ -40,7 +40,7 @@ public class FileSystemContentRepository implements ContentRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemContentRepository.class);
 
-    public static final String FINERACT_BASE_DIR = System.getProperty("user.home") + File.separator + ".fineract";
+    public static final String FINERACT_BASE_DIR = "documents";
 
     @Override
     public String saveFile(final InputStream uploadedInputStream, final DocumentCommand documentCommand) {
@@ -118,7 +118,6 @@ public class FileSystemContentRepository implements ContentRepository {
      */
     private String generateFileParentDirectory(final String entityType, final Long entityId) {
         return FileSystemContentRepository.FINERACT_BASE_DIR + File.separator
-                + ThreadLocalContextUtil.getTenant().getName().replaceAll(" ", "").trim() + File.separator + "documents" + File.separator
                 + entityType + File.separator + entityId + File.separator + ContentRepositoryUtils.generateRandomString();
     }
 
@@ -126,8 +125,7 @@ public class FileSystemContentRepository implements ContentRepository {
      * Generate directory path for storing new Image
      */
     private String generateClientImageParentDirectory(final Long resourceId) {
-        return FileSystemContentRepository.FINERACT_BASE_DIR + File.separator
-                + ThreadLocalContextUtil.getTenant().getName().replaceAll(" ", "").trim() + File.separator + "images" + File.separator
+        return FileSystemContentRepository.FINERACT_BASE_DIR + File.separator + "images" + File.separator
                 + "clients" + File.separator + resourceId;
     }
 
