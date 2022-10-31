@@ -70,4 +70,5 @@
     <include file="parts/fb_001_add_access_token_authenticator.xml" relativeToChangelogFile="true"/>
     <include file="parts/fb_002_drop_nullable_constraint.xml" relativeToChangelogFile="true"/>
     <include file="parts/fb_0003_add_kyc_client_tables.xml" relativeToChangelogFile="true"/>
+    <include file="parts/fb_0003_add_entity_client_details.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

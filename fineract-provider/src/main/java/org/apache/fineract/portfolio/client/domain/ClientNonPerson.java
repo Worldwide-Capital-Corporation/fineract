@@ -63,17 +63,75 @@ public class ClientNonPerson extends AbstractPersistableCustom {
     @Column(name = "remarks", length = 150, nullable = true)
     private String remarks;
 
-    public static ClientNonPerson createNew(final Client client, final CodeValue constitution, final CodeValue mainBusinessLine,
-            String incorpNumber, LocalDate incorpValidityTill, String remarks) {
-        return new ClientNonPerson(client, constitution, mainBusinessLine, incorpNumber, incorpValidityTill, remarks);
+    @Column(name = "incorp_date", nullable = true)
+    private LocalDate incorpDate;
+
+    @Column(name = "registered_name", length = 150, nullable = true)
+    private String registeredName;
+
+    @Column(name = "tin", length = 150, nullable = true)
+    private String tin;
+
+    @Column(name = "trading_license_no", length = 150, nullable = true)
+    private String tradingLicenseNo;
+
+    @Column(name = "contact_number", length = 150, nullable = true)
+    private String contactNumber;
+
+    @Column(name = "turnover", length = 150, nullable = true)
+    private String turnover;
+
+    @Column(name = "email_address", length = 150, nullable = true)
+    private String emailAddress;
+
+    public static ClientNonPerson createNew(
+            final Client client,
+            final CodeValue constitution,
+            final CodeValue mainBusinessLine,
+            String incorpNumber,
+            LocalDate incorpDate,
+            LocalDate incorpValidityTill,
+            String remarks,
+            final String registeredName,
+            final String tin,
+            final String tradingLicenseNo,
+            final String contactNumber,
+            final String turnover,
+            final String emailAddress) {
+        return new ClientNonPerson(
+                client,
+                constitution,
+                mainBusinessLine,
+                incorpNumber,
+                incorpDate,
+                incorpValidityTill,
+                remarks,
+                registeredName,
+                tin,
+                tradingLicenseNo,
+                contactNumber,
+                turnover,
+                emailAddress);
     }
 
     protected ClientNonPerson() {
         //
     }
 
-    private ClientNonPerson(final Client client, final CodeValue constitution, final CodeValue mainBusinessLine, final String incorpNumber,
-            final LocalDate incorpValidityTill, final String remarks) {
+    private ClientNonPerson(
+            final Client client,
+            final CodeValue constitution,
+            final CodeValue mainBusinessLine,
+            final String incorpNumber,
+            final LocalDate incorpDate,
+            final LocalDate incorpValidityTill,
+            final String remarks,
+            final String registeredName,
+            final String tin,
+            final String tradingLicenseNo,
+            final String contactNumber,
+            final String turnover,
+            final String emailAddress) {
         if (client != null) {
             this.client = client;
         }
@@ -91,11 +149,30 @@ public class ClientNonPerson extends AbstractPersistableCustom {
         }
 
         this.incorpValidityTill = incorpValidityTill;
+        this.incorpDate = incorpDate;
 
         if (StringUtils.isNotBlank(remarks)) {
             this.remarks = remarks.trim();
         }
 
+        if (StringUtils.isNotBlank(registeredName)) {
+            this.registeredName = registeredName.trim();
+        }
+        if (StringUtils.isNotBlank(tin)) {
+            this.tin = tin.trim();
+        }
+        if (StringUtils.isNotBlank(tradingLicenseNo)) {
+            this.tradingLicenseNo = tradingLicenseNo.trim();
+        }
+        if (StringUtils.isNotBlank(contactNumber)) {
+            this.contactNumber = contactNumber.trim();
+        }
+        if (StringUtils.isNotBlank(turnover)) {
+            this.turnover = turnover.trim();
+        }
+        if (StringUtils.isNotBlank(emailAddress)) {
+            this.emailAddress = emailAddress.trim();
+        }
         validate(client);
     }
 

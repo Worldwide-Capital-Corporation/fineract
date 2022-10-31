@@ -33,6 +33,9 @@ import org.apache.fineract.farmersbank.kyc.data.response.ClientRiskRating;
 import org.apache.fineract.farmersbank.kyc.data.response.ScanResponse;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.core.serialization.ToApiJsonSerializer;
+import org.apache.fineract.infrastructure.security.exception.NoAuthorizationException;
+import org.apache.fineract.infrastructure.security.service.PlatformSecurityContext;
+import org.apache.fineract.portfolio.client.api.ClientApiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -57,13 +60,16 @@ public class ScreeningApiResource {
 
     private final ToApiJsonSerializer<ClientRiskRating> apiJsonSerializerService;
     private final MemberCheckScanService kycService;
+    private final PlatformSecurityContext context;
 
 
     @Autowired
     public ScreeningApiResource(final ToApiJsonSerializer<ClientRiskRating> apiJsonSerializerService,
-                                final MemberCheckScanService kycService) {
+                                final MemberCheckScanService kycService,
+                                final PlatformSecurityContext context) {
         this.apiJsonSerializerService = apiJsonSerializerService;
         this.kycService = kycService;
+        this.context = context;
     }
 
     @GET
@@ -141,6 +147,11 @@ public class ScreeningApiResource {
             throw new IllegalArgumentException(
                     "matchId or clientId or screeningId is null in JSON of POST to /screening/result");
         }
+        if (!this.context.authenticatedUser().hasSpecificPermissionTo(ClientApiConstants.RUN_KYC_SCREENING)) {
+            final String authorizationMessage = "User has no authority to " + ClientApiConstants.RUN_KYC_SCREENING.toLowerCase() + "s";
+            throw new NoAuthorizationException(authorizationMessage);
+        }
+
         ClientRiskRating response = kycService.markVerifiedMatch(request);
         return this.apiJsonSerializerService.serialize(response);
     }

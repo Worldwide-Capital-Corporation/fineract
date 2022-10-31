@@ -24,8 +24,10 @@ package org.apache.fineract.portfolio.client.domain;
 public enum ClientIdentifierStatus {
 
     INACTIVE(100, "clientIdentifierStatusType.inactive"), //
+    PENDING(101, "clientIdentifierStatusType.pending"),
     ACTIVE(200, "clientIdentifierStatusType.active"), //
-    INVALID(0, "clientIdentifierStatusType.invalid");
+    INVALID(0, "clientIdentifierStatusType.invalid"),
+    EXPIRED(201, "clientIdentifierStatusType.expired");
 
     private final Integer value;
     private final String code;
@@ -37,8 +39,14 @@ public enum ClientIdentifierStatus {
             case 100:
                 enumeration = ClientIdentifierStatus.INACTIVE;
             break;
+            case 101:
+                enumeration = ClientIdentifierStatus.PENDING;
+                break;
             case 200:
                 enumeration = ClientIdentifierStatus.ACTIVE;
+                break;
+            case 201:
+                enumeration = ClientIdentifierStatus.EXPIRED;
             break;
         }
         return enumeration;
@@ -63,6 +71,14 @@ public enum ClientIdentifierStatus {
 
     public boolean isInactive() {
         return this.value.equals(ClientIdentifierStatus.INACTIVE.getValue());
+    }
+
+    public boolean isPending() {
+        return this.value.equals(ClientIdentifierStatus.PENDING.getValue());
+    }
+
+    public boolean isExpired() {
+        return this.value.equals(ClientIdentifierStatus.EXPIRED.getValue());
     }
 
     public boolean isActive() {

@@ -107,7 +107,7 @@ public class ClientReadPlatformServiceImpl implements ClientReadPlatformService 
         this.context.authenticatedUser();
 
         final Long defaultOfficeId = defaultToUsersOfficeIfNull(officeId);
-        AddressData address = null;
+        AddressData address = this.addressReadPlatformService.retrieveTemplate();
 
         final Collection<OfficeData> offices = this.officeReadPlatformService.retrieveAllOfficesForDropdown();
 
@@ -117,9 +117,6 @@ public class ClientReadPlatformServiceImpl implements ClientReadPlatformService 
                 .retrieveGlobalConfiguration("Enable-Address");
 
         final Boolean isAddressEnabled = configuration.isEnabled();
-        if (isAddressEnabled) {
-            address = this.addressReadPlatformService.retrieveTemplate();
-        }
 
         final ClientFamilyMembersData familyMemberOptions = this.clientFamilyMembersReadPlatformService.retrieveTemplate();
 
@@ -155,9 +152,15 @@ public class ClientReadPlatformServiceImpl implements ClientReadPlatformService 
         final List<DatatableData> datatableTemplates = this.entityDatatableChecksReadService
                 .retrieveTemplates(StatusEnum.CREATE.getCode().longValue(), EntityTables.CLIENT.getName(), null);
 
+        final List<CodeValueData> sourceOfFundsOptions = new ArrayList<>(
+                this.codeValueReadPlatformService.retrieveCodeValuesByCode(ClientApiConstants.CLIENT_SOURCE_OF_FUNDS));
+
+        final List<CodeValueData> sourceOfWealthOptions = new ArrayList<>(
+                this.codeValueReadPlatformService.retrieveCodeValuesByCode(ClientApiConstants.CLIENT_SOURCE_OF_WEALTH));
+
         return ClientData.template(defaultOfficeId, LocalDate.now(DateUtils.getDateTimeZoneOfTenant()), offices, staffOptions, null,
                 genderOptions, savingsProductDatas, clientTypeOptions, clientClassificationOptions, clientNonPersonConstitutionOptions,
-                clientNonPersonMainBusinessLineOptions, clientLegalFormOptions, familyMemberOptions,
+                clientNonPersonMainBusinessLineOptions, sourceOfFundsOptions, sourceOfWealthOptions, clientLegalFormOptions, familyMemberOptions,
                 new ArrayList<AddressData>(Arrays.asList(address)), isAddressEnabled, datatableTemplates);
     }
 
@@ -838,9 +841,11 @@ public class ClientReadPlatformServiceImpl implements ClientReadPlatformService 
         final Collection<CodeValueData> clientClassificationOptions = null;
         final Collection<CodeValueData> clientNonPersonConstitutionOptions = null;
         final Collection<CodeValueData> clientNonPersonMainBusinessLineOptions = null;
+        final Collection<CodeValueData> clientSourceOfFundsOptions = null;
+        final Collection<CodeValueData> clientSourceOfWealthOptions = null;
         final List<EnumOptionData> clientLegalFormOptions = null;
         return ClientData.template(null, null, null, null, narrations, null, null, clientTypeOptions, clientClassificationOptions,
-                clientNonPersonConstitutionOptions, clientNonPersonMainBusinessLineOptions, clientLegalFormOptions, null, null, null, null);
+                clientNonPersonConstitutionOptions, clientNonPersonMainBusinessLineOptions, clientSourceOfFundsOptions, clientSourceOfWealthOptions, clientLegalFormOptions, null, null, null, null);
     }
 
     @Override

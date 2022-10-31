@@ -50,6 +50,8 @@ import org.apache.fineract.farmersbank.kyc.domain.repositories.ResultEntityRepos
 import org.apache.fineract.farmersbank.kyc.domain.repositories.WebSearchRepository;
 import org.apache.fineract.farmersbank.utils.SearchUtils;
 import org.apache.fineract.infrastructure.codes.domain.CodeValue;
+import org.apache.fineract.infrastructure.configuration.data.GlobalConfigurationPropertyData;
+import org.apache.fineract.infrastructure.configuration.service.ConfigurationReadPlatformService;
 import org.apache.fineract.infrastructure.core.exception.InvalidKycTokenException;
 import org.apache.fineract.portfolio.client.domain.Client;
 import org.apache.fineract.portfolio.client.domain.ClientRepository;
@@ -86,6 +88,7 @@ public class MemberCheckScanService implements KYCConfiguration {
     private final LinkedCompaniesRepository linkedCompaniesRepository;
     private final ClientRepository clientRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final ConfigurationReadPlatformService configurationReadPlatformService;
 
     private static final Logger logger
             = LoggerFactory.getLogger(MemberCheckScanService.class);
@@ -102,7 +105,8 @@ public class MemberCheckScanService implements KYCConfiguration {
             final LinkedIndividualsRepository linkedIndividualsRepository,
             final LinkedCompaniesRepository linkedCompaniesRepository,
             final ClientRepository clientRepository,
-            final JdbcTemplate jdbcTemplate
+            final JdbcTemplate jdbcTemplate,
+            final ConfigurationReadPlatformService configurationReadPlatformService
     ) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
@@ -120,6 +124,7 @@ public class MemberCheckScanService implements KYCConfiguration {
         this.linkedCompaniesRepository = linkedCompaniesRepository;
         this.clientRepository = clientRepository;
         this.jdbcTemplate = jdbcTemplate;
+        this.configurationReadPlatformService = configurationReadPlatformService;
     }
 
       public ClientScreening kycScreening(Long clientId) throws Exception {
@@ -249,17 +254,19 @@ public class MemberCheckScanService implements KYCConfiguration {
         final ClientScreeningMapper rm = new ClientScreeningMapper();
         final String sql = "select " + rm.schema() + " where cs.client_id=? ORDER BY cs.id DESC LIMIT "+limit;
         List<ClientKycScreeningData> results =  this.jdbcTemplate.query(sql, rm, clientId); // NOSONAR
+        final GlobalConfigurationPropertyData configuration = this.configurationReadPlatformService
+                .retrieveGlobalConfiguration("enable-kyc-screening");
         if (results != null && results.size() > 0) {
             ClientKycScreeningData screeningData = results.get(0);
             final MatchedEntityMapper matchedEntityMapper = new MatchedEntityMapper();
             final String matchSql = "select " + matchedEntityMapper.schema() + " where me.screening_id=? ";
             List<MatchedEntityData> matches = this.jdbcTemplate.query(matchSql, matchedEntityMapper, screeningData.getId()); // NOSONAR
             if (matches != null && matches.size() > 0) {
-                return new ClientRiskRating(results.get(0), matches);
+                return new ClientRiskRating(results.get(0), matches, configuration.isEnabled());
             }
-            return new ClientRiskRating(results.get(0), null);
+            return new ClientRiskRating(results.get(0), null, configuration.isEnabled());
         }
-        return null;
+        return new ClientRiskRating(null, null, configuration.isEnabled());
     }
 
     public ClientRiskRating markVerifiedMatch(ScreeningApiResource.VerifyScreening request) {

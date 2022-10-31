@@ -19,11 +19,14 @@
 package org.apache.fineract.portfolio.client.data;
 
 import java.util.Collection;
+
+import lombok.Getter;
 import org.apache.fineract.infrastructure.codes.data.CodeValueData;
 
 /**
  * Immutable data object represent client identity data.
  */
+@Getter
 public class ClientIdentifierData {
 
     private final Long id;
@@ -32,25 +35,27 @@ public class ClientIdentifierData {
     private final String documentKey;
     private final String description;
     private final String status;
+    private final long uploadDate;
+    private final long expiryDate;
     @SuppressWarnings("unused")
     private final Collection<CodeValueData> allowedDocumentTypes;
 
     public static ClientIdentifierData singleItem(final Long id, final Long clientId, final CodeValueData documentType,
-            final String documentKey, final String status, final String description) {
-        return new ClientIdentifierData(id, clientId, documentType, documentKey, description, status, null);
+            final String documentKey, final String status, final String description, final long uploadDate, final long expiryDate) {
+        return new ClientIdentifierData(id, clientId, documentType, documentKey, description, status, uploadDate, expiryDate, null);
     }
 
     public static ClientIdentifierData template(final Collection<CodeValueData> codeValues) {
-        return new ClientIdentifierData(null, null, null, null, null, null, codeValues);
+        return new ClientIdentifierData(null, null, null, null, null, null, 0, 0, codeValues);
     }
 
     public static ClientIdentifierData template(final ClientIdentifierData data, final Collection<CodeValueData> codeValues) {
-        return new ClientIdentifierData(data.id, data.clientId, data.documentType, data.documentKey, data.description, data.status,
+        return new ClientIdentifierData(data.id, data.clientId, data.documentType, data.documentKey, data.description, data.status, 0, 0,
                 codeValues);
     }
 
     public ClientIdentifierData(final Long id, final Long clientId, final CodeValueData documentType, final String documentKey,
-            final String description, final String status, final Collection<CodeValueData> allowedDocumentTypes) {
+            final String description, final String status, final long uploadDate, final long expiryDate, final Collection<CodeValueData> allowedDocumentTypes) {
         this.id = id;
 
         this.clientId = clientId;
@@ -59,5 +64,7 @@ public class ClientIdentifierData {
         this.description = description;
         this.allowedDocumentTypes = allowedDocumentTypes;
         this.status = status;
+        this.uploadDate = uploadDate;
+        this.expiryDate = expiryDate;
     }
 }

@@ -268,9 +268,32 @@ public class Client extends AbstractAuditableWithUTCDateTimeCustom {
             submittedOnDate = activationDate;
         }
         final Long savingsAccountId = null;
-        return new Client(currentUser, status, clientOffice, clientParentGroup, accountNo, firstname, middlename, lastname, fullname,
-                activationDate, officeJoiningDate, externalId, mobileNo, emailAddress, staff, submittedOnDate, savingsProductId,
-                savingsAccountId, dataOfBirth, gender, clientType, clientClassification, legalForm, isStaff);
+        return new Client(
+                currentUser,
+                status,
+                clientOffice,
+                clientParentGroup,
+                accountNo,
+                firstname,
+                middlename,
+                lastname,
+                fullname,
+                activationDate,
+                officeJoiningDate,
+                externalId,
+                mobileNo,
+                emailAddress,
+                staff,
+                submittedOnDate,
+                savingsProductId,
+                savingsAccountId,
+                dataOfBirth,
+                gender,
+                clientType,
+                clientClassification,
+                legalForm,
+                isStaff
+        );
     }
 
     protected Client() {}

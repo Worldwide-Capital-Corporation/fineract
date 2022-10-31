@@ -131,7 +131,8 @@ public final class ClientDataValidator {
             }
         } else {
 
-            if (isFullnameParameterPassed(element) || isIndividualNamePartParameterPassed(element)) {
+            // Todo
+            if (isFullnameParameterPassed(element) || isRegisteredNameParameterPassed(element) || isIndividualNamePartParameterPassed(element)) {
 
                 // 1. No individual name parameter passed and fullname passed
                 if (isFullnameParameterPassed(element) && !isIndividualNamePartParameterPassed(element)) {
@@ -331,6 +332,12 @@ public final class ClientDataValidator {
         return this.fromApiJsonHelper.parameterExists(ClientApiConstants.fullnameParamName, element);
     }
 
+    private boolean isRegisteredNameParameterPassed(final JsonElement element) {
+        // return this.fromApiJsonHelper.parameterExists(ClientApiConstants.registeredNameParamName, element);
+        // TODO: Add proper validation
+        return true;
+    }
+
     private boolean isIndividualNameProvided(final JsonElement element) {
         final String firstname = this.fromApiJsonHelper.extractStringNamed(ClientApiConstants.firstnameParamName, element);
         final String middlename = this.fromApiJsonHelper.extractStringNamed(ClientApiConstants.middlenameParamName, element);
@@ -394,7 +401,7 @@ public final class ClientDataValidator {
             }
         } else {
 
-            if (isFullnameParameterPassed(element) || isIndividualNamePartParameterPassed(element)) {
+            if (isFullnameParameterPassed(element) || isRegisteredNameParameterPassed(element) || isIndividualNamePartParameterPassed(element)) {
 
                 // 1. No individual name parameter passed and fullname passed
                 if (isFullnameParameterPassed(element) && !isIndividualNamePartParameterPassed(element)) {

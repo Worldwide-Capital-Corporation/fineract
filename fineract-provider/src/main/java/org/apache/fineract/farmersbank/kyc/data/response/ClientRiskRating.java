@@ -31,4 +31,5 @@ import java.util.List;
 public class ClientRiskRating {
     private ClientKycScreeningData latest;
     private List<MatchedEntityData> matches;
+    private boolean isKycScreeningEnabled;
 }

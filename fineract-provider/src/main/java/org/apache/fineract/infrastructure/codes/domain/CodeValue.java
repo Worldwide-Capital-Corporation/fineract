@@ -56,6 +56,9 @@ public class CodeValue extends AbstractPersistableCustom {
     @Column(name = "is_mandatory")
     private boolean mandatory;
 
+    @Column(name = "code_score")
+    private int codeScore;
+
     public static CodeValue createNew(final Code code, final String label, final int position, final String description,
             final boolean isActive, final boolean mandatory) {
         return new CodeValue(code, label, position, description, isActive, mandatory);
@@ -81,6 +84,10 @@ public class CodeValue extends AbstractPersistableCustom {
 
     public int position() {
         return this.position;
+    }
+
+    public int getCodeScore() {
+        return this.codeScore;
     }
 
     public static CodeValue fromJson(final Code code, final JsonCommand command) {
@@ -138,6 +145,6 @@ public class CodeValue extends AbstractPersistableCustom {
     }
 
     public CodeValueData toData() {
-        return CodeValueData.instance(getId(), this.label, this.position, this.isActive, this.mandatory);
+        return CodeValueData.instance(getId(), this.label, this.position, this.isActive, this.mandatory, this.codeScore);
     }
 }

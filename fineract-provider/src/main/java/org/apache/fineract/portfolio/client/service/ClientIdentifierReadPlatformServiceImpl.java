@@ -18,9 +18,6 @@
  */
 package org.apache.fineract.portfolio.client.service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.apache.fineract.infrastructure.codes.data.CodeValueData;
 import org.apache.fineract.infrastructure.core.domain.JdbcSupport;
@@ -33,6 +30,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +89,7 @@ public class ClientIdentifierReadPlatformServiceImpl implements ClientIdentifier
 
         public String schema() {
             return "ci.id as id, ci.client_id as clientId, ci.document_type_id as documentTypeId, ci.status as status, ci.document_key as documentKey,"
-                    + " ci.description as description, cv.code_value as documentType "
+                    + " ci.description as description, ci.uploaded_date as uploadDate, ci.expiry_date as expiryDate, cv.code_value as documentType,cv.is_active as isActive, cv.is_mandatory as isMandatory "
                     + " from m_client_identifier ci, m_client c, m_office o, m_code_value cv"
                     + " where ci.client_id=c.id and c.office_id=o.id" + " and ci.document_type_id=cv.id"
                     + " and ci.client_id = ? and o.hierarchy like ? ";
@@ -101,11 +104,22 @@ public class ClientIdentifierReadPlatformServiceImpl implements ClientIdentifier
             final String documentKey = rs.getString("documentKey");
             final String description = rs.getString("description");
             final String documentTypeName = rs.getString("documentType");
-            final CodeValueData documentType = CodeValueData.instance(documentTypeId, documentTypeName);
+            final boolean isActive = rs.getBoolean("isActive");
+            final boolean isMandatory = rs.getBoolean("isMandatory");
+            final Timestamp uploadDate = rs.getTimestamp("uploadDate");
+            final Timestamp expiryDate = rs.getTimestamp("expiryDate");
+            final CodeValueData documentType = CodeValueData.instance(documentTypeId,documentTypeName,description,isActive,isMandatory);
             final String status = ClientIdentifierStatus.fromInt(rs.getInt("status")).getCode();
-            return ClientIdentifierData.singleItem(id, clientId, documentType, documentKey, status, description);
+            return ClientIdentifierData.singleItem(
+                    id,
+                    clientId,
+                    documentType,
+                    documentKey,
+                    status,
+                    description,
+                    Optional.ofNullable(uploadDate).map(Timestamp::getTime).orElse(0L),
+                    Optional.ofNullable(expiryDate).map(Timestamp::getTime).orElse(0L)
+            );
         }
-
     }
-
 }

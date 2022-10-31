@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -54,9 +55,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.fineract.commands.domain.CommandWrapper;
 import org.apache.fineract.commands.service.CommandWrapperBuilder;
 import org.apache.fineract.commands.service.PortfolioCommandSourceWritePlatformService;
+import org.apache.fineract.farmersbank.kyc.data.shared.ClientIdentifier;
 import org.apache.fineract.farmersbank.kyc.service.MemberCheckScanService;
 import org.apache.fineract.infrastructure.bulkimport.service.BulkImportWorkbookPopulatorService;
 import org.apache.fineract.infrastructure.bulkimport.service.BulkImportWorkbookService;
+import org.apache.fineract.infrastructure.codes.data.CodeValueData;
+import org.apache.fineract.infrastructure.codes.service.CodeValueReadPlatformService;
+import org.apache.fineract.infrastructure.configuration.data.GlobalConfigurationPropertyData;
+import org.apache.fineract.infrastructure.configuration.service.ConfigurationReadPlatformService;
 import org.apache.fineract.infrastructure.core.api.ApiRequestParameterHelper;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.data.UploadRequest;
@@ -70,7 +76,6 @@ import org.apache.fineract.portfolio.accountdetails.data.AccountSummaryCollectio
 import org.apache.fineract.portfolio.accountdetails.service.AccountDetailsReadPlatformService;
 import org.apache.fineract.portfolio.client.data.ClientData;
 import org.apache.fineract.portfolio.client.data.ClientIdentifierData;
-import org.apache.fineract.portfolio.client.service.ClientIdentifierReadPlatformService;
 import org.apache.fineract.portfolio.client.service.ClientReadPlatformService;
 import org.apache.fineract.portfolio.loanaccount.guarantor.data.ObligeeData;
 import org.apache.fineract.portfolio.loanaccount.guarantor.service.GuarantorReadPlatformService;
@@ -94,6 +99,7 @@ public class ClientsApiResource {
     private final PlatformSecurityContext context;
     private final ClientReadPlatformService clientReadPlatformService;
     private final ToApiJsonSerializer<ClientData> toApiJsonSerializer;
+    private final ToApiJsonSerializer<ClientIdentifier> clientIdentifierToApiJsonSerializer;
     private final ToApiJsonSerializer<AccountSummaryCollectionData> clientAccountSummaryToApiJsonSerializer;
     private final ApiRequestParameterHelper apiRequestParameterHelper;
     private final PortfolioCommandSourceWritePlatformService commandsSourceWritePlatformService;
@@ -103,7 +109,9 @@ public class ClientsApiResource {
     private final BulkImportWorkbookPopulatorService bulkImportWorkbookPopulatorService;
     private final GuarantorReadPlatformService guarantorReadPlatformService;
     private final MemberCheckScanService kycScreeningService;
-    private final ClientIdentifierReadPlatformService clientIdentifierReadPlatformService;
+    private final CodeValueReadPlatformService codeValueReadPlatformService;
+    private final ConfigurationReadPlatformService configurationReadPlatformService;
+
 
     private static final Logger logger
             = LoggerFactory.getLogger(ClientsApiResource.class);
@@ -233,19 +241,32 @@ public class ClientsApiResource {
                 .build(); //
 
         final CommandProcessingResult result = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
-        final Collection<ClientIdentifierData> clientIdentifiers = this.clientIdentifierReadPlatformService
-                .retrieveClientIdentifiers(result.getClientId());
-        for (ClientIdentifierData data : clientIdentifiers) {
-            final CommandWrapper command = new CommandWrapperBuilder().createClientIdentifier(result.getClientId())
-                    .withJson(apiRequestBodyAsJson).build();
-            // final CommandProcessingResult documentCommand = this.commandsSourceWritePlatformService.logCommandSource(commandRequest);
-        }
-        try {
+        addClientDocuments(result);
+        final GlobalConfigurationPropertyData configuration = this.configurationReadPlatformService
+                .retrieveGlobalConfiguration("enable-kyc-screening");
+        if (configuration.isEnabled()) {
+          try {
             kycScreeningService.kycScreening(result.getClientId());
-        } catch (Exception e) {
+          } catch (Exception e) {
             logger.error(e.getMessage(), e);
+          }
         }
         return this.toApiJsonSerializer.serialize(result);
+    }
+
+    private void addClientDocuments(final CommandProcessingResult result) {
+        final Collection<CodeValueData> codeValues = this.codeValueReadPlatformService.retrieveCodeValuesByCode("Customer Identifier");
+        final ClientIdentifierData clientIdentifierData = ClientIdentifierData.template(codeValues);
+        for (CodeValueData data : clientIdentifierData.getAllowedDocumentTypes()) {
+            String identifierJson = clientIdentifierToApiJsonSerializer.serialize(new ClientIdentifier(
+                    data.getId(),
+                    "Pending",
+                    UUID.randomUUID().toString()
+            ));
+            final CommandWrapper command = new CommandWrapperBuilder().createClientIdentifier(result.getClientId())
+                    .withJson(identifierJson).build();
+            this.commandsSourceWritePlatformService.logCommandSource(command);
+        }
     }
 
     @PUT

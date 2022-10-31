@@ -36,9 +36,7 @@ import org.apache.fineract.infrastructure.accountnumberformat.domain.AccountNumb
 import org.apache.fineract.infrastructure.accountnumberformat.domain.EntityAccountType;
 import org.apache.fineract.infrastructure.codes.domain.CodeValue;
 import org.apache.fineract.infrastructure.codes.domain.CodeValueRepositoryWrapper;
-import org.apache.fineract.infrastructure.configuration.data.GlobalConfigurationPropertyData;
 import org.apache.fineract.infrastructure.configuration.domain.ConfigurationDomainService;
-import org.apache.fineract.infrastructure.configuration.service.ConfigurationReadPlatformService;
 import org.apache.fineract.infrastructure.core.api.JsonCommand;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResult;
 import org.apache.fineract.infrastructure.core.data.CommandProcessingResultBuilder;
@@ -71,6 +69,7 @@ import org.apache.fineract.portfolio.client.exception.ClientHasNoStaffException;
 import org.apache.fineract.portfolio.client.exception.ClientMustBePendingToBeDeletedException;
 import org.apache.fineract.portfolio.client.exception.InvalidClientSavingProductException;
 import org.apache.fineract.portfolio.client.exception.InvalidClientStateTransitionException;
+import org.apache.fineract.portfolio.client.handler.ClientBeneficiaryWritePlatformService;
 import org.apache.fineract.portfolio.group.domain.Group;
 import org.apache.fineract.portfolio.group.domain.GroupRepository;
 import org.apache.fineract.portfolio.group.exception.GroupMemberCountNotInPermissibleRangeException;
@@ -114,9 +113,9 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
     private final ConfigurationDomainService configurationDomainService;
     private final AccountNumberFormatRepositoryWrapper accountNumberFormatRepository;
     private final FromJsonHelper fromApiJsonHelper;
-    private final ConfigurationReadPlatformService configurationReadPlatformService;
     private final AddressWritePlatformService addressWritePlatformService;
     private final ClientFamilyMembersWritePlatformService clientFamilyMembersWritePlatformService;
+    private final ClientBeneficiaryWritePlatformService clientBeneficiaryWritePlatformService;
     private final BusinessEventNotifierService businessEventNotifierService;
     private final EntityDatatableChecksWritePlatformService entityDatatableChecksWritePlatformService;
 
@@ -131,9 +130,9 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
             final SavingsApplicationProcessWritePlatformService savingsApplicationProcessWritePlatformService,
             final CommandProcessingService commandProcessingService, final ConfigurationDomainService configurationDomainService,
             final AccountNumberFormatRepositoryWrapper accountNumberFormatRepository, final FromJsonHelper fromApiJsonHelper,
-            final ConfigurationReadPlatformService configurationReadPlatformService,
             final AddressWritePlatformService addressWritePlatformService,
             final ClientFamilyMembersWritePlatformService clientFamilyMembersWritePlatformService,
+            final ClientBeneficiaryWritePlatformService clientBeneficiaryWritePlatformService,
             final BusinessEventNotifierService businessEventNotifierService,
             final EntityDatatableChecksWritePlatformService entityDatatableChecksWritePlatformService) {
         this.context = context;
@@ -154,11 +153,11 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
         this.configurationDomainService = configurationDomainService;
         this.accountNumberFormatRepository = accountNumberFormatRepository;
         this.fromApiJsonHelper = fromApiJsonHelper;
-        this.configurationReadPlatformService = configurationReadPlatformService;
         this.addressWritePlatformService = addressWritePlatformService;
         this.clientFamilyMembersWritePlatformService = clientFamilyMembersWritePlatformService;
         this.businessEventNotifierService = businessEventNotifierService;
         this.entityDatatableChecksWritePlatformService = entityDatatableChecksWritePlatformService;
+        this.clientBeneficiaryWritePlatformService = clientBeneficiaryWritePlatformService;
     }
 
     @Transactional
@@ -227,11 +226,6 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
 
             this.fromApiJsonDeserializer.validateForCreate(command.json());
 
-            final GlobalConfigurationPropertyData configuration = this.configurationReadPlatformService
-                    .retrieveGlobalConfiguration("Enable-Address");
-
-            final Boolean isAddressEnabled = configuration.isEnabled();
-
             final Boolean isStaff = command.booleanObjectValueOfParameterNamed(ClientApiConstants.isStaffParamName);
 
             final Long officeId = command.longValueOfParameterNamed(ClientApiConstants.officeIdParamName);
@@ -288,8 +282,17 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
                 }
             }
 
-            final Client newClient = Client.createNew(currentUser, clientOffice, clientParentGroup, staff, savingsProductId, gender,
-                    clientType, clientClassification, legalFormValue, command);
+            final Client newClient = Client.createNew(
+                    currentUser,
+                    clientOffice,
+                    clientParentGroup,
+                    staff,
+                    savingsProductId,
+                    gender,
+                    clientType,
+                    clientClassification,
+                    legalFormValue,
+                    command);
             this.clientRepository.saveAndFlush(newClient);
             boolean rollbackTransaction = false;
             if (newClient.isActive()) {
@@ -321,12 +324,14 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
                 extractAndCreateClientNonPerson(newClient, command);
             }
 
-            if (isAddressEnabled) {
-                this.addressWritePlatformService.addNewClientAddress(newClient, command);
-            }
+            this.addressWritePlatformService.addNewClientAddress(newClient, command);
 
             if (command.arrayOfParameterNamed("familyMembers") != null) {
                 this.clientFamilyMembersWritePlatformService.addClientFamilyMember(newClient, command);
+            }
+
+            if (command.arrayOfParameterNamed("beneficiaries") != null) {
+                this.clientBeneficiaryWritePlatformService.addBeneficiary(newClient, command);
             }
 
             if (command.parameterExists(ClientApiConstants.datatables)) {
@@ -395,9 +400,29 @@ public class ClientWritePlatformServiceJpaRepositoryImpl implements ClientWriteP
                         ClientApiConstants.CLIENT_NON_PERSON_MAIN_BUSINESS_LINE, clientNonPersonMainBusinessLineId);
             }
 
-            final ClientNonPerson newClientNonPerson = ClientNonPerson.createNew(client, clientNonPersonConstitution,
-                    clientNonPersonMainBusinessLine, incorpNumber, incorpValidityTill, remarks);
+            final LocalDate incorporationDate = this.fromApiJsonHelper
+                    .extractLocalDateNamed("incorporationDate", clientNonPersonElement);
+            final String registeredName = this.fromApiJsonHelper.extractStringNamed("registeredName", clientNonPersonElement);
+            final String tin = this.fromApiJsonHelper.extractStringNamed("tin", clientNonPersonElement);
+            final String tradingLicenseNo = this.fromApiJsonHelper.extractStringNamed("tradingLicenseNo", clientNonPersonElement);
+            final String contactNumber = this.fromApiJsonHelper.extractStringNamed("contactNumber", clientNonPersonElement);
+            final String turnover = this.fromApiJsonHelper.extractStringNamed("turnover", clientNonPersonElement);
+            final String emailAddress = this.fromApiJsonHelper.extractStringNamed("emailAddress", clientNonPersonElement);
 
+            final ClientNonPerson newClientNonPerson = ClientNonPerson.createNew(
+                    client,
+                    clientNonPersonConstitution,
+                    clientNonPersonMainBusinessLine,
+                    incorpNumber,
+                    incorporationDate,
+                    incorpValidityTill,
+                    remarks,
+                    registeredName,
+                    tin,
+                    tradingLicenseNo,
+                    contactNumber,
+                    turnover,
+                    emailAddress);
             this.clientNonPersonRepository.save(newClientNonPerson);
         }
     }

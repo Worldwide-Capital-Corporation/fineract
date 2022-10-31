@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements. See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership. The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied. See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet id="1" author="fineract">
+
+        <insert tableName="m_code">
+            <column name="id" value="39"/>
+            <column name="code_name" value="Source Of Funds"/>
+            <column name="is_system_defined" value="true"/>
+        </insert>
+
+        <insert tableName="m_code">
+            <column name="id" value="40"/>
+            <column name="code_name" value="Source Of Wealth"/>
+            <column name="is_system_defined" value="true"/>
+        </insert>
+
+        <insert tableName="m_code">
+            <column name="id" value="41"/>
+            <column name="code_name" value="Entity Identifier"/>
+            <column name="is_system_defined" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="39"/>
+            <column name="code_value" value="Salary/Wages"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="39"/>
+            <column name="code_value" value="Investments"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="39"/>
+            <column name="code_value" value="Family &amp; Friends"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="4"/>
+            <column name="code_value" value="Male"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="4"/>
+            <column name="code_value" value="Female"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="4"/>
+            <column name="code_value" value="Transgender"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="30"/>
+            <column name="code_value" value="Single"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="30"/>
+            <column name="code_value" value="Married"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="30"/>
+            <column name="code_value" value="Widowed"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="30"/>
+            <column name="code_value" value="Divorced"/>
+            <column name="order_position" value="4"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="30"/>
+            <column name="code_value" value="Separates"/>
+            <column name="order_position" value="5"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="30"/>
+            <column name="code_value" value="Registered Partnership"/>
+            <column name="order_position" value="6"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="31"/>
+            <column name="code_value" value="Spouse / Partner"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="31"/>
+            <column name="code_value" value="Parent"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="31"/>
+            <column name="code_value" value="Sibling"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="31"/>
+            <column name="code_value" value="Child"/>
+            <column name="order_position" value="4"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="31"/>
+            <column name="code_value" value="Grandparent"/>
+            <column name="order_position" value="5"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="32"/>
+            <column name="code_value" value="Entrepreneur"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="32"/>
+            <column name="code_value" value="Expatriate Employee"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="32"/>
+            <column name="code_value" value="General Employee"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="32"/>
+            <column name="code_value" value="House Wife"/>
+            <column name="order_position" value="4"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="32"/>
+            <column name="code_value" value="Student"/>
+            <column name="order_position" value="5"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="32"/>
+            <column name="code_value" value="Unemployed"/>
+            <column name="order_position" value="6"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="29"/>
+            <column name="code_value" value="Home Address"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="29"/>
+            <column name="code_value" value="Residential Address"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="29"/>
+            <column name="code_value" value="Office Address"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="27"/>
+            <column name="code_value" value="Hhohho"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="27"/>
+            <column name="code_value" value="Manzini"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="27"/>
+            <column name="code_value" value="Shiselweni"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="27"/>
+            <column name="code_value" value="Lubombo"/>
+            <column name="order_position" value="4"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="28"/>
+            <column name="code_value" value="Eswatini"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Occupation and Income (i.e. wages, bonus)"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Savings"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Property Sale"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Sale of Investments"/>
+            <column name="order_position" value="4"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Inheritance"/>
+            <column name="order_position" value="5"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Company Sale/Dividend"/>
+            <column name="order_position" value="6"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Divorce Settlement"/>
+            <column name="order_position" value="7"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Lottery/Gambling win"/>
+            <column name="order_position" value="8"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="40"/>
+            <column name="code_value" value="Gifts"/>
+            <column name="order_position" value="9"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="41"/>
+            <column name="code_value" value="Trading License"/>
+            <column name="order_position" value="1"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="41"/>
+            <column name="code_value" value="Tax Certificate"/>
+            <column name="order_position" value="2"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="41"/>
+            <column name="code_value" value="Proof of Address"/>
+            <column name="order_position" value="3"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="true"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="24"/>
+            <column name="code_value" value="Sole Proprietary"/>
+            <column name="order_position" value="9"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="24"/>
+            <column name="code_value" value="Company/Corporate"/>
+            <column name="order_position" value="9"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="m_code_value">
+            <column name="code_id" value="24"/>
+            <column name="code_value" value="Association/NGO"/>
+            <column name="order_position" value="9"/>
+            <column name="is_active" value="true"/>
+            <column name="is_mandatory" value="false"/>
+        </insert>
+
+        <insert tableName="c_configuration">
+            <column name="id" value="47"/>
+            <column name="name" value="enable-kyc-screening"/>
+            <column name="enabled" value="false"/>
+            <column name="is_trap_door" value="false"/>
+        </insert>
+
+        <insert tableName="c_configuration">
+            <column name="id" value="48"/>
+            <column name="name" value="kyc-documents-validity-period"/>
+            <column name="enabled" value="true"/>
+            <column name="value" value="6"/>
+            <column name="is_trap_door" value="false"/>
+        </insert>
+
+        <insert tableName="m_permission">
+            <column name="id" value="903"/>
+            <column name="grouping" value="kyc"/>
+            <column name="code" value="RUN_KYC_SCREENING"/>
+            <column name="entity_name" value="CLIENT"/>
+            <column name="action_name" value="UPDATE"/>
+            <column name="can_maker_checker" value="false"/>
+        </insert>
+
+        <update tableName="c_configuration">
+            <column name="enabled" value="true" />
+            <where>name = 'Enable-Address'</where>
+        </update>
+
+        <update tableName="m_field_configuration">
+            <column name="is_enabled" value="true" />
+            <where>field = 'townVillage'</where>
+        </update>
+
+        <createTable tableName="m_client_entity_beneficiaries">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_number" type="VARCHAR(13)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="VARCHAR(300)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_name" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ownership" type="DECIMAL(5,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tin" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source_of_funds_code_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source_of_wealth_code_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="town" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="postal_code" type="VARCHAR(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="next_kyc_screening_date" type="DATETIME"/>
+            <column name="created_by" type="BIGINT"/>
+            <column name="created_on_utc" type="DATETIME"/>
+            <column defaultValueComputed="NULL" name="last_modified_by" type="BIGINT"/>
+            <column defaultValueComputed="NULL" name="last_modified_on_utc" type="DATETIME"/>
+        </createTable>
+
+        <addColumn tableName="m_client_identifier">
+            <column name="uploaded_date" type="DATETIME" >
+                <constraints nullable="true" />
+            </column>
+            <column name="expiry_date" type="DATETIME" >
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+
+        <addColumn tableName="m_client_non_person">
+            <column name="incorp_date" type="DATETIME" >
+                <constraints nullable="true" />
+            </column>
+            <column name="registered_name" type="VARCHAR(150)" >
+                <constraints nullable="true" />
+            </column>
+            <column name="tin" type="VARCHAR(150)" >
+                <constraints nullable="true" unique="true" uniqueConstraintName="m_client_non_person_tin"/>
+            </column>
+            <column name="trading_license_no" type="VARCHAR(150)" >
+                <constraints nullable="true" unique="true" uniqueConstraintName="m_client_non_person_trading_license_no"/>
+            </column>
+            <column name="contact_number" type="VARCHAR(150)" >
+                <constraints nullable="true" />
+            </column>
+            <column name="turnover" type="VARCHAR(150)" >
+                <constraints nullable="true" />
+            </column>
+            <column name="email_address" type="VARCHAR(150)" >
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="source_of_funds_code_id"
+                                 baseTableName="m_client_entity_beneficiaries"
+                                 constraintName="fk_source_of_funds_code_value"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_code_value"/>
+
+        <addForeignKeyConstraint baseColumnNames="source_of_wealth_code_id"
+                                 baseTableName="m_client_entity_beneficiaries"
+                                 constraintName="fk_source_of_wealth_code_value"
+                                 referencedColumnNames="id"
+                                 referencedTableName="m_code_value"/>
+    </changeSet>
+</databaseChangeLog>
+

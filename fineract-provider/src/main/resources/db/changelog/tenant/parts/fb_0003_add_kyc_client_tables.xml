@@ -458,21 +458,30 @@
 
         <update tableName="m_code_value">
             <column name="code_value" value="Identity Document" />
+            <column name="is_active" value="true" />
+            <column name="is_mandatory" value="true" />
+            <column name="code_score" value="1" />
             <where>code_value = 'Passport'</where>
         </update>
 
         <update tableName="m_code_value">
             <column name="code_value" value="Proof Of Income" />
+            <column name="is_active" value="true" />
+            <column name="is_mandatory" value="true" />
             <where>code_value = 'Id'</where>
         </update>
 
         <update tableName="m_code_value">
             <column name="code_value" value="Proof of Address" />
+            <column name="is_active" value="true" />
+            <column name="is_mandatory" value="true" />
             <where>code_value = 'Drivers License'</where>
         </update>
 
         <update tableName="m_code_value">
             <column name="code_value" value="Tax Document" />
+            <column name="is_active" value="true" />
+            <column name="code_score" value="1" />
             <where>code_value = 'Any Other Id Type'</where>
         </update>
 

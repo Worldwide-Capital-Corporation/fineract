@@ -33,6 +33,7 @@ public class CodeValueData implements Serializable {
     private final String description;
     private final boolean active;
     private final boolean mandatory;
+    private final Integer score;
 
     public CodeValueData(final Long id) {
         this.id = id;
@@ -41,25 +42,28 @@ public class CodeValueData implements Serializable {
         this.description = null;
         this.active = false;
         this.mandatory = false;
+        this.score = null;
     }
 
     public static CodeValueData instance(final Long id, final String name, final Integer position, final boolean isActive,
-            final boolean mandatory) {
+            final boolean mandatory, final Integer score) {
         String description = null;
-        return new CodeValueData(id, name, position, description, isActive, mandatory);
+        return new CodeValueData(id, name, position, description, isActive, mandatory, score);
     }
 
     public static CodeValueData instance(final Long id, final String name, final String description, final boolean isActive,
             final boolean mandatory) {
         Integer position = null;
-        return new CodeValueData(id, name, position, description, isActive, mandatory);
+        Integer score = null;
+        return new CodeValueData(id, name, position, description, isActive, mandatory, score);
     }
 
     public static CodeValueData instance(final Long id, final String name, final String description, final boolean isActive) {
         Integer position = null;
         boolean mandatory = false;
+        Integer score = null;
 
-        return new CodeValueData(id, name, position, description, isActive, mandatory);
+        return new CodeValueData(id, name, position, description, isActive, mandatory, score);
     }
 
     public static CodeValueData instance(final Long id, final String name) {
@@ -67,22 +71,24 @@ public class CodeValueData implements Serializable {
         Integer position = null;
         boolean isActive = false;
         boolean mandatory = false;
+        Integer score = null;
 
-        return new CodeValueData(id, name, position, description, isActive, mandatory);
+        return new CodeValueData(id, name, position, description, isActive, mandatory, score);
     }
 
     public static CodeValueData instance(final Long id, final String name, final Integer position, final String description,
-            final boolean isActive, final boolean mandatory) {
-        return new CodeValueData(id, name, position, description, isActive, mandatory);
+            final boolean isActive, final boolean mandatory, final Integer score) {
+        return new CodeValueData(id, name, position, description, isActive, mandatory, score);
     }
 
     private CodeValueData(final Long id, final String name, final Integer position, final String description, final boolean active,
-            final boolean mandatory) {
+            final boolean mandatory, final Integer score) {
         this.id = id;
         this.name = name;
         this.position = position;
         this.description = description;
         this.active = active;
         this.mandatory = mandatory;
+        this.score = score;
     }
 }

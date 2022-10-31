@@ -64,12 +64,15 @@ public class ClientApiConstants {
 
     public static final String CLIENT_NON_PERSON_CONSTITUTION = "Constitution";
     public static final String CLIENT_NON_PERSON_MAIN_BUSINESS_LINE = "Main Business Line";
+    public static final String CLIENT_SOURCE_OF_FUNDS = "Source Of Funds";
+    public static final String CLIENT_SOURCE_OF_WEALTH = "Source Of Wealth";
 
     // general
     public static final String localeParamName = "locale";
     public static final String dateFormatParamName = "dateFormat";
     public static final String address = "address";
     public static final String familyMembers = "familyMembers";
+    public static final String beneficiaries = "beneficiaries";
     public static final String MARITALSTATUS = "MARITALSTATUS";
     public static final String maritalStatusIdParamName = "maritalStatusId";
 
@@ -86,6 +89,7 @@ public class ClientApiConstants {
     public static final String middlenameParamName = "middlename";
     public static final String lastnameParamName = "lastname";
     public static final String fullnameParamName = "fullname";
+    public static final String registeredNameParamName = "registeredName";
     public static final String displaynameParamName = "displayname";
     public static final String officeIdParamName = "officeId";
     public static final String transferOfficeIdParamName = "transferOfficeIdParamName";
@@ -184,6 +188,9 @@ public class ClientApiConstants {
     public static final String obligeeData = "ObligeeDetails";
 
     public static final String clientEntityName = "clients";
+
+    public static final String RUN_KYC_SCREENING = "RUN_KYC_SCREENING";
+
 
     /**
      * These parameters will match the class level parameters of {@link ClientData}. Where possible, we try to get
