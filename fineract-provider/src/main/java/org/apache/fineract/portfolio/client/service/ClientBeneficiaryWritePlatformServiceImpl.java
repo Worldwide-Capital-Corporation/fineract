@@ -99,7 +99,7 @@ public class ClientBeneficiaryWritePlatformServiceImpl implements ClientBenefici
                 firstName = member.get("firstName").getAsString();
             }
 
-            if (member.get("middleName") != null) {
+            if (!(member.get("middleName") instanceof JsonNull) && member.get("middleName") != null) {
                 middleName = member.get("middleName").getAsString();
             }
 
@@ -111,7 +111,7 @@ public class ClientBeneficiaryWritePlatformServiceImpl implements ClientBenefici
                 ownership = member.get("ownership").getAsFloat();
             }
 
-            if (member.get("tin") != null) {
+            if (!(member.get("tin") instanceof JsonNull) && member.get("tin") != null) {
                 tin = member.get("tin").getAsString();
             }
 
