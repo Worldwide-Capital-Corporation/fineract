@@ -40,7 +40,7 @@ public class FileSystemContentRepository implements ContentRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemContentRepository.class);
 
-    public static final String FINERACT_BASE_DIR = "/home/tech/staging/documents";
+    public static final String FINERACT_BASE_DIR = "/home/tech/storage/documents";
 
     @Override
     public String saveFile(final InputStream uploadedInputStream, final DocumentCommand documentCommand) {

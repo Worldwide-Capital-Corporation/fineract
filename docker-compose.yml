@@ -25,6 +25,7 @@ services:
     image: postgres:14.5
     volumes:
       - ./fineract-db/docker/postgresql:/docker-entrypoint-initdb.d/:Z,ro
+      - /home/tech/storage/db:/home/tech/storage/db
     restart: always
     environment:
       POSTGRES_USER: root
@@ -39,14 +40,6 @@ services:
       retries: 10
     ports:
       - "5432:5432"
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: innocent.magagula@farmersbank.co.sz
-      PGADMIN_DEFAULT_PASSWORD: skdcnwauicn2ucnaecasdsajdnizucawencascdca
-    ports:
-      - "5050:80"
   redis:
     image: redis:7.0.5
     restart: always
@@ -59,7 +52,7 @@ services:
     image: fineract:latest
     volumes:
       - ./fineract-provider/build/data:/data
-      - /home/tech/staging/documents:/home/tech/staging/documents
+      - /home/tech/storage/documents:/home/tech/storage/documents
     healthcheck:
       test: ["CMD", 'sh', '-c', 'echo -e "Checking for the availability of Fineract server deployment"; while ! nc -z "fineract-server" 8443; do sleep 1; printf "-"; done; echo -e " >> Fineract server has started";' ]
       timeout: 10s
