@@ -47,7 +47,7 @@ services:
     restart: always
     ports:
       - '6379:6379'
-    command: redis-server --save 20 1 --loglevel debug --requirepass ${REDIS_PASS}
+    command: redis-server --save 20 1 --loglevel debug --requirepass ${FINERACT_TENANT_REDIS_TOKEN}
     volumes:
       - ./home/tech/storage/redis:/data
   fineract-server:
@@ -78,8 +78,8 @@ services:
       - FINERACT_SECURITY_MFA_ENABLED=true
       # NOTE: env vars prefixed "FINERACT_HIKARI_*" are used to configure the database connection pool
       - FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME=org.postgresql.Driver
-      - FINERACT_HIKARI_JDBC_URL=jdbc:postgresql://fineractpostgresql:5432/farmers_bank
-      - FINERACT_HIKARI_USERNAME=postgres
+      - FINERACT_HIKARI_JDBC_URL=jdbc:postgresql://${FINERACT_DEFAULT_TENANTDB_HOSTNAME}:${FINERACT_DEFAULT_TENANTDB_PORT}/farmers_bank
+      - FINERACT_HIKARI_USERNAME=${FINERACT_DB_USER}
       - FINERACT_HIKARI_PASSWORD=${FINERACT_DB_PASS}
       # ... following variables are optional; "application.properties" contains reasonable defaults (same as here)
       - FINERACT_HIKARI_MINIMUM_IDLE=3
@@ -101,9 +101,9 @@ services:
       - FINERACT_HIKARI_DS_PROPERTIES_LOG_SLOW_QUERIES=true
       - FINERACT_HIKARI_DS_PROPERTIES_DUMP_QUERIES_IN_EXCEPTION=true
       # NOTE: env vars prefixed "FINERACT_DEFAULT_TENANTDB_*" are used to create the default tenant database
-      - FINERACT_DEFAULT_TENANTDB_HOSTNAME=fineractpostgresql
-      - FINERACT_DEFAULT_TENANTDB_PORT=5432
-      - FINERACT_DEFAULT_TENANTDB_UID=postgres
+      - FINERACT_DEFAULT_TENANTDB_HOSTNAME=${FINERACT_DEFAULT_TENANTDB_HOSTNAME}
+      - FINERACT_DEFAULT_TENANTDB_PORT=${FINERACT_DEFAULT_TENANTDB_PORT}
+      - FINERACT_DEFAULT_TENANTDB_UID=${FINERACT_DEFAULT_TENANTDB_UID}
       - FINERACT_DEFAULT_TENANTDB_PWD=${FINERACT_DB_PASS}
       - FINERACT_DEFAULT_TENANTDB_CONN_PARAMS=
       - FINERACT_DEFAULT_TENANTDB_TIMEZONE=Africa/Harare
@@ -112,5 +112,6 @@ services:
       - FINERACT_DEFAULT_TENANTDB_DESCRIPTION=Farmers Bank
       - JAVA_TOOL_OPTIONS="-Xmx1G"
       - FINERACT_TENANT_REDIS_HOSTNAME=redis
-      - FINERACT_TENANT_REDIS_TOKEN=${REDIS_PASS}
+      - FINERACT_TENANT_REDIS_TOKEN=${FINERACT_TENANT_REDIS_TOKEN}
       - FINERACT_SECURITY_OAUTH_JWT_KEY=${FINERACT_SECURITY_OAUTH_JWT_KEY}
+      - FINERACT_SERVER_SSL_KEY_STORE_PASSWORD=${FINERACT_SERVER_SSL_KEY_STORE_PASSWORD}
