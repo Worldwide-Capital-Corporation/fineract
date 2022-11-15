@@ -47,6 +47,6 @@ services:
     restart: always
     ports:
       - '6379:6379'
-    command: redis-server --save 20 1 --loglevel debug --requirepass "${REDIS_PASS}"
+    command: redis-server --save 20 1 --loglevel debug --requirepass ${REDIS_PASS}
     volumes:
       - ./fineract-redis:/data

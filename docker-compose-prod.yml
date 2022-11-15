@@ -47,7 +47,7 @@ services:
     restart: always
     ports:
       - '6379:6379'
-    command: redis-server --save 20 1 --loglevel debug --requirepass "${REDIS_PASS}"
+    command: redis-server --save 20 1 --loglevel debug --requirepass ${REDIS_PASS}
     volumes:
       - ./home/tech/storage/redis:/data
   fineract-server:
@@ -80,7 +80,7 @@ services:
       - FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME=org.postgresql.Driver
       - FINERACT_HIKARI_JDBC_URL=jdbc:postgresql://fineractpostgresql:5432/farmers_bank
       - FINERACT_HIKARI_USERNAME=postgres
-      - FINERACT_HIKARI_PASSWORD="${FINERACT_DB_PASS}"
+      - FINERACT_HIKARI_PASSWORD=${FINERACT_DB_PASS}
       # ... following variables are optional; "application.properties" contains reasonable defaults (same as here)
       - FINERACT_HIKARI_MINIMUM_IDLE=3
       - FINERACT_HIKARI_MAXIMUM_POOL_SIZE=10
@@ -104,7 +104,7 @@ services:
       - FINERACT_DEFAULT_TENANTDB_HOSTNAME=fineractpostgresql
       - FINERACT_DEFAULT_TENANTDB_PORT=5432
       - FINERACT_DEFAULT_TENANTDB_UID=postgres
-      - FINERACT_DEFAULT_TENANTDB_PWD="${FINERACT_DB_PASS}"
+      - FINERACT_DEFAULT_TENANTDB_PWD=${FINERACT_DB_PASS}
       - FINERACT_DEFAULT_TENANTDB_CONN_PARAMS=
       - FINERACT_DEFAULT_TENANTDB_TIMEZONE=Africa/Harare
       - FINERACT_DEFAULT_TENANTDB_IDENTIFIER=default
@@ -112,5 +112,5 @@ services:
       - FINERACT_DEFAULT_TENANTDB_DESCRIPTION=Farmers Bank
       - JAVA_TOOL_OPTIONS="-Xmx1G"
       - FINERACT_TENANT_REDIS_HOSTNAME=redis
-      - FINERACT_TENANT_REDIS_TOKEN="${REDIS_PASS}"
-      - FINERACT_SECURITY_OAUTH_JWT_KEY="${FINERACT_SECURITY_OAUTH_JWT_KEY}"
+      - FINERACT_TENANT_REDIS_TOKEN=${REDIS_PASS}
+      - FINERACT_SECURITY_OAUTH_JWT_KEY=${FINERACT_SECURITY_OAUTH_JWT_KEY}
