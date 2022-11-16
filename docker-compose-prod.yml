@@ -25,7 +25,7 @@ services:
     image: postgres:14.5
     volumes:
       - ./fineract-db/docker/postgresql:/docker-entrypoint-initdb.d/:Z,ro
-      - ./home/tech/storage/data:/var/lib/postgresql/data
+      - /home/tech/storage/data:/var/lib/postgresql/data
       - ./fineract-db/docker/postgresql/postgres.conf:/etc/postgresql/postgresql.conf
       - ./fineract-db/docker/postgresql/pg_hba.conf:/etc/postgresql/pg_hba.conf
     restart: always
@@ -49,7 +49,7 @@ services:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel debug --requirepass ${FINERACT_TENANT_REDIS_TOKEN}
     volumes:
-      - ./home/tech/storage/redis:/data
+      - /home/tech/storage/redis:/data
   fineract-server:
     image: fineract:latest
     volumes:
