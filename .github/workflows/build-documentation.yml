@@ -22,7 +22,7 @@ jobs:
       - name: Congfigure vega-cli
         run: npm i -g vega-cli --unsafe
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+        uses: gradle/wrapper-validation-action@216d1ad2b3710bf005dc39237337b9673fd8fcd5
       - name: Install additional software
         run: |
             sudo apt-get update
