@@ -43,7 +43,7 @@ jobs:
       - name: Congfigure vega-cli
         run: npm i -g vega-cli --unsafe
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+        uses: gradle/wrapper-validation-action@9ba54b687bf0f59b62abbf91e0d60de082e8ebc4
       - name: Verify PostgreSQL connection
         run: |
             while ! pg_isready -d postgres -U root -h 127.0.0.1 -p 5432 ; do
